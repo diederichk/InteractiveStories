@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>EaselJS Story Demo</title>
+	<meta charset="utf-8">
+	
+	<script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
+	<script src="https://code.createjs.com/preloadjs-0.6.1.min.js"></script>
+	<!--
+	<link href="../_shared/demo.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/>
+	<link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/>
+	<script src="../lib/easeljs-NEXT.combined.js"></script>
+	-->
+<!--
+	<script>
+		function init() {
+			var stage = new createjs.Stage("demoCanvas");
+			var circle = new createjs.Shape();
+			circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+			circle.x = 100;
+			circle.y = 100;
+			stage.addChild(circle);
+			// stage.addChild(new createjs.Shape()).setTransform(100,100).graphics.f("red").dc(0,0,50);
+			stage.update();
+		}
+	</script>
+-->
+</head>
+<body onload="init();">
+
+<header class="EaselJS">
+	<h1>Story Example</h1>
+	
+	<p>This example is used to show the story with initial buttons
+		to progress between pages.</p>
+</header>
+
+<div>
+	<canvas id="demoCanvas" width="850" height="625"></canvas>
+</div>
+
+
+<script id="editable">
+	//Actual Javascript goes here
+	var stage;
+	var image;
+	var queue;
+	var bmp;
+	var prvShape;
+	var nxtShape;
+	var slide = 0;
+		
+	function init() {
+		// Create the stage from the canvas element
+		stage = new createjs.Stage("demoCanvas");
+		
+		// Method 1: Display an image
+		/*
+		image = new createjs.Bitmap("Story_Images/web_voice_v2-01.jpg");
+		stage.addChild(image);
+		createjs.Ticker.addEventListener("tick", handleTick);
+		function handleTick(event) {
+			//image.x += 10;
+			image.scaleX=0.5;
+			image.scaleY=0.5;
+			stage.update();
+		}
+		*/
+		
+		// Method 2: Display an image
+		/*var bitmap = new createjs.Bitmap("Story_Images/web_voice_v2-01.jpg");
+		bitmap.image.onload = function () {
+			bitmap.scaleX=0.5;
+			bitmap.scaleY=0.5;
+			stage.addChild(bitmap);
+			stage.update();
+		};
+		*/
+		
+		// Method 3: Display a slideshow
+		queue = new createjs.LoadQueue(false); // Creates a new queue (false is important)
+		queue.setMaxConnections(10); // Allows 10 concurrent connections for load
+		
+		queue.addEventListener("complete", handleCmplt); // Calls handleCmplt when load is finished
+		
+		
+		queue.loadManifest([
+				    {id:'1', src:'Story_Images/web_voice_v2-01.jpg'},
+				    {id:'2', src:'Story_Images/web_voice_v2-02.jpg'},
+					{id:'3', src:'Story_Images/web_voice_v2-03.jpg'},
+					{id:'4', src:'Story_Images/web_voice_v2-04.jpg'},
+					{id:'5', src:'Story_Images/web_voice_v2-05.jpg'},
+					{id:'6', src:'Story_Images/web_voice_v2-06.jpg'},
+					{id:'7', src:'Story_Images/web_voice_v2-07.jpg'},
+					{id:'8', src:'Story_Images/web_voice_v2-08.jpg'},
+					{id:'9', src:'Story_Images/web_voice_v2-09.jpg'},
+					{id:'10', src:'Story_Images/web_voice_v2-10.jpg'},
+					{id:'11', src:'Story_Images/web_voice_v2-11.jpg'},
+					{id:'12', src:'Story_Images/web_voice_v2-12.jpg'},
+					{id:'13', src:'Story_Images/web_voice_v2-13.jpg'},
+					{id:'14', src:'Story_Images/web_voice_v2-14.jpg'},
+					{id:'15', src:'Story_Images/web_voice_v2-15.jpg'},
+					{id:'16', src:'Story_Images/web_voice_v2-16.jpg'},
+					{id:'17', src:'Story_Images/web_voice_v2-17.jpg'},
+					{id:'18', src:'Story_Images/web_voice_v2-18.jpg'},
+					{id:'19', src:'Story_Images/web_voice_v2-19.jpg'}
+		]); // Preloads all images, Images paired with number id tags
+		
+		// See: https://www.youtube.com/watch?v=M-AWo4cVgFI
+	}
+	
+	function handleCmplt(event){
+		//Create the introduction to story
+		var txtintro = new createjs.Text();
+		txtintro.font = "bold 86px Arial";
+		txtintro.color = "#ff7700";
+		txtintro.text = "Welcome to Story 1";
+		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
+		var prevw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
+		txtintro.x = 425 - (prevw / 2); // Center text
+		txtintro.y = 300;
+		stage.addChild(txtintro);
+		
+		// Create the Previous Text
+		var prevtxt = new createjs.Text();
+		prevtxt.font = "bold 30px Arial";
+		prevtxt.color = "#000000";
+		prevtxt.text = "Previous";
+		prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+		prevtxt.x = 70;
+		prevtxt.y = 555;
+		stage.addChild(prevtxt);
+		
+		// Create the Next Text
+		var nexttxt = new createjs.Text();
+		nexttxt.font = "bold 30px Arial";
+		nexttxt.color = "#000000";
+		nexttxt.text = "Next";
+		nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+		nexttxt.x = 660;
+		nexttxt.y = 555;
+		stage.addChild(nexttxt);
+		
+		// Create left pointing triangle
+		prvShape = new createjs.Shape();
+		prvShape.graphics.beginFill("#ff8c00").drawPolyStar(0, 0, 20, 3, 0.5, 60);
+		prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawPolyStar(0, 0, 20, 3, 0.5, 60);
+		prvShape.x = 40;
+		prvShape.y = 575;
+		prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		prvShape.addEventListener("click", prvClck);
+		stage.addChild(prvShape);
+		
+		// Create right pointing triangle
+		nxtShape = new createjs.Shape();
+		nxtShape.graphics.beginFill("#ff8c00").drawPolyStar(0, 0, 20, 3, 0.5, 240);
+		nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawPolyStar(0, 0, 20, 3, 0.5, 240);
+		nxtShape.x = 760;
+		nxtShape.y = 575;
+		nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		nxtShape.addEventListener("click", nxtClck);
+		stage.addChild(nxtShape);
+		
+		// Add everything to stage
+		stage.update();
+	}
+	
+	function nxtClck(event){
+		// Moves current slide to the next slide
+		slide = slide + 1; //Set counter to previous or next slide
+		bmp = new createjs.Bitmap(queue.getResult(slide.toString())); //Convert counter to string
+				
+		bmp.scaleX=0.5;
+		bmp.scaleY=0.5;
+		
+		// Run thru images
+		bmp.x = 0;
+		bmp.y= -75;
+		if (slide > 19) { //Stop counter from going past end of slide ids
+			slide = 19;
+		}
+		stage.addChild(bmp);
+		stage.update();
+	}
+	
+	
+	function prvClck(event){
+		// Moves current slide to the previous slide
+		slide = slide - 1; //Set counter to previous or next slide
+		bmp = new createjs.Bitmap(queue.getResult(slide.toString())); //Convert counter to string
+		bmp.scaleX=0.5;
+		bmp.scaleY=0.5;
+		
+		// Run thru images
+		bmp.x = 0;
+		bmp.y= -75;
+		if (slide < 1) { //Stop counter from going negative
+			slide = 1;
+		}
+		stage.addChild(bmp);
+		stage.update();
+	}
+</script>
+
+
+</body>
+</html>
