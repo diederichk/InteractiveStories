@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <title>Proportional Grid page</title>
+  <style>
+    body {
+      /* Note the below properties for body are illustrative only.
+         Not needed for responsiveness */
+      font-size:40px;
+      text-align: center;
+      line-height: 100px;
+      vertical-align: middle;
+    }
+    #header
+    {
+      /* Note the below properties for body are illustrative only.
+         Not needed for responsiveness */
+      height: 150px;
+      border: solid 1px blue;
+    }
+    #mainContent {
+      width: 60%;
+      float: right;
+      /*This way the mainContent div is always 60% of the width of its parent container,
+        which in this case is the  tag that defaults to 100% page width anyway */
+      background: #999999;
+      }
+#imageContainer {
+    margin:10px;
+    width: auto;
+    /*This forces there to always be a fixed margin of 10px around the image */
+}
+#mainImage {
+    width:100%;
+    /* the image grows proportionally with #mainContent, but still maintains 10px of gutter */
+}
+#sideContentWrapper {
+    width: 40%;
+    float: left;
+}
+#sideContent {
+    margin-right: 20px;
+    /* sideContent always keeps 20px of right margin, relative to its parent container, namely
+       #sideContentWrapper. Otherwise it grows proportionally. */
+    background: #cccccc;
+    min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">Header</div>
+  <div id="mainContent">
+    <div id="imageContainer">
+      <img id="mainImage" src="microsoft_pc_1.png" />
+    </div>
+    Main Content
+  </div>
+  <div id="sideContentWrapper">
+  <div id="sideContent">
+    Side Content
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<title>Break points with media queries</title>
+  <style type="text/css">
+    /* default styling info*/
+/* four columns of stacked one below the other in a phone layout */
+/* remember to plan and style your sites mobile-first */
+ 
+#mainContent
+{
+  margin: 40px;
+}
+ 
+#red, #yellow, #green, #blue
+{
+  height: 200px;
+}
+#red
+{
+  background: red;
+}
+#green
+{
+  background: green;
+}
+#yellow
+{
+  background: yellow;
+}
+#blue
+{
+  background: blue;
+}
+ 
+@media screen and (max-width:800px) and (min-width:540px)
+{
+  /* this is the breakpoint where we transition from the first layout, of four side-by-side
+     columns, to the square layout with 2X2 grid */
+ 
+  #red, #blue, #green, #yellow {
+    width:50%;
+    display: inline-block;
+  }
+}
+ 
+@media screen and (min-width:800px)
+{
+  /*custom styling info for smartphones small screens;
+    All columns are just displayed one below the other */
+ 
+  #red, #yellow, #green, #blue {
+    width: 25%;
+    display: inline-block;
+    white-space: nowrap;
+  }
+ 
+}
+ 
+  </style>
+</head>
+<body>
+  <div id="mainContent">
+    <div id="red"></div><div id="green"></div><div id="yellow"></div><div id="blue"></div>
+  </div>
+</body>
+</html>
