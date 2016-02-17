@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<!-- Using this metatag users can't scale the page using pinchIn/out gestures on mobile devices -->
+	<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+
+	<script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
+	<script src="https://code.createjs.com/preloadjs-0.6.1.min.js"></script>
+	<script src="https://code.createjs.com/soundjs-0.6.1.min.js"></script>
+	
+	<title>Red Circle</title>	
+
+	<style type="text/css">
+
+		/* Remove margins and HTML scrollbars */
+		body {
+			padding: 0;
+			margin: 0;
+			overflow: hidden;
+		}
+		canvas {
+			border: 1px solid #f00;
+		}
+	</style>
+</head>
+
+<body onLoad="init();">
+	<canvas id="canvas" width="800" height="600"  >
+		alternate content
+	</canvas>
+	
+		<script>
+		var stage = new createjs.Stage("canvas");
+
+		var c = new createjs.Shape();
+		c.graphics.f("#f00").dc(0, 0, 50); // Drawn a 100x100 circle from the center
+
+		var t = new createjs.Text("Resize the browser/frame to redraw", "24px Arial bold", "#000");
+		t.x = t.y = 20;
+		stage.addChild(c, t);
+
+		window.addEventListener("resize", handleResize);
+
+		function handleResize() {
+			var w = window.innerWidth - 2; // -2 accounts for the border
+			var h = window.innerHeight - 2;
+			stage.canvas.width = w;
+			stage.canvas.height = h;
+			//
+			
+			var ratio = 100 / 100; // 100 is the width and height of the circle conten
+			var windowRatio = w / h;
+			var scale = w / 100;
+			if (windowRatio > ratio) {
+				scale = h / 100;
+			}
+
+			// Scale up to fit width or height
+			c.scaleX = c.scaleY = scale;
+
+			// Center the shape
+			c.x = w / 2;
+			c.y = h / 2;
+
+			stage.update();
+		}
+
+		handleResize(); // First draw
+
+	</script>
+</body>
+</html>

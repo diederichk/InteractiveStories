@@ -18,6 +18,9 @@
 	<p>This example is used to show the story with initial buttons
 		to progress between pages.</p>
 </header>
+
+Link to dynamic resizing ideas:
+https://github.com/CreateJS/EaselJS/issues/343
 -->
 
 <div id="error">
@@ -37,19 +40,22 @@
 <script id="editable">
 	// Image Variables
 	var stage;
-	var image;
-	var queue;
-	var musicqueue;
-	var bmp;
+	var bg; 			// Background
+	var imgqueue;			// Queue for all images
+	var musicqueue;		// Queue for all sounds
+	var content, bmp;	// Container object, image object
 	var prvShape;
 	var nxtShape;
-	var slide = 0;
+	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
 	
 	// Sound Variables
 	var src;            // the audio src we are trying to play
 	var soundInstance;  // the soundInstance returned by Sound when we create or play a src
 	var canvas;  		// the canvas we draw to
+	
+	// Resize event listener
+	window.addEventListener('resize', resize);
 
 		
 	function init() {
@@ -67,12 +73,15 @@
 			return;
 		}
 		
-		
 		// create a new stage and point it at our canvas:
 		canvas = document.getElementById("demoCanvas");
 		stage = new createjs.Stage(canvas);
 		
-		// Create a single item to load.
+		// Create the background
+		createBackground();
+		
+		// Create the container
+		createContent();
 		
 		var musicPath = "Story_Audio/";
 			
@@ -103,13 +112,13 @@
 		
 		
 		// Method: Display a slideshow
-		queue = new createjs.LoadQueue(false); // Creates a new queue (false is important)
-		queue.setMaxConnections(10); // Allows 10 concurrent connections for load
+		imgqueue = new createjs.LoadQueue(false); // Creates a new queue (false is important)
+		imgqueue.setMaxConnections(10); // Allows 10 concurrent connections for load
 		
-		queue.addEventListener("complete", handleCmplt); // Calls handleCmplt when load is finished
+		imgqueue.addEventListener("complete", handleCmplt); // Calls handleCmplt when load is finished
 		
 		
-		queue.loadManifest([
+		imgqueue.loadManifest([
 				    {id:'1', src:'Story_Images/web_voice_v2-01.jpg'},
 				    {id:'2', src:'Story_Images/web_voice_v2-02.jpg'},
 					{id:'3', src:'Story_Images/web_voice_v2-03.jpg'},
@@ -131,6 +140,22 @@
 					{id:'19', src:'Story_Images/web_voice_v2-19.jpg'}
 		]); // Preloads all images, Images paired with number id tags
 		
+		resize();
+	}
+	
+	/**
+	 * create and display the background (fullscreen)
+	 */
+	function createBackground() {
+		bg = new createjs.Shape();		
+		stage.addChild(bg);
+	}
+	/**
+	 * create content (centered)
+	 */
+	function createContent() {
+		content = new createjs.Container();
+		stage.addChild(content);
 	}
 	
 	// Sound handling methods
@@ -237,7 +262,7 @@
 		// Stop any song currently playing
 		createjs.Sound.stop();
 		
-		bmp = new createjs.Bitmap(queue.getResult(slide.toString())); //Convert counter to string
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 				
 		bmp.scaleX=0.5;
 		bmp.scaleY=0.5;
@@ -275,7 +300,7 @@
 		// Stop any song currently playing
 		createjs.Sound.stop();
 		
-		bmp = new createjs.Bitmap(queue.getResult(slide.toString())); //Convert counter to string
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 		bmp.scaleX=0.5;
 		bmp.scaleY=0.5;
 		
@@ -294,6 +319,38 @@
 			song = 1;
 		}
 		playSound(song.toString());
+	}
+	
+	/**
+	 * Resize event handler
+	 */
+	function resize() {
+		var w = window.innerWidth-2;
+		var h = window.innerHeight-2;
+
+		stage.canvas.width = w;
+		stage.canvas.height = h;
+
+		// Simple "fit-to-screen" scaling
+		var ratio = 1667 / 1250; // Use the "default" size of the content you have.
+		var windowRatio = w/h;
+		var scale = w/1250;
+		if (windowRatio > ratio) {
+			scale = h/1667;
+		}
+		
+		// Background: full screen redraw 
+		bg.graphics.clear()
+		bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+		
+		// Content: centered
+		bmp.x = stage.canvas.width / 2;
+		bmp.y = stage.canvas.height / 2;
+		
+		// Scale up to fit width or height
+		bmp.scaleX = bmp.scaleY = scale;
+		
+		stage.update();
 	}
 </script>
 
