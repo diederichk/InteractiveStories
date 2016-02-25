@@ -40,40 +40,39 @@
 	
 	<script>
 
-		var stage;
+		var canvas, stage;
 		var bg, logo;		
-		var content, storyImg;
+		var container, storyImg;
+		var contentWidth, contentHeight;
 		var imgPath = "Story_Images/";
 
 		// Resize event listener
 		window.addEventListener('resize', resize);
-
+		
 		/**
 		 * Init handler
 		 */
+		 
 		function init() {
-
-			stage = new createjs.Stage("demoCanvas");
+			canvas = document.getElementById("demoCanvas");
+			stage = new createjs.Stage(canvas);
 			
 			createBackground();
-			createLogo();
 			createContent();
-			//alert("set up ticker");
 			
-			/*BUG*/ //Does not progress from this point on.
-			//createjs.Ticker.addListener(this);
-			createjs.Ticker.addEventListener("tick", tick);
 			/**
 			 * Tick Handler
 			 */
+			createjs.Ticker.addEventListener("tick", stage);
+			
+			/* // Method 2: to create a Tick event listener
+			createjs.Ticker.addEventListener("tick", tick);
 			function tick() {
 				stage.update();
 				//alert("tick");
-			}
+			}*/
 			
-			//alert("ticker added");
 			resize();
-			//alert("resize complete");
 		}
 		
 		/**
@@ -89,23 +88,34 @@
 		/**
 		 * create and display logo (top-right)
 		 */
+		 /*BUG*/ // Not current being used
+				// Rolled into the createContent method
 		function createLogo() {
 
 			logo = new createjs.Bitmap(imgPath + "echo2.png");
 			logo.y = 10;
-			stage.addChild(logo);
-
+			// Adds logo only to the stage
+			//stage.addChild(logo);
 		}
 		
 		 
 		/**
-		 * create content (centered)
+		 * create container (centered)
 		 */
 		function createContent() {
+			
+			// Obtain the current draw space
+			contentWidth = document.getElementById("demoCanvas").offsetWidth;
+			contentHeight = document.getElementById("demoCanvas").offsetHeight;
 
-
-			content = new createjs.Container();
-			stage.addChild(content);
+			container = new createjs.Container();
+			stage.addChild(container);
+			
+			// Adding logo to the content container
+			logo = new createjs.Bitmap(imgPath + "echo2.png");
+			logo.y = 10;
+			logo.x = 10;
+			container.addChild(logo);
 
 			// Load the Image
 			// (You should also use PreloadJS to avoid the onload listener)
@@ -122,32 +132,50 @@
 			var bmpStoryImage = new createjs.Bitmap(storyImg);
 
 			// Add the bitmap to the Container
-			content.addChild(bmpStoryImage);
+			container.addChild(bmpStoryImage);
+			
+			// Used to place the logo at the top layer
+			// Place the logo on the story image
+			container.setChildIndex(logo,1);
 			
 			// Set the registration point of the content Container to center
-			content.regX = bmpStoryImage.image.width/2;
-			content.regY = bmpStoryImage.image.height/2;
+			container.regX = bmpStoryImage.image.width/2;
+			container.regY = bmpStoryImage.image.height/2;
 
 			// Set the scale value
 			// It could be useful to properly handle different mobile resolutions
-			content.scaleX = 0.5;
-			content.scaleY = 0.5;
+			container.scaleX = 0.5;
+			container.scaleY = 0.5;
 			//alert("scaling set");
 			
 			/*BUG*/ //This method of setting the transform does not work
-			//content.setTransform(0,0, 0.5, 0.5, 0,0,0,0,0);
+			//container.setTransform(0,0, 0.5, 0.5, 0,0,0,0,0);
 			
 		}
+		
+		//**************************************
+		// Methods to test when using the 
+		// container object.
+		//**************************************	
+/*
+		createjs.Ticker.addEventListener("tick", stage);
 
+		var contentWidth = document.getElementById("content").offsetWidth;
+		var contentHeight = document.getElementById("content").offsetHeight;
 
-		/**
-		 * Tick Handler
-		 */
-		/*function tick() {
-			
-			stage.update();
-			alert("tick");
-		}*/	
+		var container = new createjs.Container();
+		stage.addChild(container);
+		stage.enableMouseOver();
+
+		var xPos = 0;
+		for(var i = 0; i < 10; i++){
+			var button = new createjs.Shape();
+			button.graphics.beginFill("#FF0000");
+			button.graphics.drawRect(0, 0, 50, 50);
+			button.graphics.endFill();
+			button.cursor = "pointer";
+		}
+*/
 			
 		/**
 		 * Resize event handler
@@ -168,8 +196,8 @@
 	    	bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 	    	
 	        // Content: centered
-	        content.x = stage.canvas.width / 2;
-	        content.y = stage.canvas.height / 2;
+	        container.x = stage.canvas.width / 2;
+	        container.y = stage.canvas.height / 2;
 			//alert("resize complete");
 			*/
 			
@@ -187,8 +215,8 @@
 	    	bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 			
 			// Content: centered
-	        content.x = stage.canvas.width / 2;
-	        content.y = stage.canvas.height / 2;
+	        container.x = stage.canvas.width / 2;
+	        container.y = stage.canvas.height / 2;
 			
 			stage.update(); // draw at the new size.
 			*/
@@ -206,6 +234,10 @@
 			// Simple "fit-to-screen" scaling
 			var ratio = 1667 / 1250; // Use the "default" size of the content you have.
 			var windowRatio = w/h;
+			
+			// calculate a scale factor to keep a correct aspect ratio.
+            //var scale = Math.min(window.innerWidth/w, window.innerHeight/w);
+			
 			var scale = w/1250;
 			if (windowRatio > ratio) {
 				scale = h/1667;
@@ -216,11 +248,11 @@
 	    	bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 			
 			// Content: centered
-	        content.x = stage.canvas.width / 2;
-	        content.y = stage.canvas.height / 2;
+	        container.x = stage.canvas.width / 2;
+	        container.y = stage.canvas.height / 2; 
 			
 			// Scale up to fit width or height
-			content.scaleX = content.scaleY = scale;
+			container.scaleX = container.scaleY = scale;
 			
 			stage.update();
 		

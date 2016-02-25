@@ -1,27 +1,41 @@
 html, body {
-	text-align: left;
+	width: 960px;
+	text-align: center;
 	overflow:hidden;
 }
 
 /* CSS techniques examples: http://www.htmlgoodies.com/html5/client/common-techniques-in-responsive-web-design.html#fbid=q3_-oSNiotY */
 
 header {
-	margin-bottom: 0;
+	margin-bottom: 1rem;
+	width: 960px;
+}
+
+h1 {
+	font-weight: 200;
+	margin-bottom: 1rem;
+}
+
+h1:before {
+	content:"HCI: ";
+	font-weight: bold;
 }
 
 header p {
 	margin: 0;
-	padding: 0em;
+	padding: 1em;
 	background: rgba(250, 252, 255, 0.7);
 }
 
 .content, canvas {
-	background: white;
+	/*background: white;*/
 }
 
 .content {
+	width: 960px;
+	height: 400px;
 	overflow: hidden;
-	padding: 0em;
+	padding: 1em;
 	box-sizing: border-box;
 }
 
@@ -29,19 +43,21 @@ header p {
 	position: relative;
 }
 
-/*.loading:after {
+.loading:after {
 	content: url("../art/loading.gif");
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	margin: -13px 0 0 -51px;
 	opacity: 0.8;
-}*/
+}
 
 #error, #mobile {
+	width: 960px;
+	height: 400px;
 	display:none;
 	text-align: left;
-	padding: 0em;
+	padding: 1em;
 }
 
 body.embedded header {

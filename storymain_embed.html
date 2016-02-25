@@ -3,7 +3,9 @@
 <head>
 	<title>CreateJS Story Demo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
+	
 	
 	<script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
 	<script src="https://code.createjs.com/preloadjs-0.6.1.min.js"></script>
@@ -32,7 +34,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		with the device and browser you are using. Thank you.</p>
 </div>
 
-<div style ="width: 800px; margin: 0px auto;">
+<div style ="position:absolute; width:100%;">
 	<canvas id="demoCanvas" width="850" height="625"></canvas>
 </div>
 
@@ -41,13 +43,18 @@ https://github.com/CreateJS/EaselJS/issues/343
 	// Image Variables
 	var stage;
 	var bg; 			// Background
-	var imgqueue;			// Queue for all images
+	var imgqueue;		// Queue for all images
 	var musicqueue;		// Queue for all sounds
-	var content, bmp;	// Container object, image object
+	var container, bmp;	// Container object, image object
 	var prvShape;
 	var nxtShape;
 	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
+	
+	// Text Variables
+	var txtintro;
+	var prevtxt;
+	var nexttxt;
 	
 	// Sound Variables
 	var src;            // the audio src we are trying to play
@@ -56,7 +63,26 @@ https://github.com/CreateJS/EaselJS/issues/343
 	
 	// Resize event listener
 	window.addEventListener('resize', resize);
-
+	
+	// Alternative Resize Idea
+	/*window.addEventListener('resize',
+		function(evt) {
+			alert("resize");
+			// calculate a scale factor to keep a correct aspect ratio.
+			scaleFactor= Math.min(window.innerWidth/W, window.innerHeight/H);
+			// make the canvas conform to the new scaled size.
+			canvas.width = W*scaleFactor;
+			canvas.height = H*scaleFactor;
+			// get the scaled canvas context.
+			context = canvas.getContext( "2d" );
+			
+			stage.scaleX=scaleFactor; // scaling the stage  X
+			stage.scaleY=scaleFactor; // scaling the stage Y
+			
+			alert("resize");
+		},
+	false);
+	*/
 		
 	function init() {
 		// this does two things, it initializes the default plugins, and if that fails the if statement triggers and we display an error
@@ -81,7 +107,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		createBackground();
 		
 		// Create the container
-		createContent();
+		createContainer();
 		
 		var musicPath = "Story_Audio/";
 			
@@ -151,11 +177,21 @@ https://github.com/CreateJS/EaselJS/issues/343
 		stage.addChild(bg);
 	}
 	/**
-	 * create content (centered)
+	 * create container (centered)
 	 */
-	function createContent() {
-		content = new createjs.Container();
-		stage.addChild(content);
+	function createContainer() {
+		container = new createjs.Container();
+		stage.addChild(container);
+		
+		// Set the registration point of the content Container to center
+		container.regX = window.innerWidth/2;
+		container.regY = window.innerHeight/2;
+		
+		// Set the scale value
+		// It could be useful to properly handle different mobile resolutions
+		container.scaleX = 0.5;
+		container.scaleY = 0.5;
+				
 	}
 	
 	// Sound handling methods
@@ -200,36 +236,41 @@ https://github.com/CreateJS/EaselJS/issues/343
 	
 	
 	function handleCmplt(event){
-		//Create the introduction to story
-		var txtintro = new createjs.Text();
-		txtintro.font = "bold 86px Arial";
-		txtintro.color = "#ff7700";
-		txtintro.text = "Welcome to Story 1";
-		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
-		var prevw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
-		txtintro.x = 425 - (prevw / 2); // Center text
-		txtintro.y = 300;
-		stage.addChild(txtintro);
+		alert("beginning to add page turners to container");
 		
 		// Create the Previous Text
-		var prevtxt = new createjs.Text();
+		prevtxt = new createjs.Text();
 		prevtxt.font = "bold 30px Arial";
 		prevtxt.color = "#000000";
 		prevtxt.text = "Previous";
 		prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
 		prevtxt.x = 70;
 		prevtxt.y = 555;
-		stage.addChild(prevtxt);
+		
+		alert(1);
+		
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(prevtxt);
+		// Simple change to adding to Container
+		container.addChild(prevtxt);
 		
 		// Create the Next Text
-		var nexttxt = new createjs.Text();
+		nexttxt = new createjs.Text();
 		nexttxt.font = "bold 30px Arial";
 		nexttxt.color = "#000000";
 		nexttxt.text = "Next";
 		nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
 		nexttxt.x = 660;
 		nexttxt.y = 555;
-		stage.addChild(nexttxt);
+		
+		alert(2);
+		
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(nexttxt);
+		// Simple change to adding to Container
+		//container.addChild(nexttxt);
 		
 		// Create left pointing triangle
 		prvShape = new createjs.Shape();
@@ -239,7 +280,13 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prvShape.y = 575;
 		prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 		prvShape.addEventListener("click", prvClck);
-		stage.addChild(prvShape);
+		
+			
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(prvShape);
+		// Simple change to adding to Container
+		//container.addChild(prevShape);
 		
 		// Create right pointing triangle
 		nxtShape = new createjs.Shape();
@@ -249,7 +296,43 @@ https://github.com/CreateJS/EaselJS/issues/343
 		nxtShape.y = 575;
 		nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 		nxtShape.addEventListener("click", nxtClck);
-		stage.addChild(nxtShape);
+			
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(nxtShape);
+		// Simple change to adding to Container
+		//container.addChild(nxtShape);
+		
+		//Create the introduction to story
+		txtintro = new createjs.Text();
+		// Removed to test set and container
+		txtintro.set({
+			text: "Welcome to Story 1",
+			font: "bold 70px Arial",
+			color: "#ff7700",
+		});
+		//txtintro.font = "bold 86px Arial";
+		//txtintro.color = "#ff7700";
+		//txtintro.text = "Welcome to Story 1";
+		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
+		var prevw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
+		txtintro.x = 425 - (prevw / 2); // Center text
+		txtintro.y = 300;
+		
+		alert("before addChild");
+		
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(txtintro);
+		// Simple change to adding to Container
+		//container.addChild(txtintro);
+		
+		/*BUG*/
+		// Adding to the container is failing on nxtShape and prevShape
+		// Possible solution ideas: http://stackoverflow.com/questions/21985930/shapes-in-containers-are-not-shown-on-the-stage
+		container.addChild(nexttxt,txtintro);
+		
+		alert("everything added to container");
 		
 		// Add everything to stage
 		stage.update();
@@ -281,7 +364,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 			// Quick fix to stop looping sound
 			createjs.Sound.removeAllSounds();
 		}
+		
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
 		stage.addChild(bmp);
+		// Simple change to adding to Container
+		//container.addChild(bmp);
 		stage.update();
 		
 		// Run thru songs
@@ -310,7 +398,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 		if (slide < 1) { //Stop counter from going negative
 			slide = 1;
 		}
+		
+		/*BUG*/
+		// Must be changed to be added instead to the container Container
 		stage.addChild(bmp);
+		// Simple change to adding to Container
+		//container.addChild(bmp);
 		stage.update();
 		
 		// Run thru songs
