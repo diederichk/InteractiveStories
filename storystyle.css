@@ -1,6 +1,7 @@
 html, body {
 	text-align: left;
 	overflow:hidden;
+	margin: 0;
 }
 
 /* CSS techniques examples: http://www.htmlgoodies.com/html5/client/common-techniques-in-responsive-web-design.html#fbid=q3_-oSNiotY */

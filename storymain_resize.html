@@ -6,7 +6,6 @@
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
 	
-	
 	<script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
 	<script src="https://code.createjs.com/preloadjs-0.6.1.min.js"></script>
 	<script src="https://code.createjs.com/soundjs-0.6.1.min.js"></script>
@@ -207,7 +206,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		txtintro.y = IMAGE_HEIGHT/2 - 45;
 		
 		// Add the shape to the container
-		// Used to place the shpae at the top layer
+		// Used to place the shape at the top layer
 		container.addChild(txtintro);
 		container.setChildIndex(txtintro, 1);
 		
@@ -221,7 +220,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prvShape.addEventListener("click", prvClck);
 		
 		// Add the shape to the container
-		// Used to place the shpae at the top layer
+		// Used to place the shape at the top layer
 		container.addChild(prvShape);
 		container.setChildIndex(prvShape, 1);
 		//prvShape.addEventListener("click", prvClck);
@@ -236,7 +235,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		nxtShape.addEventListener("click", nxtClck);
 		
 		// Add the shape to the container
-		// Used to place the shpae at the top layer
+		// Used to place the shape at the top layer
 		container.addChild(nxtShape);
 		container.setChildIndex(nxtShape, 1);
 		
@@ -248,9 +247,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
 		nexttxt.x = IMAGE_WIDTH - 215;
 		nexttxt.y = IMAGE_HEIGHT - 100;
+		nexttxt.addEventListener("click", nxtClck);
 		
 		// Add the shape to the container
-		// Used to place the shpae at the top layer
+		// Used to place the shape at the top layer
 		container.addChild(nexttxt);
 		container.setChildIndex(nexttxt, 1);
 		
@@ -262,9 +262,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
 		prevtxt.x = 100;
 		prevtxt.y = IMAGE_HEIGHT - 100;
+		prevtxt.addEventListener("click", prvClck);
 		
 		// Add the shape to the container
-		// Used to place the shpae at the top layer
+		// Used to place the shape at the top layer
 		container.addChild(prevtxt);
 		container.setChildIndex(prevtxt, 1);
 				
@@ -346,7 +347,6 @@ https://github.com/CreateJS/EaselJS/issues/343
 			createjs.Sound.removeAllSounds();
 		}
 		
-		/*BUG*/
 		// Must be changed to be added instead to the container Container
 		//stage.addChild(bmp);
 		// Simple change to adding to Container
@@ -382,7 +382,6 @@ https://github.com/CreateJS/EaselJS/issues/343
 			slide = 1;
 		}
 		
-		/*BUG*/
 		// Must be changed to be added instead to the container Container
 		//stage.addChild(bmp);
 		// Simple change to adding to Container
