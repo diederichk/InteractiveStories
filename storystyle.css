@@ -22,7 +22,7 @@ header p {
 .content {
 	overflow: hidden;
 	padding: 0em;
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 }
 
 .loading {
