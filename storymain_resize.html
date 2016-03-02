@@ -48,6 +48,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var container, bmp;	// Container object, image object
 	var prvShape;
 	var nxtShape;
+	var running = false;
 	
 	// Constants
 	var musicPath = "Story_Audio/";
@@ -193,6 +194,23 @@ https://github.com/CreateJS/EaselJS/issues/343
 		container.scaleX = 0.5;
 		container.scaleY = 0.5;
 		
+		//Create the introduction to story
+		txtintro = new createjs.Text();
+		txtintro.set({
+			text: "Welcome to Story 1",
+			font: "bold 90px Arial",
+			color: "#ff7700",
+		});
+		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
+		var introw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
+		txtintro.x = IMAGE_WIDTH/2 - (introw / 2); // Center text
+		txtintro.y = IMAGE_HEIGHT/2 - 45;
+		
+		// Add the shape to the container
+		// Used to place the shpae at the top layer
+		container.addChild(txtintro);
+		container.setChildIndex(txtintro, 1);
+		
 		// Create left pointing triangle
 		prvShape = new createjs.Shape();
 		prvShape.graphics.beginFill("#ff8c00").drawPolyStar(0, 0, 40, 3, 0.5, 60);
@@ -249,24 +267,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shpae at the top layer
 		container.addChild(prevtxt);
 		container.setChildIndex(prevtxt, 1);
-		
-		//Create the introduction to story
-		txtintro = new createjs.Text();
-		txtintro.set({
-			text: "Welcome to Story 1",
-			font: "bold 90px Arial",
-			color: "#ff7700",
-		});
-		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
-		var introw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
-		txtintro.x = IMAGE_WIDTH/2 - (introw / 2); // Center text
-		txtintro.y = IMAGE_HEIGHT/2 - 45;
-		
-		// Add the shape to the container
-		// Used to place the shpae at the top layer
-		container.addChild(txtintro);
-		container.setChildIndex(txtintro, 1);
-		
+				
 		// Set the registration point of the content Container to center
 		container.regX = bmpStoryImage.image.width/2;
 		container.regY = bmpStoryImage.image.height/2;
@@ -316,11 +317,19 @@ https://github.com/CreateJS/EaselJS/issues/343
 	}
 	
 	function nxtClck(event){
-		// Moves current slide to the next slide
+		// Remove the title text from the container
+		if(slide >= 0 && !running){
+			container.removeChild(txtintro);
+			running = true;
+		}
+		// Moves current slide to the next slide	
 		slide = slide + 1; //Set counter to previous or next slide
 		song = (song + 1)%3+1;	//Set counter to previous or next song
 		// Stop any song currently playing
 		createjs.Sound.stop();
+		
+		// Remove existing image
+		container.removeChild(bmp);
 		
 		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 		
@@ -339,10 +348,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		/*BUG*/
 		// Must be changed to be added instead to the container Container
-		stage.addChild(bmp);
+		//stage.addChild(bmp);
 		// Simple change to adding to Container
-		//container.addChild(bmp);
-		stage.update();
+		container.addChildAt(bmp,1);
+		//stage.update();
 		
 		// Run thru songs
 		// For use with audio for each slide
@@ -350,6 +359,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 			song = 3;
 		}
 		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
 	}
 	
 	
@@ -360,6 +372,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Stop any song currently playing
 		createjs.Sound.stop();
 		
+		// Remove existing image
+		container.removeChild(bmp);
+		
 		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 		
 		// Run thru images
@@ -369,10 +384,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		/*BUG*/
 		// Must be changed to be added instead to the container Container
-		stage.addChild(bmp);
+		//stage.addChild(bmp);
 		// Simple change to adding to Container
-		//container.addChild(bmp);
-		stage.update();
+		container.addChildAt(bmp,1);
+		//stage.update();
 		
 		// Run thru songs
 		// For use with audio for each slide
@@ -380,6 +395,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 			song = 1;
 		}
 		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
 	}
 	
 	/**
