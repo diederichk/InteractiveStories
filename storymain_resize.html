@@ -98,9 +98,28 @@ https://github.com/CreateJS/EaselJS/issues/343
 		//createContainer();		
 		
 		var musicManifest = [
-			{id: "1", src: musicPath + "M-GameBG.ogg"},
-			{id: "2", src: musicPath + "bensound-goinghigher.mp3"},
-			{id: "3", src: musicPath + "bensound-happiness.mp3"},
+			{id: "1", src: musicPath + "audio_01.mp3"},
+			{id: "2", src: musicPath + "audio_02.mp3"},
+			{id: "3", src: musicPath + "audio_03.mp3"},
+			{id: "4", src: musicPath + "audio_04.mp3"},
+			{id: "5", src: musicPath + "audio_05.mp3"},
+			{id: "6", src: musicPath + "audio_06.mp3"},
+			{id: "7", src: musicPath + "audio_07.mp3"},
+			{id: "8", src: musicPath + "audio_08.mp3"},
+			{id: "9", src: musicPath + "audio_09.mp3"},
+			{id: "10", src: musicPath + "audio_10.mp3"},
+			{id: "11", src: musicPath + "audio_11.mp3"},
+			{id: "12", src: musicPath + "audio_12.mp3"},
+			{id: "13", src: musicPath + "audio_13.mp3"},
+			{id: "14", src: musicPath + "audio_14.mp3"},
+			{id: "15", src: musicPath + "audio_15.mp3"},
+			{id: "16", src: musicPath + "audio_16.mp3"},
+			{id: "17", src: musicPath + "audio_17.mp3"},
+			{id: "18", src: musicPath + "audio_18.mp3"},
+			{id: "19", src: musicPath + "audio_19.mp3"},
+			{id: "game", src: musicPath + "M-GameBG.ogg"},
+			{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
+			{id: "happy", src: musicPath + "bensound-happiness.mp3"},
 			{id: "coin", src: musicPath + "coin.mp3"}
 		]
 		
@@ -299,7 +318,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 	function loadComplete(evt) {
 		// Load completed.
 		//alert("Complete :)");
-		//playSound("1");
+		playSound("happy");
 	}
 
 	function fileComplete(evt) {
@@ -312,7 +331,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		//soundInstance = createjs.Sound.play(name);
 		
 		//For testing
-		soundInstance = createjs.Sound.play("coin");
+		soundInstance = createjs.Sound.play(name);
 		soundInstance.addEventListener("complete", nxtClck);
 		//return createjs.Sound.play(name);
 	}
@@ -325,7 +344,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		}
 		// Moves current slide to the next slide	
 		slide = slide + 1; //Set counter to previous or next slide
-		song = (song + 1)%3+1;	//Set counter to previous or next song
+		song = song + 1;	//Set counter to previous or next song
 		// Stop any song currently playing
 		createjs.Sound.stop();
 		
@@ -355,8 +374,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		// Run thru songs
 		// For use with audio for each slide
-		if (song > 3) { //Stop counter from going past end of song ids
-			song = 3;
+		if (song > 19) { //Stop counter from going past end of song ids
+			song = 19;
 		}
 		playSound(song.toString());
 		
@@ -368,7 +387,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 	function prvClck(event){
 		// Moves current slide to the previous slide
 		slide = slide - 1;	//Set counter to previous or next slide
-		song = (song - 1)%3+1;	//Set counter to previous or next song
+		song = song - 1;	//Set counter to previous or next song
 		// Stop any song currently playing
 		createjs.Sound.stop();
 		
