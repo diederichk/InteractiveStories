@@ -6,9 +6,9 @@
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
 	
-	<script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
-	<script src="https://code.createjs.com/preloadjs-0.6.1.min.js"></script>
-	<script src="https://code.createjs.com/soundjs-0.6.1.min.js"></script>
+	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+	<script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+	<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 </head>
 <body onload="init();">
 
@@ -73,7 +73,11 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 	function init() {
 		// this does two things, it initializes the default plugins, and if that fails the if statement triggers and we display an error
-/*
+		
+		// if initializeDefaultPlugins returns false, we cannot play sound in this browser
+		if (!createjs.Sound.initializeDefaultPlugins()) {return;}
+		
+		/*
 		if (!createjs.Sound.initializeDefaultPlugins()) {
 			document.getElementById("error").style.display = "block";
 			document.getElementById("content").style.display = "none";
