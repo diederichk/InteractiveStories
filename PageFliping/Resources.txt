@@ -1,0 +1,7 @@
+Page Flipping Options:
+
+PAGEFLIP ::= Book Template for the web (must pay to use)
+http://pageflip-books.com/
+
+turn.js ::= Make a flip book with HTML5 (free)
+https://github.com/blasten/turn.js
