@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CreateJS Story Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
+	
+	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+	<script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+	<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+</head>
+<body onload="init();">
+
+<!--
+<header class="CreateJS">
+	<h1>Story Example</h1>
+	
+	<p>This example is used to show the story with initial buttons
+		to progress between pages.</p>
+</header>
+
+Link to dynamic resizing ideas:
+https://github.com/CreateJS/EaselJS/issues/343
+-->
+<!--
+<div id="error">
+	<h2>Sorry!</h2>
+
+	<p>SoundJS is not currently supported in your browser.</p>
+
+	<p>Please <a href="http://github.com/CreateJS/SoundJS/issues" target="_blank">log a bug</a>
+		with the device and browser you are using. Thank you.</p>
+</div>
+-->
+<div>
+	<canvas id="demoCanvas" width="800" height="600"></canvas>
+</div>
+
+
+<script id="editable">
+	// Image Variables
+	var stage;
+	var bg; 			// Background
+	var imgqueue;		// Queue for all images
+	var musicqueue;		// Queue for all sounds
+	var container, bmp;	// Container object, image object
+	var prvShape;
+	var nxtShape;
+	var running = false;
+	
+	// Constants
+	var musicPath = "Story_Audio/";
+	var imgPath = "Story_Images_1/";
+	var IMAGE_WIDTH = 2222;
+	var IMAGE_HEIGHT = 1250;
+	
+	var slide = 0;		// Variable to access the image and song queues
+	var song = 0;
+	
+	// Text Variables
+	var txtintro;
+	var prevtxt;
+	var nexttxt;
+	
+	// Sound Variables
+	var src;            // the audio src we are trying to play
+	var soundInstance;  // the soundInstance returned by Sound when we create or play a src
+	var canvas;  		// the canvas we draw to
+	
+	// Resize event listener
+	window.addEventListener('resize', resize);
+		
+	function init() {
+		// this does two things, it initializes the default plugins, and if that fails the if statement triggers and we display an error
+		
+		// if initializeDefaultPlugins returns false, we cannot play sound in this browser
+		if (!createjs.Sound.initializeDefaultPlugins()) {return;}
+		
+		/*
+		if (!createjs.Sound.initializeDefaultPlugins()) {
+			document.getElementById("error").style.display = "block";
+			document.getElementById("content").style.display = "none";
+			return;
+		}
+		
+		// check if we are on a mobile device, as these currently require us to launch sound inside of a user event
+		if (createjs.BrowserDetect.isIOS || createjs.BrowserDetect.isAndroid || createjs.BrowserDetect.isBlackberry) {
+			document.getElementById("mobile").style.display = "block";
+			document.getElementById("content").style.display = "none";
+			return;
+		}
+*/		
+		// create a new stage and point it at our canvas:
+		canvas = document.getElementById("demoCanvas");
+		stage = new createjs.Stage(canvas);
+		
+		// Create the background
+		createBackground();
+		
+		// Create the container
+		//createContainer();		
+		
+		var musicManifest = [
+			{id: "1", src: musicPath + "audio_01.mp3"},
+			{id: "2", src: musicPath + "audio_02.mp3"},
+			{id: "3", src: musicPath + "audio_03.mp3"},
+			{id: "4", src: musicPath + "audio_04.mp3"},
+			{id: "5", src: musicPath + "audio_05.mp3"},
+			{id: "6", src: musicPath + "audio_06.mp3"},
+			{id: "7", src: musicPath + "audio_07.mp3"},
+			{id: "8", src: musicPath + "audio_08.mp3"},
+			{id: "9", src: musicPath + "audio_09.mp3"},
+			{id: "10", src: musicPath + "audio_10.mp3"},
+			{id: "11", src: musicPath + "audio_11.mp3"},
+			{id: "12", src: musicPath + "audio_12.mp3"},
+			{id: "13", src: musicPath + "audio_13.mp3"},
+			{id: "14", src: musicPath + "audio_14.mp3"},
+			{id: "15", src: musicPath + "audio_15.mp3"},
+			{id: "16", src: musicPath + "audio_16.mp3"},
+			{id: "17", src: musicPath + "audio_17.mp3"},
+			{id: "18", src: musicPath + "audio_18.mp3"},
+			{id: "19", src: musicPath + "audio_19.mp3"},
+			{id: "game", src: musicPath + "M-GameBG.ogg"},
+			{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
+			{id: "happy", src: musicPath + "bensound-happiness.mp3"},
+			{id: "coin", src: musicPath + "coin.mp3"}
+		]
+		
+		// Instantiate a music queue.
+		musicqueue = new createjs.LoadQueue();
+		createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
+		musicqueue.installPlugin(createjs.Sound);
+		musicqueue.addEventListener("complete", loadComplete);
+		musicqueue.addEventListener("fileload", fileComplete);
+		musicqueue.addEventListener("error", handleFileError);
+		musicqueue.addEventListener("fileprogress", handleFileProgress);
+		musicqueue.addEventListener("progress", handleProgress);
+		musicqueue.loadManifest(musicManifest);
+		
+		
+		// Royalty free sound clips: http://www.bigsoundbank.com/
+		// Royalty free music songs: http://www.bensound.com/
+		
+		//canvas.innerHTML = "Waiting for load to complete.";  // letting the user know what's happening
+		
+		
+		// Method: Display a slideshow
+		imgqueue = new createjs.LoadQueue(false); // Creates a new queue (false is important)
+		imgqueue.setMaxConnections(10); // Allows 10 concurrent connections for load
+		
+		// Need to call container creator
+		imgqueue.addEventListener("complete", createContainer); // Calls handleCmplt when load is finished
+		
+		
+		imgqueue.loadManifest([
+				    {id:'1', src: imgPath + 'web_voice_v2-01.jpg'},
+				    {id:'2', src: imgPath + 'web_voice_v2-02.jpg'},
+					{id:'3', src: imgPath + 'web_voice_v2-03.jpg'},
+					{id:'4', src: imgPath + 'web_voice_v2-04.jpg'},
+					{id:'5', src: imgPath + 'web_voice_v2-05.jpg'},
+					{id:'6', src: imgPath + 'web_voice_v2-06.jpg'},
+					{id:'7', src: imgPath + 'web_voice_v2-07.jpg'},
+					{id:'8', src: imgPath + 'web_voice_v2-08.jpg'},
+					{id:'9', src: imgPath + 'web_voice_v2-09.jpg'},
+					{id:'10', src: imgPath + 'web_voice_v2-10.jpg'},
+					{id:'11', src: imgPath + 'web_voice_v2-11.jpg'},
+					{id:'12', src: imgPath + 'web_voice_v2-12.jpg'},
+					{id:'13', src: imgPath + 'web_voice_v2-13.jpg'},
+					{id:'14', src: imgPath + 'web_voice_v2-14.jpg'},
+					{id:'15', src: imgPath + 'web_voice_v2-15.jpg'},
+					{id:'16', src: imgPath + 'web_voice_v2-16.jpg'},
+					{id:'17', src: imgPath + 'web_voice_v2-17.jpg'},
+					{id:'18', src: imgPath + 'web_voice_v2-18.jpg'},
+					{id:'19', src: imgPath + 'web_voice_v2-19.jpg'}
+		]); // Preloads all images, Images paired with number id tags
+		
+		resize();
+	}
+	
+	/**
+	 * create and display the background (fullscreen)
+	 */
+	function createBackground() {
+		bg = new createjs.Shape();		
+		stage.addChild(bg);
+	}
+	/**
+	 * create container (centered)
+	 */
+	function createContainer() {
+		
+		// Obtain the current draw space
+		contentWidth = document.getElementById("demoCanvas").offsetWidth;
+		contentHeight = document.getElementById("demoCanvas").offsetHeight;
+
+		container = new createjs.Container();
+		stage.addChild(container);
+				
+		// Load the Image
+		// (You should also use PreloadJS to avoid the onload listener)
+		storyImg = new Image();
+		storyImg.src = imgPath +"web_voice_v2-00.jpg";
+		storyImg.onload = handleImageLoad;
+	}
+	
+	function handleImageLoad() {
+		// Create a CreateJS bitmap from the loaded image
+		var bmpStoryImage = new createjs.Bitmap(storyImg);
+		
+		// Add the bitmap to the Container
+		container.addChild(bmpStoryImage);
+		
+		// Set the scale value
+		// It could be useful to properly handle different mobile resolutions
+		container.scaleX = 0.5;
+		container.scaleY = 0.5;
+		
+		//Create the introduction to story
+		txtintro = new createjs.Text();
+		txtintro.set({
+			text: "Welcome to Story 1",
+			font: "bold 90px Arial",
+			color: "#ff7700",
+		});
+		txtintro.shadow = new createjs.Shadow("#000000", 0, 0, 10);
+		var introw = txtintro.getMeasuredWidth(); //Check width of text to be displayed
+		txtintro.x = IMAGE_WIDTH/2 - (introw / 2); // Center text
+		txtintro.y = IMAGE_HEIGHT/2 - 45;
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(txtintro);
+		container.setChildIndex(txtintro, 1);
+		
+		// Create left rectangular button
+		prvShape = new createjs.Shape();
+		prvShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  
+		prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		prvShape.x = 40;
+		prvShape.y = 40;
+		prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		prvShape.addEventListener("click", prvClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(prvShape);
+		container.setChildIndex(prvShape, 1);
+		//prvShape.addEventListener("click", prvClck);
+		
+		// Create right rectangular button
+		nxtShape = new createjs.Shape();
+		nxtShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		nxtShape.x = IMAGE_WIDTH - 310;
+		nxtShape.y = 40;
+		nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		nxtShape.addEventListener("click", nxtClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(nxtShape);
+		container.setChildIndex(nxtShape, 1);
+		
+		// Create the Next Text
+		nexttxt = new createjs.Text();
+		nexttxt.font = "bold 50px Arial";
+		nexttxt.color = "#000000";
+		nexttxt.text = "Next";
+		nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+		nexttxt.x = IMAGE_WIDTH - 230;
+		nexttxt.y = IMAGE_HEIGHT - 80;
+		nexttxt.addEventListener("click", nxtClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(nexttxt);
+		container.setChildIndex(nexttxt, 1);
+		
+		// Create the Previous Text
+		prevtxt = new createjs.Text();
+		prevtxt.font = "bold 50px Arial";
+		prevtxt.color = "#000000";
+		prevtxt.text = "Previous";
+		prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+		prevtxt.x = 75;
+		prevtxt.y = IMAGE_HEIGHT - 80;
+		prevtxt.addEventListener("click", prvClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(prevtxt);
+		container.setChildIndex(prevtxt, 1);
+				
+		// Set the registration point of the content Container to center
+		container.regX = bmpStoryImage.image.width/2;
+		container.regY = bmpStoryImage.image.height/2;
+		
+		//stage.update();		
+		resize();
+	}
+	
+	// Sound handling methods
+	function handleFileError(evt) {
+		// An error occurred.
+		//console.log("error ", evt);
+		//canvas.innerText = "Error :("
+		//alert("Error :(");
+	}
+
+	function handleFileProgress(evt) {
+		// Progress happened.
+		//canvas.innerText = "Event File Loading: " + (queue.progress.toFixed(2) * 100) + "%";
+		//alert("Event File Loading");
+	}
+
+	function handleProgress(evt) {
+		// Progress happened.
+		//canvas.innerText = "Event Loading: " + (queue.progress.toFixed(2) * 100) + "%";
+	}
+
+	function loadComplete(evt) {
+		// Load completed.
+		//alert("Complete :)");
+		playSound("happy");
+	}
+
+	function fileComplete(evt) {
+		//console.log("Event Callback file loaded ", evt);
+		//alert("File loaded");
+	}
+
+	function playSound(name) {
+		// Play the sound using the ID created above.
+		//soundInstance = createjs.Sound.play(name);
+		
+		//For testing
+		soundInstance = createjs.Sound.play(name);
+		soundInstance.addEventListener("complete", nxtClck);
+		//return createjs.Sound.play(name);
+	}
+	
+	function nxtClck(event){
+		// Remove the title text from the container
+		if(slide >= 0 && !running){
+			container.removeChild(txtintro);
+			running = true;
+		}
+		// Moves current slide to the next slide	
+		slide = slide + 1; //Set counter to previous or next slide
+		song = song + 1;	//Set counter to previous or next song
+		// Stop any song currently playing
+		createjs.Sound.stop();
+		
+		// Remove existing image
+		container.removeChild(bmp);
+		
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
+		
+		// Run thru images
+		if (slide > 19) { //Stop counter from going past end of slide ids
+			slide = 19;
+			
+			/*BUG*/
+			// Remove Event Listener when story is complete
+			//soundInstance.removeEventListener("complete", nxtClck);
+			
+			/*BUG*/
+			// Quick fix to stop looping sound
+			createjs.Sound.removeAllSounds();
+		}
+		
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(bmp);
+		// Simple change to adding to Container
+		container.addChildAt(bmp,1);
+		//stage.update();
+		
+		// Run thru songs
+		// For use with audio for each slide
+		if (song > 19) { //Stop counter from going past end of song ids
+			song = 19;
+		}
+		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
+	}
+	
+	
+	function prvClck(event){
+		// Moves current slide to the previous slide
+		slide = slide - 1;	//Set counter to previous or next slide
+		song = song - 1;	//Set counter to previous or next song
+		// Stop any song currently playing
+		createjs.Sound.stop();
+		
+		// Remove existing image
+		container.removeChild(bmp);
+		
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
+		
+		// Run thru images
+		if (slide < 1) { //Stop counter from going negative
+			slide = 1;
+		}
+		
+		// Must be changed to be added instead to the container Container
+		//stage.addChild(bmp);
+		// Simple change to adding to Container
+		container.addChildAt(bmp,1);
+		//stage.update();
+		
+		// Run thru songs
+		// For use with audio for each slide
+		if (song < 1) { //Stop counter from going negative
+			song = 1;
+		}
+		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
+	}
+	
+	/**
+	 * Resize event handler
+	 */
+	function resize() {
+		
+		var w = window.innerWidth-2;
+		var h = window.innerHeight-2;
+
+		stage.canvas.width = w;
+		stage.canvas.height = h;
+
+		// Simple "fit-to-screen" scaling
+		var ratio = IMAGE_WIDTH / IMAGE_HEIGHT; // Use the "default" size of the content you have.
+		var windowRatio = w/h;
+		
+		// calculate a scale factor to keep a correct aspect ratio.			
+		var scale = w/IMAGE_WIDTH;
+		if (windowRatio > ratio) {
+			scale = h/IMAGE_HEIGHT;
+		}
+		
+		// Background: full screen redraw 
+		bg.graphics.clear()
+		bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+		
+		// Content: centered
+		container.x = stage.canvas.width / 2;
+		container.y = stage.canvas.height / 2; 
+		
+		// Scale up to fit width or height
+		container.scaleX = container.scaleY = scale;
+		
+		stage.update();
+	}
+</script>
+</body>
+</html>
