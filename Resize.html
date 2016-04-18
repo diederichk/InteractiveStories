@@ -34,10 +34,12 @@
 		var canvas, stage;
 		var bg, logo;		
 		var container, storyImg;
+		var rightArrow, leftArrow;
 		var contentWidth, contentHeight;
-		var imgPath = "Story_Images/";
-		var IMAGE_WIDTH = 1667;
+		var imgPath = "Story_Images_1/";
+		var IMAGE_WIDTH = 2222;
 		var IMAGE_HEIGHT = 1250;
+		var ARROW_SIDE = 270;
 
 		// Resize event listener
 		window.addEventListener('resize', resize);
@@ -93,10 +95,9 @@
 		}
 		
 		function handleImageLoad() {
-
 			// Create a CreateJS bitmap from the loaded image
 			var bmpStoryImage = new createjs.Bitmap(storyImg);
-
+			
 			// Add the bitmap to the Container
 			container.addChild(bmpStoryImage);
 			
@@ -104,61 +105,9 @@
 			// It could be useful to properly handle different mobile resolutions
 			container.scaleX = 0.5;
 			container.scaleY = 0.5;
-			//alert("scaling set");
-						
-			// Create left pointing triangle
-			prvShape = new createjs.Shape();
-			prvShape.graphics.beginFill("#ff8c00").drawPolyStar(0, 0, 40, 3, 0.5, 60);
-			prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawPolyStar(0, 0, 40, 3, 0.5, 60);
-			prvShape.x = 60;
-			prvShape.y = IMAGE_HEIGHT - 75;
-			prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-			
-			// Add the shape to the container
-			container.addChild(prvShape);
-			// Used to place the shpae at the top layer
-			container.setChildIndex(prvShape, 1);
-			//prvShape.addEventListener("click", prvClck);
-			
-			// Create right pointing triangle
-			nxtShape = new createjs.Shape();
-			nxtShape.graphics.beginFill("#ff8c00").drawPolyStar(0, 0, 40, 3, 0.5, 240);
-			nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawPolyStar(0, 0, 40, 3, 0.5, 240);
-			nxtShape.x = IMAGE_WIDTH - 60;
-			nxtShape.y = IMAGE_HEIGHT - 75;
-			nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-			
-			container.addChild(nxtShape);
-			container.setChildIndex(nxtShape, 1);
-			//nxtShape.addEventListener("click", nxtClck);
-			
-			// Create the Next Text
-			nexttxt = new createjs.Text();
-			nexttxt.font = "bold 50px Arial";
-			nexttxt.color = "#000000";
-			nexttxt.text = "Next";
-			nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
-			nexttxt.x = IMAGE_WIDTH - 215;
-			nexttxt.y = IMAGE_HEIGHT - 100;
-			
-			container.addChild(nexttxt);
-			container.setChildIndex(nexttxt, 1);
-			
-			// Create the Previous Text
-			prevtxt = new createjs.Text();
-			prevtxt.font = "bold 50px Arial";
-			prevtxt.color = "#000000";
-			prevtxt.text = "Previous";
-			prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
-			prevtxt.x = 100;
-			prevtxt.y = IMAGE_HEIGHT - 100;
-			
-			container.addChild(prevtxt);
-			container.setChildIndex(prevtxt, 1);
 			
 			//Create the introduction to story
 			txtintro = new createjs.Text();
-			// Removed to test set and container
 			txtintro.set({
 				text: "Welcome to Story 1",
 				font: "bold 90px Arial",
@@ -169,16 +118,78 @@
 			txtintro.x = IMAGE_WIDTH/2 - (introw / 2); // Center text
 			txtintro.y = IMAGE_HEIGHT/2 - 45;
 			
+			// Add the shape to the container
+			// Used to place the shape at the top layer
 			container.addChild(txtintro);
 			container.setChildIndex(txtintro, 1);
 			
+			// Create left rectangular button
+			prvShape = new createjs.Shape();
+			prvShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  
+			prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+			prvShape.x = 40;
+			prvShape.y = 40;
+			prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+			
+			// Add the shape to the container
+			// Used to place the shape at the top layer
+			container.addChild(prvShape);
+			container.setChildIndex(prvShape, 1);
+			//prvShape.addEventListener("click", prvClck);
+					
+			// Create right rectangular button
+			nxtShape = new createjs.Shape();
+			nxtShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+			nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+			nxtShape.x = IMAGE_WIDTH - 310;
+			nxtShape.y = 40;
+			nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+						
+			// Add the shape to the container
+			// Used to place the shape at the top layer
+			container.addChild(nxtShape);
+			container.setChildIndex(nxtShape, 1);
+			
+			// Create the Next Text
+			nexttxt = new createjs.Text();
+			nexttxt.font = "bold 50px Arial";
+			nexttxt.color = "#000000";
+			nexttxt.text = "Next";
+			nexttxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+			nexttxt.x = IMAGE_WIDTH - 230;
+			nexttxt.y = IMAGE_HEIGHT - 80;
+						
+			// Add the shape to the container
+			// Used to place the shape at the top layer
+			container.addChild(nexttxt);
+			container.setChildIndex(nexttxt, 1);
+			
+			// Add the left arrow to the button
+			/*BUG*/
+			
+			// Add the right arrow to the button
+			/*BUG*/
+			
+			// Create the Previous Text
+			prevtxt = new createjs.Text();
+			prevtxt.font = "bold 50px Arial";
+			prevtxt.color = "#000000";
+			prevtxt.text = "Previous";
+			prevtxt.shadow = new createjs.Shadow("#000000", 2, 2, 4);
+			prevtxt.x = 75;
+			prevtxt.y = IMAGE_HEIGHT - 80;
+						
+			// Add the shape to the container
+			// Used to place the shape at the top layer
+			container.addChild(prevtxt);
+			container.setChildIndex(prevtxt, 1);
+					
 			// Set the registration point of the content Container to center
 			container.regX = bmpStoryImage.image.width/2;
 			container.regY = bmpStoryImage.image.height/2;
 			
-			/*BUG*/ //This method of setting the transform does not work
-			//container.setTransform(0,0, 0.5, 0.5, 0,0,0,0,0);
-			
+			//stage.update();		
+			resize();
 		}
 		
 			

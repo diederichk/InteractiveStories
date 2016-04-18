@@ -45,8 +45,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var imgqueue;		// Queue for all images
 	var musicqueue;		// Queue for all sounds
 	var container, bmp;	// Container object, image object
-	var prvShape;
-	var nxtShape;
+	var prvShape, nxtShape;
+	var prvArrow, nxtArrow;
 	var running = false;
 	
 	// Constants
@@ -54,6 +54,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var imgPath = "Story_Images_1/";
 	var IMAGE_WIDTH = 2222;
 	var IMAGE_HEIGHT = 1250;
+	var ARROW_SIDE = 270;
 	
 	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
@@ -102,6 +103,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		//createContainer();		
 		
 		var musicManifest = [
+			{id: "0", src: musicPath + "audio_00.mp3"},
 			{id: "1", src: musicPath + "audio_01.mp3"},
 			{id: "2", src: musicPath + "audio_02.mp3"},
 			{id: "3", src: musicPath + "audio_03.mp3"},
@@ -154,7 +156,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		
 		imgqueue.loadManifest([
-				    {id:'1', src: imgPath + 'web_voice_v2-01.jpg'},
+				    {id:'0', src: imgPath + 'web_voice_v2-00.jpg'},
+					{id:'1', src: imgPath + 'web_voice_v2-01.jpg'},
 				    {id:'2', src: imgPath + 'web_voice_v2-02.jpg'},
 					{id:'3', src: imgPath + 'web_voice_v2-03.jpg'},
 					{id:'4', src: imgPath + 'web_voice_v2-04.jpg'},
@@ -172,7 +175,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 					{id:'16', src: imgPath + 'web_voice_v2-16.jpg'},
 					{id:'17', src: imgPath + 'web_voice_v2-17.jpg'},
 					{id:'18', src: imgPath + 'web_voice_v2-18.jpg'},
-					{id:'19', src: imgPath + 'web_voice_v2-19.jpg'}
+					{id:'19', src: imgPath + 'web_voice_v2-19.jpg'},
+					{id:'right', src: imgPath + 'right_arrow.jpg'},
+					{id:'left', src: imgPath + 'left_arrow.jpg'}
 		]); // Preloads all images, Images paired with number id tags
 		
 		resize();
@@ -198,7 +203,6 @@ https://github.com/CreateJS/EaselJS/issues/343
 		stage.addChild(container);
 				
 		// Load the Image
-		// (You should also use PreloadJS to avoid the onload listener)
 		storyImg = new Image();
 		storyImg.src = imgPath +"web_voice_v2-00.jpg";
 		storyImg.onload = handleImageLoad;
@@ -233,6 +237,26 @@ https://github.com/CreateJS/EaselJS/issues/343
 		container.addChild(txtintro);
 		container.setChildIndex(txtintro, 1);
 		
+		/*BUG*/ // Including the following lines of code will cause the images to display
+				// but will prevent all event listeners from functioning.
+		/*
+		// Add the next arrow to the existing button
+		nxtArrow = new createjs.Bitmap(imgqueue.getResult("right"));
+		nxtArrow.x = IMAGE_WIDTH-310;
+		nxtArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
+		nxtArrow.addEventListener("click", nxtClck);
+		container.addChild(nxtArrow);
+		container.setChildIndex(nxtArrow, 1);
+		
+		// Add the previous arrow to the existing button
+		prvArrow = new createjs.Bitmap(imgqueue.getResult("left"));
+		prvArrow.x = 40;
+		prvArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
+		prvArrow.addEventListener("click", prvClck);
+		container.addChild(prvArrow);
+		container.setChildIndex(prvArrow, 1);
+		*/
+		
 		// Create left rectangular button
 		prvShape = new createjs.Shape();
 		prvShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  
@@ -261,7 +285,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shape at the top layer
 		container.addChild(nxtShape);
 		container.setChildIndex(nxtShape, 1);
-		
+			
 		// Create the Next Text
 		nexttxt = new createjs.Text();
 		nexttxt.font = "bold 50px Arial";
@@ -323,7 +347,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Load completed.
 		//alert("Complete :)");
 		//playSound("happy");
-		playSound("10");
+		playSound("0");
 	}
 
 	function fileComplete(evt) {
@@ -371,11 +395,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 			createjs.Sound.removeAllSounds();
 		}
 		
-		// Must be changed to be added instead to the container Container
-		//stage.addChild(bmp);
-		// Simple change to adding to Container
+		// Adding to Container
 		container.addChildAt(bmp,1);
-		//stage.update();
 		
 		// Run thru songs
 		// For use with audio for each slide
@@ -402,20 +423,18 @@ https://github.com/CreateJS/EaselJS/issues/343
 		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 		
 		// Run thru images
-		if (slide < 1) { //Stop counter from going negative
-			slide = 1;
+		if (slide < 0) { //Stop counter from going negative
+			slide = 0;
 		}
 		
-		// Must be changed to be added instead to the container Container
-		//stage.addChild(bmp);
-		// Simple change to adding to Container
+		// Adding to Container
 		container.addChildAt(bmp,1);
 		//stage.update();
 		
 		// Run thru songs
 		// For use with audio for each slide
-		if (song < 1) { //Stop counter from going negative
-			song = 1;
+		if (song < 0) { //Stop counter from going negative
+			song = 0;
 		}
 		playSound(song.toString());
 		
