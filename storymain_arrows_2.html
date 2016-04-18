@@ -51,10 +51,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 	
 	// Constants
 	var musicPath = "Story_Audio/";
-	var imgPath = "Story_Images_1/";
-	var IMAGE_WIDTH = 2222;
-	var IMAGE_HEIGHT = 1250;
-	var ARROW_SIDE = 270;
+	var imgPath = "Story_Images_2/";
+	var IMAGE_WIDTH = 2200;
+	var IMAGE_HEIGHT = 1238;
+	var ARROW_SIDE = 230;
 	
 	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
@@ -156,28 +156,28 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		
 		imgqueue.loadManifest([
-				    {id:'0', src: imgPath + 'web_voice_v2-00.jpg'},
-					{id:'1', src: imgPath + 'web_voice_v2-01.jpg'},
-				    {id:'2', src: imgPath + 'web_voice_v2-02.jpg'},
-					{id:'3', src: imgPath + 'web_voice_v2-03.jpg'},
-					{id:'4', src: imgPath + 'web_voice_v2-04.jpg'},
-					{id:'5', src: imgPath + 'web_voice_v2-05.jpg'},
-					{id:'6', src: imgPath + 'web_voice_v2-06.jpg'},
-					{id:'7', src: imgPath + 'web_voice_v2-07.jpg'},
-					{id:'8', src: imgPath + 'web_voice_v2-08.jpg'},
-					{id:'9', src: imgPath + 'web_voice_v2-09.jpg'},
-					{id:'10', src: imgPath + 'web_voice_v2-10.jpg'},
-					{id:'11', src: imgPath + 'web_voice_v2-11.jpg'},
-					{id:'12', src: imgPath + 'web_voice_v2-12.jpg'},
-					{id:'13', src: imgPath + 'web_voice_v2-13.jpg'},
-					{id:'14', src: imgPath + 'web_voice_v2-14.jpg'},
-					{id:'15', src: imgPath + 'web_voice_v2-15.jpg'},
-					{id:'16', src: imgPath + 'web_voice_v2-16.jpg'},
-					{id:'17', src: imgPath + 'web_voice_v2-17.jpg'},
-					{id:'18', src: imgPath + 'web_voice_v2-18.jpg'},
-					{id:'19', src: imgPath + 'web_voice_v2-19.jpg'},
-					{id:'right', src: imgPath + 'right_arrow.jpg'},
-					{id:'left', src: imgPath + 'left_arrow.jpg'}
+				    {id:'0', src: imgPath + 'story1-newratio-00.jpg'},
+					{id:'1', src: imgPath + 'story1-newratio-01.png'},
+				    {id:'2', src: imgPath + 'story1-newratio-02.png'},
+					{id:'3', src: imgPath + 'story1-newratio-03.png'},
+					{id:'4', src: imgPath + 'story1-newratio-04.png'},
+					{id:'5', src: imgPath + 'story1-newratio-05.png'},
+					{id:'6', src: imgPath + 'story1-newratio-06.png'},
+					{id:'7', src: imgPath + 'story1-newratio-07.png'},
+					{id:'8', src: imgPath + 'story1-newratio-08.png'},
+					{id:'9', src: imgPath + 'story1-newratio-09.png'},
+					{id:'10', src: imgPath + 'story1-newratio-10.png'},
+					{id:'11', src: imgPath + 'story1-newratio-11.png'},
+					{id:'12', src: imgPath + 'story1-newratio-12.png'},
+					{id:'13', src: imgPath + 'story1-newratio-13.png'},
+					{id:'14', src: imgPath + 'story1-newratio-14.png'},
+					{id:'15', src: imgPath + 'story1-newratio-15.png'},
+					{id:'16', src: imgPath + 'story1-newratio-16.png'},
+					{id:'17', src: imgPath + 'story1-newratio-17.png'},
+					{id:'18', src: imgPath + 'story1-newratio-18.png'},
+					{id:'19', src: imgPath + 'story1-newratio-19.png'},
+					{id:'right', src: imgPath + 'right_arrow.png'},
+					{id:'left', src: imgPath + 'left_arrow.png'}
 		]); // Preloads all images, Images paired with number id tags
 		
 		resize();
@@ -204,7 +204,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 				
 		// Load the Image
 		storyImg = new Image();
-		storyImg.src = imgPath +"web_voice_v2-00.jpg";
+		storyImg.src = imgPath +"story1-newratio-00.jpg";
 		storyImg.onload = handleImageLoad;
 	}
 	
@@ -239,7 +239,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 				
 		// Add the next arrow to the existing button
 		nxtArrow = new createjs.Bitmap(imgqueue.getResult("right"));
-		nxtArrow.x = IMAGE_WIDTH-310;
+		nxtArrow.x = IMAGE_WIDTH-280;
 		nxtArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
 		//nxtArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
 																// but will prevent all event listeners from functioning.
@@ -262,6 +262,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 		prvShape.x = 40;
 		prvShape.y = 40;
+		prvShape.alpha = 0.01;
 		//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 		prvShape.addEventListener("click", prvClck);
 		
@@ -273,7 +274,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		// Create right rectangular button
 		nxtShape = new createjs.Shape();
-		nxtShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
+		nxtShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
 		//nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 		nxtShape.x = IMAGE_WIDTH - 310;
 		nxtShape.y = 40;
@@ -285,7 +286,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shape at the top layer
 		container.addChild(nxtShape);
 		container.setChildIndex(nxtShape, 1);
-			
+		
+		/*		
 		// Create the Next Text
 		nexttxt = new createjs.Text();
 		nexttxt.font = "bold 70px Arial";
@@ -315,6 +317,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shape at the top layer
 		container.addChild(prevtxt);
 		container.setChildIndex(prevtxt, 1);
+		*/
 				
 		// Set the registration point of the content Container to center
 		container.regX = bmpStoryImage.image.width/2;
