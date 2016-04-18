@@ -236,15 +236,13 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shape at the top layer
 		container.addChild(txtintro);
 		container.setChildIndex(txtintro, 1);
-		
-		/*BUG*/ // Including the following lines of code will cause the images to display
-				// but will prevent all event listeners from functioning.
-		/*
+				
 		// Add the next arrow to the existing button
 		nxtArrow = new createjs.Bitmap(imgqueue.getResult("right"));
 		nxtArrow.x = IMAGE_WIDTH-310;
 		nxtArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
-		nxtArrow.addEventListener("click", nxtClck);
+		//nxtArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
+																// but will prevent all event listeners from functioning.
 		container.addChild(nxtArrow);
 		container.setChildIndex(nxtArrow, 1);
 		
@@ -252,14 +250,15 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prvArrow = new createjs.Bitmap(imgqueue.getResult("left"));
 		prvArrow.x = 40;
 		prvArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
-		prvArrow.addEventListener("click", prvClck);
+		//prvArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
+																// but will prevent all event listeners from functioning.
 		container.addChild(prvArrow);
 		container.setChildIndex(prvArrow, 1);
-		*/
+		
 		
 		// Create left rectangular button
 		prvShape = new createjs.Shape();
-		prvShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  
+		prvShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
 		prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 		prvShape.x = 40;
 		prvShape.y = 40;
@@ -274,7 +273,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		// Create right rectangular button
 		nxtShape = new createjs.Shape();
-		nxtShape.graphics.beginFill("#ff8c00").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		nxtShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
 		nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 		nxtShape.x = IMAGE_WIDTH - 310;
 		nxtShape.y = 40;
