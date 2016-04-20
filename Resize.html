@@ -33,7 +33,7 @@
 
 		var canvas, stage;
 		var bg, logo;		
-		var container, storyImg;
+		var container, storyImg, storyImg2;
 		var rightArrow, leftArrow;
 		var contentWidth, contentHeight;
 		var imgPath = "Story_Images_1/";
@@ -89,17 +89,27 @@
 			// (You should also use PreloadJS to avoid the onload listener)
 			storyImg = new Image();
 			storyImg.src = imgPath +"web_voice_v2-00.jpg";
-			storyImg.onload = handleImageLoad;
+			storyImg.onload = step2; //handleImageLoad;
 			//alert("image loaded");
-
+		}
+		
+		function step2(){
+			storyImg2 = new Image();
+			storyImg2.src = imgPath +"right_arrow.jpg";
+			storyImg2.onload = handleImageLoad;
 		}
 		
 		function handleImageLoad() {
 			// Create a CreateJS bitmap from the loaded image
 			var bmpStoryImage = new createjs.Bitmap(storyImg);
-			
 			// Add the bitmap to the Container
 			container.addChild(bmpStoryImage);
+			
+			var bmpStoryImage2 = new createjs.Bitmap(storyImg2);
+			bmpStoryImage2.x = 20;
+			bmpStoryImage2.y = 20;
+			bmpStoryImage2.addEventListener("click", Clck);
+			container.addChild(bmpStoryImage2);
 			
 			// Set the scale value
 			// It could be useful to properly handle different mobile resolutions
@@ -144,6 +154,7 @@
 			nxtShape.x = IMAGE_WIDTH - 310;
 			nxtShape.y = 40;
 			nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+			nxtShape.addEventListener("click", NxtClck);
 						
 			// Add the shape to the container
 			// Used to place the shape at the top layer
@@ -192,6 +203,12 @@
 			resize();
 		}
 		
+		function Clck(event) {
+			alert("The click worked");
+		}
+		function NxtClck(event) {
+			alert("Next button click.");
+		}
 			
 		/**
 		 * Resize event handler
