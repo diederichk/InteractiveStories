@@ -231,7 +231,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		nxtArrow = new createjs.Bitmap(imgqueue.getResult("right"));
 		nxtArrow.x = IMAGE_WIDTH-280;
 		nxtArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
-		//nxtArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
+		nxtArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
 																// but will prevent all event listeners from functioning.
 		container.addChild(nxtArrow);
 		container.setChildIndex(nxtArrow, 1);
@@ -240,7 +240,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prvArrow = new createjs.Bitmap(imgqueue.getResult("left"));
 		prvArrow.x = 40;
 		prvArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
-		//prvArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
+		prvArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
 																// but will prevent all event listeners from functioning.
 		container.addChild(prvArrow);
 		container.setChildIndex(prvArrow, 1);
@@ -260,7 +260,6 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Used to place the shape at the top layer
 		container.addChild(prvShape);
 		container.setChildIndex(prvShape, 1);
-		//prvShape.addEventListener("click", prvClck);
 		
 		// Create right rectangular button
 		nxtShape = new createjs.Shape();
@@ -342,6 +341,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		container.removeChild(bmp);
 		
 		// Choice needs to be added starting at slide 7 to slide 10
+		// Create 3 transparent boxes to make each shape clickable
 		
 		// Choice needs to be added starting at slide 12 to slide 15
 		
