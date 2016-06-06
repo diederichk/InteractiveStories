@@ -129,6 +129,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 			{id: "game", src: musicPath + "M-GameBG.ogg"},
 			{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
 			{id: "happy", src: musicPath + "bensound-happiness.mp3"},
+			{id: "oops", src: musicPath + "audio_oops.mp3"},
 			{id: "coin", src: musicPath + "coin.mp3"}
 		]
 		
@@ -369,43 +370,43 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Right:	1500x250px	450x850px
 		if (slide == 7) { //highlight popsicle (image left)
 			// Add the left image
-			addLeftImage("pop_highlight", 300, 250);
+			addLeftImage("pop_highlight", 300, 250, 0);
 						
 			// Add the middle image
-			addMiddleImage("starfish", 780,250);
+			addMiddleImage("starfish", 780, 250, 0);
 						
 			// Add the right image
-			addRightImage("shovel", 1500, 250);
+			addRightImage("shovel", 1500, 250, 1);
 		}
 		else if (slide == 8) { //highlight starfish (image mid)
 			// Add the left image
-			addLeftImage("popsicle", 300, 250);
+			addLeftImage("popsicle", 300, 250, 0);
 						
 			// Add the middle image
-			addMiddleImage("star_highlight", 780,250);
+			addMiddleImage("star_highlight", 780, 250, 0);
 						
 			// Add the right image
-			addRightImage("shovel", 1500, 250);
+			addRightImage("shovel", 1500, 250, 1);
 		}
 		else if (slide == 9) { //highlight shovel (image right)
 			// Add the left image
-			addLeftImage("popsicle", 300, 250);
+			addLeftImage("popsicle", 300, 250, 0);
 						
 			// Add the middle image
-			addMiddleImage("starfish", 780,250);
+			addMiddleImage("starfish", 780, 250, 0);
 						
 			// Add the right image
-			addRightImage("shovel_highlight", 1500, 250);
+			addRightImage("shovel_highlight", 1500, 250, 1);
 		}
 		else if (slide == 10){ //no highlights
 			// Add the left image
-			addLeftImage("popsicle", 300, 250);
+			addLeftImage("popsicle", 300, 250, 0);
 						
 			// Add the middle image
-			addMiddleImage("starfish", 780,250);
+			addMiddleImage("starfish", 780, 250, 0);
 						
 			// Add the right image
-			addRightImage("shovel", 1500, 250);
+			addRightImage("shovel", 1500, 250, 1);
 		}	
 		
 		// Choice needs to be added starting at slide 12 to slide 15
@@ -415,43 +416,43 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Right:	1450x200px	450x900px
 		if (slide == 12) { //highlight bathingsuit (image left)
 			// Add the left image
-			addLeftImage("suit_highlight", 250, 200);
+			addLeftImage("suit_highlight", 250, 200, 0);
 						
 			// Add the middle image
-			addMiddleImage("beachumbrella", 770,200);
+			addMiddleImage("beachumbrella", 770, 200, 0);
 						
 			// Add the right image
-			addRightImage("bucket", 1450, 200);
+			addRightImage("bucket", 1450, 200, 1);
 		}
 		else if (slide == 13) { //highlight beachumbrella (image mid)
 			// Add the left image
-			addLeftImage("bathingsuit", 250, 200);
+			addLeftImage("bathingsuit", 250, 200, 0);
 						
 			// Add the middle image
-			addMiddleImage("umbrella_highlight", 770,200);
+			addMiddleImage("umbrella_highlight", 770, 200, 0);
 						
 			// Add the right image
-			addRightImage("bucket", 1450, 200);
+			addRightImage("bucket", 1450, 200, 1);
 		}
 		else if (slide == 14) { //highlight bucket (image right)
 			// Add the left image
-			addLeftImage("bathingsuit", 250, 200);
+			addLeftImage("bathingsuit", 250, 200, 0);
 						
 			// Add the middle image
-			addMiddleImage("beachumbrella", 770,200);
+			addMiddleImage("beachumbrella", 770, 200, 0);
 						
 			// Add the right image
-			addRightImage("bucket_highlight", 1450, 200);
+			addRightImage("bucket_highlight", 1450, 200, 1);
 		}
 		else if (slide == 15){ //no highlights
 			// Add the left image
-			addLeftImage("bathingsuit", 250, 200);
+			addLeftImage("bathingsuit", 250, 200, 0);
 						
 			// Add the middle image
-			addMiddleImage("beachumbrella", 770,200);
+			addMiddleImage("beachumbrella", 770, 200, 0);
 						
 			// Add the right image
-			addRightImage("bucket", 1450, 200);
+			addRightImage("bucket", 1450, 200, 1);
 		}	
 		
 		// Adding to Container
@@ -638,18 +639,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 	}
 
 	/**
-	 * Handler for incorrect choices
-	 */	
-	function wrongChoice(event) {
-		//alert("Try Again !");
-		
-		// Replay the slide and the song
-		slide = slide - 1;
-		song = song - 1;
-	}
-	
+	 * Handler for correct choices
+	 */
 	function correctChoice(event) {
-		//alert("Correct !");
 		
 		// Jump to the next part of the story
 		if (slide >= 12) {
@@ -680,10 +672,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		}
 		else {
 			// incorrect answer
-			leftImg.addEventListener("click", wrongChoice);
+			leftImg.addEventListener("click", oopsClck);
 		}*/	
 		
-		leftImg.addEventListener("click", wrongChoice);
+		leftImg.addEventListener("click", oopsClck);
 		container.addChildAt(leftImg, 1);
 	}
 	
@@ -699,10 +691,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		}
 		else {
 			// incorrect answer
-			middleImg.addEventListener("click", wrongChoice);
+			middleImg.addEventListener("click", oopsClck);
 		}*/
 		
-		middleImg.addEventListener("click", wrongChoice);
+		middleImg.addEventListener("click", oopsClck);
 		container.addChildAt(middleImg, 1);
 	}
 	
@@ -718,11 +710,42 @@ https://github.com/CreateJS/EaselJS/issues/343
 		}
 		else {
 			// incorrect answer
-			rightImg.addEventListener("click", wrongChoice);
+			rightImg.addEventListener("click", oopsClck);
 		}*/
 		
 		rightImg.addEventListener("click", correctChoice);
 		container.addChildAt(rightImg, 1);
+	}
+	
+	/**
+	 *	Oops Click Handler
+	 */
+	function oopsClck(event){
+		// Stop any song currently playing
+		createjs.Sound.stop();
+		
+		// Remove existing images
+		container.removeChild(bmp);
+		container.removeChild(leftImg);
+		container.removeChild(middleImg);
+		container.removeChild(rightImg);
+		
+		// Select the correct oops image to display.
+		bmp = new createjs.Bitmap(imgqueue.getResult("oops-01")); 	
+		
+		// Adding to Container
+		container.addChildAt(bmp,1);
+		
+		// Play the correct oops sound
+		playSound("oops");
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
+			
+		// Replay the slide and the song
+		slide = slide - 1;
+		song = song - 1;
+	
 	}
 </script>
 </body>
