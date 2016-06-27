@@ -228,7 +228,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		nxtArrow.x = IMAGE_WIDTH-280;
 		nxtArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
 		nxtArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
-																// but will prevent all event listeners from functioning.
+																// but will prevent all event listeners from functioning in local Chrome browser.
 		container.addChild(nxtArrow);
 		container.setChildIndex(nxtArrow, 1);
 		
@@ -237,7 +237,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		prvArrow.x = 40;
 		prvArrow.y = IMAGE_HEIGHT/2 - ARROW_SIDE/2;
 		prvArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
-																// but will prevent all event listeners from functioning.
+															// but will prevent all event listeners from functioning in local Chrome browser.
 		container.addChild(prvArrow);
 		container.setChildIndex(prvArrow, 1);
 		
@@ -734,7 +734,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 </body>
 </html>
 
-<!--
+<!-- Play on Click example
 Play multiple sound instances:
 
 var preload;
