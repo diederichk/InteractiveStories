@@ -79,30 +79,13 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		// if initializeDefaultPlugins returns false, we cannot play sound in this browser
 		if (!createjs.Sound.initializeDefaultPlugins()) {return;}
-		
-		/*
-		if (!createjs.Sound.initializeDefaultPlugins()) {
-			document.getElementById("error").style.display = "block";
-			document.getElementById("content").style.display = "none";
-			return;
-		}
-		
-		// check if we are on a mobile device, as these currently require us to launch sound inside of a user event
-		if (createjs.BrowserDetect.isIOS || createjs.BrowserDetect.isAndroid || createjs.BrowserDetect.isBlackberry) {
-			document.getElementById("mobile").style.display = "block";
-			document.getElementById("content").style.display = "none";
-			return;
-		}
-*/		
+			
 		// create a new stage and point it at our canvas:
 		canvas = document.getElementById("demoCanvas");
 		stage = new createjs.Stage(canvas);
 		
 		// Create the background
-		createBackground();
-		
-		// Create the container
-		//createContainer();		
+		createBackground();		
 		
 		var musicManifest = [
 			{id: "0", src: musicPath + "audio_00.mp3"},
