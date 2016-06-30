@@ -8,7 +8,6 @@ package playcoordinatorcreator;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -40,15 +38,16 @@ public class StartPage extends javax.swing.JFrame {
     /**
      * Creates new form StartPage
      */
-    final JFileChooser fc = new JFileChooser();
-    public ArrayList<File> roles = new ArrayList<File>();
-    public ArrayList<File> explanations = new ArrayList<File>();
-    public ArrayList people = new ArrayList();
-    public ArrayList<JLabel> labels = new ArrayList<JLabel>();
-    public ArrayList<JButton> buttons = new ArrayList<JButton>();
+    final JFileChooser fc = new JFileChooser(); //used for importing images
+    public ArrayList<File> roles = new ArrayList<File>(); //list of roles, populated with image files
+    public ArrayList<File> explanations = new ArrayList<File>(); //list of explanations for roles, populated with image files
+    public ArrayList people = new ArrayList(); //list of students
     
-    public File background = null;
-    public JLabel backlabel = null;
+    public ArrayList<JLabel> labels = new ArrayList<JLabel>(); //list of images, used to undraw when a picture is deleted
+    public ArrayList<JButton> buttons = new ArrayList<JButton>(); //list of buttons, used to undraw when a button is deleted
+    
+    public File background = null; //background or context image file
+    public JLabel backlabel = null; //background or context image
     
     public StartPage() {
         initComponents();
@@ -69,6 +68,10 @@ public class StartPage extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton3 = new javax.swing.JButton();
@@ -87,6 +90,7 @@ public class StartPage extends javax.swing.JFrame {
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Coordinator Setup"));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Class roster (1 name per line)");
 
         jTextArea1.setColumns(20);
@@ -95,17 +99,33 @@ public class StartPage extends javax.swing.JFrame {
 
         jTextField1.setText("Class title");
 
+        jLabel2.setText("role images- 400px by 400px (.png)");
+
+        jLabel3.setText("context image- 2200px by 1238px (.png)  ");
+
+        jLabel4.setText("explanation images- 2200px by 1238px (.png)");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Recommended formats");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1))
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,9 +133,19 @@ public class StartPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
                 .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jTabbedPane1.addTab("Class Roster", jPanel1);
@@ -158,7 +188,7 @@ public class StartPage extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
@@ -214,7 +244,7 @@ public class StartPage extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(459, Short.MAX_VALUE)
+                        .addContainerGap(487, Short.MAX_VALUE)
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
@@ -283,81 +313,90 @@ public class StartPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(roles.size() >= 12) return;
-        int returnVal = fc.showOpenDialog(jPanel1);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        //handles clicks of add role button
+        if(roles.size() >= 12) return; //the player can't display more than 12 roles, so prevent the user from adding more
+        
+        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
             File file = fc.getSelectedFile();
-            roles.add(file);
-            explanations.add(null);
-            jProgressBar1.setValue(roles.size());
+            roles.add(file); //add the file to roles
+            explanations.add(null); //add a space to explanations (to be filled later)
+            jProgressBar1.setValue(roles.size()); //show that the role has been added on the progress bar
             Image image = null;
-            GridBagConstraints c=new GridBagConstraints();;
+            GridBagConstraints c = new GridBagConstraints(); //used to position image
             try {
-                image = ImageIO.read(roles.get(roles.size()-1));
+                image = ImageIO.read(roles.get(roles.size()-1)); //convert file to image
             } catch (IOException ex) {
-                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
-                jProgressBar1.setValue(12);
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
                 return;
             }
-            image = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-            ImageIcon icon = new ImageIcon(image);
+            image = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+            
             if(roles.size() == 1){
-                jPanel2.setLayout(new GridBagLayout());
+                jPanel2.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
             }
 
-            JLabel picLabel = new JLabel();
-            picLabel.setIcon(icon);
-            picLabel.setText(roles.get(roles.size()-1).getName());
+            JLabel picLabel = new JLabel(); //make a new label
+            picLabel.setIcon(icon); //add the image icon to the label
+            picLabel.setText(roles.get(roles.size()-1).getName()); //set the label text to the filename of the image
             
-            JButton picButton = new JButton();
+            JButton picButton = new JButton(); //make a new button (for picking an explanation)
             picButton.setText("pick explanation");
+            
             picButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){
-                    explanationButtonActionPerformed(e.getSource());
+                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                    explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
                 }
             });
             
-            labels.add(picLabel);
-            buttons.add(picButton);
+            labels.add(picLabel); //add the new label to the list of labels
+            buttons.add(picButton); //add the new button to the list of buttons
             
-            c.gridx = 0;
+            //set position of label in grid
+            c.gridx = 0; 
             c.gridy = (roles.size()-1)*2;
-            jPanel2.add(picLabel,c);
+            jPanel2.add(picLabel,c); //draw image
             
+            //set position of button in grid
             c.gridx = 1;
-            jPanel2.add(picButton,c);
+            jPanel2.add(picButton,c); //draw button
             
-            jPanel2.revalidate();
+            jPanel2.revalidate(); //redraw and scale page
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void explanationButtonActionPerformed(Object e){
-        System.out.println(buttons.indexOf(e));
-        JButton button = buttons.get(buttons.indexOf(e));
-        if (explanations.get(buttons.indexOf(e)) == null){
-            int returnVal = fc.showOpenDialog(jPanel1);
-            if(returnVal == JFileChooser.APPROVE_OPTION){
-                File file = fc.getSelectedFile();
-                explanations.set(buttons.indexOf(e), file);
-                button.setText("explanation set, click to delete");
+        //handles clicks of explanation buttons
+        JButton button = buttons.get(buttons.indexOf(e)); //get the button that was clicked
+        if (explanations.get(buttons.indexOf(e)) == null){ //if the corresponding explanation for the button has not been added yet
+            int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                File file = fc.getSelectedFile(); //get the selected file
+                explanations.set(buttons.indexOf(e), file); //add it to the list of explanations
+                button.setText("explanation set, click to delete"); //change the button text to reflect that the image has been added
             }
         }
-        else{
-            explanations.set(buttons.indexOf(e),null);
-            button.setText("pick explanation");
+        else{ //if the corresponding explanation has already been added
+            explanations.set(buttons.indexOf(e),null); //remove the explanation from the list of explanations
+            button.setText("pick explanation"); //change the button text to reflect that the image has been deleted
         }
     }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(labels.size() > 0){
-            jPanel2.remove(labels.get(labels.size()-1));
-            jPanel2.remove(buttons.get(buttons.size()-1));
-            roles.remove(labels.size()-1);
-            labels.remove(labels.size()-1);
-            buttons.remove(buttons.size()-1);
-            explanations.remove(explanations.size()-1);
-            jPanel2.revalidate();
-            jPanel2.repaint();
-            jProgressBar1.setValue(roles.size());
+        //handles clicks of delete role button
+        if(labels.size() > 0){ //if there are roles
+            jPanel2.remove(labels.get(labels.size()-1)); //undraw the label (image) of the role
+            jPanel2.remove(buttons.get(buttons.size()-1)); //undraw the button of the role
+            
+            roles.remove(roles.size()-1); //remove the role from the list of roles
+            labels.remove(labels.size()-1); //remove the corresponding label from the list of labels
+            buttons.remove(buttons.size()-1); //remove the corresponding button from the list of buttons
+            explanations.remove(explanations.size()-1); //remove the corresponding explanation from the list of explanations
+            
+            jPanel2.revalidate(); //redraw the page
+            jPanel2.repaint(); //redraw the background of the page
+            
+            jProgressBar1.setValue(roles.size()); //show that the role has been deleted on the progress bar
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -366,55 +405,60 @@ public class StartPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(background != null) return;
-        int returnVal = fc.showOpenDialog(jPanel5);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
-            File file = fc.getSelectedFile();
-            background = file;
+        //handles clicks of add context button
+        if(background != null) return; //if there already is a context, do nothing
+        int returnVal = fc.showOpenDialog(jPanel5); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+            background = fc.getSelectedFile(); //import the file
         }
         
         Image image = null;
-        GridBagConstraints c=new GridBagConstraints();;
         try {
-            image = ImageIO.read(background);
+            image = ImageIO.read(background); //convert file to image
         } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
             return;
         }
-            image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT);
-            ImageIcon icon = new ImageIcon(image);
-            jPanel5.setLayout(new FlowLayout());
+            image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT); //scale the image down to fit in the window 
+            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+            jPanel5.setLayout(new FlowLayout()); //set the layout for the image
 
-            backlabel = new JLabel();
-            backlabel.setIcon(icon);
-            jPanel5.add(backlabel);
-            jPanel5.revalidate();
+            backlabel = new JLabel(); //make a new label
+            backlabel.setIcon(icon); //add the image icon to a label
+            
+            jPanel5.add(backlabel); //draw the label
+            jPanel5.revalidate(); //redraw and scale page
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(background != null){
-            jPanel5.remove(backlabel);
-            background = null;
-            backlabel = null;
-            jPanel5.revalidate();
+        //handles clicks of delete context button
+        if(background != null){ //if there is a context
+            jPanel5.remove(backlabel); //undraw the context
+            background = null; //remove the context file
+            backlabel = null; //remove the context image
+            jPanel5.revalidate(); //redraw the page
+            jPanel5.repaint(); //redraw the background of the page
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //handles clicks of save button
+        
+        //loop through the explanations list to make sure all explanations have been set
         boolean explanationsSet = true;
         for(File explanation:explanations){
             if(explanation == null) explanationsSet = false;
         }
+        
+        //make sure there is a class title, between 1 and 12 roles, explanations for those roles and a context
         if(jTextField1.getText().equals("Class title")) JOptionPane.showMessageDialog(null, "Please set a class title before saving","class title not found",JOptionPane.WARNING_MESSAGE);
         else if(background == null) JOptionPane.showMessageDialog(null, "Please set a context before saving","context not found",JOptionPane.WARNING_MESSAGE);
         else if(roles.size() == 0) JOptionPane.showMessageDialog(null, "Please set at least 1 role","roles not found",JOptionPane.WARNING_MESSAGE);
         else if(roles.size() > 12) JOptionPane.showMessageDialog(null, "Please decrease number of roles to 12","too many roles selected",JOptionPane.WARNING_MESSAGE);
         else if(!explanationsSet) JOptionPane.showMessageDialog(null, "Please set all explanations before saving","explanations not set",JOptionPane.WARNING_MESSAGE);
-        else{
+        else{ //if all the checks are passed
             try {
-                //find working directory
-                String current = new java.io.File( "." ).getCanonicalPath();
-                System.out.println("Current dir:"+current);
+                String current = new java.io.File( "." ).getCanonicalPath(); //find working directory
                 
                 //make folders for pictures and audio
                 File folder = new File(current+"\\"+jTextField1.getText());
@@ -487,36 +531,37 @@ public class StartPage extends javax.swing.JFrame {
                 infile = new File(current+"\\resources\\playcoordinator.html.0.js");
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\playcoordinator.html.0.js");
                 
-                if(!outfile.exists()) {
-                    outfile.createNewFile();
+                if(!outfile.exists()) { //if the output location doesn't have a javascript file
+                    outfile.createNewFile(); //make a new javascript file
                 }
                 
                 //get list of students
                 ArrayList<String> people = new ArrayList<String>();
-                String lines[] = jTextArea1.getText().split("\\n");
+                String lines[] = jTextArea1.getText().split("\\n"); //split the string of students into an array
                 for(String line: lines) {
-                    people.add(line);
+                    people.add(line); //add contents of array into an arraylist
                 }
-                String peopleList = "var people = [";
-                for(int i = 0; i < people.size(); i++){
-                    peopleList = peopleList + "{name:\"" + people.get(i) + "\",role:-1}";
-                    if(i < people.size()-1) peopleList = peopleList +",";
-                    else peopleList = peopleList + "];";
+                
+                String peopleList = "var people = ["; //start the string for the list of people
+                for(int i = 0; i < people.size(); i++){ //for every person in the list
+                    peopleList = peopleList + "{name:\"" + people.get(i) + "\",role:-1}"; //add them to the output string
+                    if(i < people.size()-1) peopleList = peopleList +","; //if this person is not the last person add a comma
+                    else peopleList = peopleList + "];"; //if this person is the last person finish the string
                 }
-                try(BufferedReader br = new BufferedReader(new FileReader(infile))) {
-                    try(FileWriter fw = new FileWriter(outfile)){
-                        for(String line; (line = br.readLine()) != null; ) {
-                            if(line.contains("var people = [")) line = peopleList;
-                            if(line.contains("var NUM_ROLES = ")) line = "var NUM_ROLES = "+roles.size()+";";
-                            fw.write(line+"\n");
+                try(BufferedReader br = new BufferedReader(new FileReader(infile))) { //open a file reader for the reference javascript file
+                    try(FileWriter fw = new FileWriter(outfile)){ //open a file writer for the new javasctipt file
+                        for(String line; (line = br.readLine()) != null; ) { //loop through the reference file by line
+                            if(line.contains("var people = [")) line = peopleList; //if this line is the list of people, replace with the new list of people
+                            if(line.contains("var NUM_ROLES = ")) line = "var NUM_ROLES = "+roles.size()+";"; //if this line says how many roles there are, replace with the correct number
+                            fw.write(line+"\n"); //write the line to the new javascript file
                         }
                     }
                 }
                 jProgressBar2.setValue(9);
-                JOptionPane.showMessageDialog(null, "Save succesful");
+                JOptionPane.showMessageDialog(null, "Save succesful"); //if everything worked, report to user
             } catch (IOException ex) {
-                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("write failed!");
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
+                JOptionPane.showMessageDialog(null, "Save failed"); //tell the user the save didn't work
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -587,6 +632,10 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
