@@ -12,10 +12,10 @@ var people = [
 	{name:"Eric",role:-1},
 	{name:"Florence",role:-1},
 	{name:"Gabriela",role:-1},
-	{name:"Henry",role:-1}
+	{name:"Henry",role:-1},
+	{name:"TEST",role:-1}
 ]; // list of people, needs to be dynamic
 var results = []; // for displaying people and roles chosen
-var checkarrow,checkshape; // checkmark to confirm selection
 
 var title; // text which indicates who needs to pick
 
@@ -26,9 +26,12 @@ var IMAGE_HEIGHT = 1238;
 
 var NUM_ROLES=12; // number of roles to chose from
 
-var slide=0; //variables for current slide,music playing, person picking role
+//variables for current slide,music playing, person picking role
 var song=0;
 var person=0;
+var slide=0;
+
+var resultSlide=1;
 
 var current_role = -1;
 
@@ -36,6 +39,9 @@ var current_role = -1;
 var src;            // the audio src we are trying to play
 var soundInstance;  // the soundInstance returned by Sound when we create or play a src
 var canvas;  		// the canvas we draw to
+
+var nextArrow, prevArrow;
+var nextShape, prevShape;
 
 // Resize event listener
 window.addEventListener('resize', resize);
@@ -54,7 +60,7 @@ function init() {
 	createBackground();		
 	
 	var musicManifest = [
-		{id: "0", src: musicPath + "audio_00.mp3"},
+/*		{id: "0", src: musicPath + "audio_00.mp3"},
 		{id: "1", src: musicPath + "audio_01.mp3"},
 		{id: "2", src: musicPath + "audio_02.mp3"},
 		{id: "3", src: musicPath + "audio_03.mp3"},
@@ -74,19 +80,21 @@ function init() {
 		{id: "17", src: musicPath + "audio_17.mp3"},
 		{id: "18", src: musicPath + "audio_18.mp3"},
 		{id: "19", src: musicPath + "audio_19.mp3"},
-		{id: "20", src: musicPath + "audio_20.mp3"},
+		{id: "20", src: musicPath + "audio_20.mp3"}, */
 		{id: "game", src: musicPath + "M-GameBG.ogg"},
-		{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
-		{id: "happy", src: musicPath + "bensound-happiness.mp3"},
-		{id: "oops", src: musicPath + "audio_oops.mp3"},
-		{id: "coin", src: musicPath + "coin.mp3"}
+		//{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
+		//{id: "happy", src: musicPath + "bensound-happiness.mp3"},
+		//{id: "oops", src: musicPath + "audio_oops.mp3"},
+		{id: "coin", src: musicPath + "coin.mp3"},
+		{id: "acoustic", src: musicPath + "bensound-acousticbreeze.mp3"},
+		{id: "funny", src: musicPath + "bensound-funnysong.mp3"}
 	];
 	
 	// Instantiate a music queue.
 	musicqueue = new createjs.LoadQueue();
 	createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
 	musicqueue.installPlugin(createjs.Sound);
-
+	musicqueue.addEventListener("complete", loadComplete);
 	musicqueue.loadManifest(musicManifest);
 	
 	
@@ -218,48 +226,50 @@ function addRoleButtons(){
 
 //create back button and background shape
 function addBackButton(){
-	prvArrow = new createjs.Bitmap(imgqueue.getResult("left"));
-	prvArrow.x = 40;
-	prvArrow.y = 40;
-	prvArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
+	backArrow = new createjs.Bitmap(imgqueue.getResult("left"));
+	backArrow.x = 40;
+	backArrow.y = 40;
+	backArrow.addEventListener("click", prvClck);/*BUG*/	// Including this following line of code will cause the images to display
 															// but will prevent all event listeners from functioning.
-	container.addChild(prvArrow);
-	container.setChildIndex(prvArrow, 1);
+	container.addChild(backArrow);
+	container.setChildIndex(backArrow, 1);
 	
-	prvShape = new createjs.Shape();
-	prvShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
+	backShape = new createjs.Shape();
+	backShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
 	//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
-	prvShape.x = 40;
-	prvShape.y = 40;
-	prvShape.alpha = 0.01;
+	backShape.x = 40;
+	backShape.y = 40;
+	backShape.alpha = 0.01;
 	//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-	prvShape.addEventListener("click", prvClck);
+	backShape.addEventListener("click", prvClck);
 	
-	container.addChild(prvShape);
-	container.setChildIndex(prvShape, 1);
+	container.addChild(backShape);
+	container.setChildIndex(backShape, 1);
+	
 }
 
 //create check button and background shape
 function addCheckButton(){
-	checkarrow = new createjs.Bitmap(imgqueue.getResult("check"));
-	checkarrow.x = IMAGE_WIDTH-280;
-	checkarrow.y = 40;
-	checkarrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
+	checkArrow = new createjs.Bitmap(imgqueue.getResult("check"));
+	checkArrow.x = IMAGE_WIDTH-280;
+	checkArrow.y = 40;
+	checkArrow.addEventListener("click", nxtClck); /*BUG*/	// Including this following line of code will cause the images to display
 															// but will prevent all event listeners from functioning.
-	container.addChild(checkarrow);
-	container.setChildIndex(checkarrow, 1);
+	container.addChild(checkArrow);
+	container.setChildIndex(checkArrow, 1);
 	
-  checkshape = new createjs.Shape();
-	checkshape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
+  checkShape = new createjs.Shape();
+	checkShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
 	//nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
-	checkshape.x = IMAGE_WIDTH - 310;
-	checkshape.y = 40;
-	checkshape.alpha = 0.01;
+	checkShape.x = IMAGE_WIDTH - 310;
+	checkShape.y = 40;
+	checkShape.alpha = 0.01;
 	//nxtShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-	checkshape.addEventListener("click", nxtClck);
+	checkShape.addEventListener("click", nxtClck);
 	
-	container.addChild(checkshape);
-	container.setChildIndex(checkshape, 1);
+	container.addChild(checkShape);
+	container.setChildIndex(checkShape, 1);
+	playSound("coin");
 }
 
 function playSound(name) {
@@ -295,8 +305,8 @@ function prvClck(event){
   if(slide !== 0){
     slide = 0;
     container.removeChild(bmp);
-    container.removeChild(checkshape);
-    container.removeChild(checkarrow);
+    container.removeChild(checkShape);
+    container.removeChild(checkArrow);
     addRoleButtons();
   }
   resize();
@@ -312,59 +322,113 @@ function nxtClck(event){
   }
   //if everybody has picked, draw final carousel
   else{
-    //get rid of back and check buttons
-    container.removeChild(bmp);
-    container.removeChild(checkshape);
-    container.removeChild(checkarrow);
-    container.removeChild(prvArrow);
-    container.removeChild(prvShape);
-    
-    //create a draggable container for displaying results
-    var dragger = new createjs.Container();
-    dragger.x = dragger.y = 0;
-    
-    //draw background of draggable container
-    var hit = new createjs.Shape();
-		hit.graphics.beginFill("#ffcc80").drawRect(100, 250, people.length*600+100, 600);
-		dragger.addChild(hit);
-		dragger.hitArea = hit;
-		
-		//draw arrow showing that a drag is possible
-		var arrow = new createjs.Bitmap(imgqueue.getResult("dragright"));
-		arrow.x = 10;
-		arrow.y = 485;
-		dragger.addChild(arrow);
-		
-		//draw names of users, roles underneath names
-    for(var i = 0; i < people.length; i++){
-      console.log(people[i].name + ": " + people[i].role);
-      var text = new createjs.Text(people[i].name, "80px Comic Sans MS", "#ff7700");
-      text.x = (i*600)+300;
-      text.y = 360;
-      text.textBaseline = "alphabetic";
-      dragger.addChild(text);
-      
-      var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
-      image.x = (i*600)+200;
-      image.y = 380;
-      dragger.addChild(image);
-
-      container.addChild(dragger);
-    }
-    
-    //when clicked, record the intial position of the click
-    var offset = 0;
-    dragger.on("mousedown",function(evt){
-      offset = evt.stageX - evt.currentTarget.x;
-    });
-    
-    //if drag, use change in location of click to move draggable container
-    dragger.on("pressmove",function(evt) {
-			evt.currentTarget.x = evt.stageX - offset;
-			stage.update();
-    });
+    drawResults(resultSlide);
   }
   resize();
+}
+
+function nextPage(event){
+  resultSlide++;
+  drawResults(resultSlide);
+}
+
+function prevPage(event){
+  resultSlide--;
+  drawResults(resultSlide);
+}
+
+function drawResults(page){
+  container.removeChild(bmp);
+  container.removeChild(checkShape);
+  container.removeChild(checkArrow);
+  container.removeChild(backArrow);
+  container.removeChild(backShape);
+  
+  for(var j = 0; j < results.length; j++){
+    container.removeChild(results[j]);
+  }
+  
+  if(nextArrow !== undefined){
+    container.removeChild(nextArrow);
+    container.removeChild(nextShape);
+  }
+  
+  if(prevArrow !== undefined){
+    container.removeChild(prevArrow);
+    container.removeChild(prevShape);
+  }
+  
+	//draw names of users, roles underneath names
+  for(var i = (page-1)*8; i < page*8; i++){
+    if(people[i] !== undefined){
+      console.log(people[i].name + ": " + people[i].role);
+      var text = new createjs.Text(people[i].name, "80px Comic Sans MS", "#ff7700");
+      text.x = (((i-(page-1)*8)%4)*450)+300;
+      text.y = Math.floor((i-(page-1)*8)/4)*600+180;
+      text.textBaseline = "alphabetic";
+      container.addChild(text);
+      
+      var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
+      image.x = (((i-(page-1)*8)%4)*450)+200;
+      image.y = Math.floor((i-(page-1)*8)/4)*600+200;
+      container.addChild(image);
+      
+      results.push(text);
+      results.push(image);
+    }
+  }
+	
+	//make next arrow
+	if(page*8<people.length){
+  	nextArrow = new createjs.Bitmap(imgqueue.getResult("right"));
+  	nextArrow.x = IMAGE_WIDTH-280;
+  	nextArrow.y = 40;
+  	nextArrow.addEventListener("click", nextPage);/*BUG*/	// Including this following line of code will cause the images to display
+  															// but will prevent all event listeners from functioning.
+  	container.addChild(nextArrow);
+  	container.setChildIndex(nextArrow, 1);
+  	
+  	nextShape = new createjs.Shape();
+  	nextShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
+  	//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+  	nextShape.x = IMAGE_WIDTH-310;
+  	nextShape.y = 40;
+  	nextShape.alpha = 0.01;
+  	//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+  	nextShape.addEventListener("click", nextPage);
+  	
+  	container.addChild(nextShape);
+  	container.setChildIndex(nextShape, 1);  
+	}
+	
+	if(page !== 1){
+  	prevArrow = new createjs.Bitmap(imgqueue.getResult("left"));
+  	prevArrow.x = 40;
+  	prevArrow.y = 40;
+  	prevArrow.addEventListener("click", prevPage);/*BUG*/	// Including this following line of code will cause the images to display
+  															// but will prevent all event listeners from functioning.
+  	container.addChild(prevArrow);
+  	container.setChildIndex(prevArrow, 1);
+  	
+  	prevShape = new createjs.Shape();
+  	prevShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
+  	//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+  	prevShape.x = 40;
+  	prevShape.y = 40;
+  	prevShape.alpha = 0.01;
+  	//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+  	prevShape.addEventListener("click", prevPage);
+  	
+  	container.addChild(prevShape);
+  	container.setChildIndex(prevShape, 1);  
+	}
+	resize();
+}
+
+function loadComplete(evt) {
+		// Load completed.
+		//playSound("happy");
+		playSound("funny");
 }
 
 function resize() {
@@ -398,4 +462,3 @@ function resize() {
 	
 	stage.update();
 }
-	
