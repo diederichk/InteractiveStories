@@ -12,9 +12,12 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -102,7 +105,7 @@ public class StartPage extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1))
-                .addContainerGap(354, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +136,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 592, Short.MAX_VALUE)
+            .addGap(0, 627, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +158,7 @@ public class StartPage extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
@@ -169,10 +172,11 @@ public class StartPage extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane2)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3)
+                        .addComponent(jButton4)))
                 .addContainerGap())
         );
 
@@ -210,7 +214,7 @@ public class StartPage extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(460, Short.MAX_VALUE)
+                        .addContainerGap(459, Short.MAX_VALUE)
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
@@ -243,6 +247,8 @@ public class StartPage extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        jProgressBar2.setMaximum(9);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -404,6 +410,115 @@ public class StartPage extends javax.swing.JFrame {
         else if(roles.size() == 0) JOptionPane.showMessageDialog(null, "Please set at least 1 role","roles not found",JOptionPane.WARNING_MESSAGE);
         else if(roles.size() > 12) JOptionPane.showMessageDialog(null, "Please decrease number of roles to 12","too many roles selected",JOptionPane.WARNING_MESSAGE);
         else if(!explanationsSet) JOptionPane.showMessageDialog(null, "Please set all explanations before saving","explanations not set",JOptionPane.WARNING_MESSAGE);
+        else{
+            try {
+                //find working directory
+                String current = new java.io.File( "." ).getCanonicalPath();
+                System.out.println("Current dir:"+current);
+                
+                //make folders for pictures and audio
+                File folder = new File(current+"\\"+jTextField1.getText());
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
+                folder = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3");
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
+                //copy background
+                File outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-00.png");
+                copyFile(background, outfile);
+                jProgressBar2.setValue(1);
+                
+                //copy roles
+                for(int i = 0; i < roles.size(); i++){
+                    if(i<9) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\role"+(i+1)+".png");
+                    copyFile(roles.get(i),outfile);
+                }
+                jProgressBar2.setValue(2);
+                
+                //copy explanations
+                for(int i = 0; i < explanations.size(); i++){
+                    if(i<9) outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\story1-newratio-0"+(i+1)+".png");
+                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\story1-newratio-"+(i+1)+".png");
+                    copyFile(explanations.get(i),outfile);
+                }
+                jProgressBar2.setValue(3);
+                
+                //copy arrows
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\check_arrow.png");
+                File infile = new File(current+"\\resources\\check_arrow.png");
+                copyFile(infile,outfile);
+                jProgressBar2.setValue(4);
+                
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\left_arrow.png");
+                infile = new File(current+"\\resources\\left_arrow.png");
+                copyFile(infile,outfile);
+                jProgressBar2.setValue(5);
+                
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\right_arrow.png");
+                infile = new File(current+"\\resources\\right_arrow.png");
+                copyFile(infile,outfile);
+                jProgressBar2.setValue(6);
+                
+                //copy html file
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\playcoordinator.html");
+                infile = new File(current+"\\resources\\playcoordinator.html");
+                copyFile(infile,outfile);
+                jProgressBar2.setValue(7);
+                
+                //copy css file
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\storystyle.css");
+                infile = new File(current+"\\resources\\storystyle.css");
+                copyFile(infile,outfile);
+                jProgressBar2.setValue(8);
+                
+                //import javascript file
+                infile = new File(current+"\\resources\\playcoordinator.html.0.js");
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\playcoordinator.html.0.js");
+                
+                if(!outfile.exists()) {
+                    outfile.createNewFile();
+                }
+                
+                //get list of students
+                ArrayList<String> people = new ArrayList<String>();
+                String lines[] = jTextArea1.getText().split("\\n");
+                for(String line: lines) {
+                    people.add(line);
+                }
+                String peopleList = "var people = [";
+                for(int i = 0; i < people.size(); i++){
+                    peopleList = peopleList + "{name:\"" + people.get(i) + "\",role:-1}";
+                    if(i < people.size()-1) peopleList = peopleList +",";
+                    else peopleList = peopleList + "];";
+                }
+                try(BufferedReader br = new BufferedReader(new FileReader(infile))) {
+                    try(FileWriter fw = new FileWriter(outfile)){
+                        for(String line; (line = br.readLine()) != null; ) {
+                            if(line.contains("var people = [")) line = peopleList;
+                            if(line.contains("var NUM_ROLES = ")) line = "var NUM_ROLES = "+roles.size()+";";
+                            fw.write(line+"\n");
+                        }
+                    }
+                }
+                jProgressBar2.setValue(9);
+                JOptionPane.showMessageDialog(null, "Save succesful");
+            } catch (IOException ex) {
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("write failed!");
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public static void copyFile(File sourceFile, File destFile) throws IOException {
