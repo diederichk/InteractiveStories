@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -98,6 +99,11 @@ public class StartPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jTextField1.setText("Class title");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("role images- 400px by 400px (.png)");
 
@@ -312,60 +318,6 @@ public class StartPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //handles clicks of add role button
-        if(roles.size() >= 12) return; //the player can't display more than 12 roles, so prevent the user from adding more
-        
-        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
-        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-            File file = fc.getSelectedFile();
-            roles.add(file); //add the file to roles
-            explanations.add(null); //add a space to explanations (to be filled later)
-            jProgressBar1.setValue(roles.size()); //show that the role has been added on the progress bar
-            Image image = null;
-            GridBagConstraints c = new GridBagConstraints(); //used to position image
-            try {
-                image = ImageIO.read(roles.get(roles.size()-1)); //convert file to image
-            } catch (IOException ex) {
-                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
-                return;
-            }
-            image = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT); //scale the image down to fit in the window
-            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
-            
-            if(roles.size() == 1){
-                jPanel2.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
-            }
-
-            JLabel picLabel = new JLabel(); //make a new label
-            picLabel.setIcon(icon); //add the image icon to the label
-            picLabel.setText(roles.get(roles.size()-1).getName()); //set the label text to the filename of the image
-            
-            JButton picButton = new JButton(); //make a new button (for picking an explanation)
-            picButton.setText("pick explanation");
-            
-            picButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
-                    explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
-                }
-            });
-            
-            labels.add(picLabel); //add the new label to the list of labels
-            buttons.add(picButton); //add the new button to the list of buttons
-            
-            //set position of label in grid
-            c.gridx = 0; 
-            c.gridy = (roles.size()-1)*2;
-            jPanel2.add(picLabel,c); //draw image
-            
-            //set position of button in grid
-            c.gridx = 1;
-            jPanel2.add(picButton,c); //draw button
-            
-            jPanel2.revalidate(); //redraw and scale page
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void explanationButtonActionPerformed(Object e){
         //handles clicks of explanation buttons
         JButton button = buttons.get(buttons.indexOf(e)); //get the button that was clicked
@@ -382,64 +334,9 @@ public class StartPage extends javax.swing.JFrame {
             button.setText("pick explanation"); //change the button text to reflect that the image has been deleted
         }
     }
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //handles clicks of delete role button
-        if(labels.size() > 0){ //if there are roles
-            jPanel2.remove(labels.get(labels.size()-1)); //undraw the label (image) of the role
-            jPanel2.remove(buttons.get(buttons.size()-1)); //undraw the button of the role
-            
-            roles.remove(roles.size()-1); //remove the role from the list of roles
-            labels.remove(labels.size()-1); //remove the corresponding label from the list of labels
-            buttons.remove(buttons.size()-1); //remove the corresponding button from the list of buttons
-            explanations.remove(explanations.size()-1); //remove the corresponding explanation from the list of explanations
-            
-            jPanel2.revalidate(); //redraw the page
-            jPanel2.repaint(); //redraw the background of the page
-            
-            jProgressBar1.setValue(roles.size()); //show that the role has been deleted on the progress bar
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        //handles clicks of add context button
-        if(background != null) return; //if there already is a context, do nothing
-        int returnVal = fc.showOpenDialog(jPanel5); //open file picker
-        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-            background = fc.getSelectedFile(); //import the file
-        }
-        
-        Image image = null;
-        try {
-            image = ImageIO.read(background); //convert file to image
-        } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
-            return;
-        }
-            image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT); //scale the image down to fit in the window 
-            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
-            jPanel5.setLayout(new FlowLayout()); //set the layout for the image
-
-            backlabel = new JLabel(); //make a new label
-            backlabel.setIcon(icon); //add the image icon to a label
-            
-            jPanel5.add(backlabel); //draw the label
-            jPanel5.revalidate(); //redraw and scale page
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        //handles clicks of delete context button
-        if(background != null){ //if there is a context
-            jPanel5.remove(backlabel); //undraw the context
-            background = null; //remove the context file
-            backlabel = null; //remove the context image
-            jPanel5.revalidate(); //redraw the page
-            jPanel5.repaint(); //redraw the background of the page
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //handles clicks of save button
@@ -565,6 +462,120 @@ public class StartPage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        //handles clicks of delete context button
+        if(background != null){ //if there is a context
+            jPanel5.remove(backlabel); //undraw the context
+            background = null; //remove the context file
+            backlabel = null; //remove the context image
+            jPanel5.revalidate(); //redraw the page
+            jPanel5.repaint(); //redraw the background of the page
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //handles clicks of add context button
+        if(background != null) return; //if there already is a context, do nothing
+        int returnVal = fc.showOpenDialog(jPanel5); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+            background = fc.getSelectedFile(); //import the file
+        }
+
+        Image image = null;
+        try {
+            image = ImageIO.read(background); //convert file to image
+        } catch (IOException ex) {
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+            return;
+        }
+        image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+        jPanel5.setLayout(new FlowLayout()); //set the layout for the image
+
+        backlabel = new JLabel(); //make a new label
+        backlabel.setIcon(icon); //add the image icon to a label
+
+        jPanel5.add(backlabel); //draw the label
+        jPanel5.revalidate(); //redraw and scale page
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //handles clicks of delete role button
+        if(labels.size() > 0){ //if there are roles
+            jPanel2.remove(labels.get(labels.size()-1)); //undraw the label (image) of the role
+            jPanel2.remove(buttons.get(buttons.size()-1)); //undraw the button of the role
+
+            roles.remove(roles.size()-1); //remove the role from the list of roles
+            labels.remove(labels.size()-1); //remove the corresponding label from the list of labels
+            buttons.remove(buttons.size()-1); //remove the corresponding button from the list of buttons
+            explanations.remove(explanations.size()-1); //remove the corresponding explanation from the list of explanations
+
+            jPanel2.revalidate(); //redraw the page
+            jPanel2.repaint(); //redraw the background of the page
+
+            jProgressBar1.setValue(roles.size()); //show that the role has been deleted on the progress bar
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //handles clicks of add role button
+        if(roles.size() >= 12) return; //the player can't display more than 12 roles, so prevent the user from adding more
+
+        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+            File file = fc.getSelectedFile();
+            roles.add(file); //add the file to roles
+            explanations.add(null); //add a space to explanations (to be filled later)
+            jProgressBar1.setValue(roles.size()); //show that the role has been added on the progress bar
+            Image image = null;
+            GridBagConstraints c = new GridBagConstraints(); //used to position image
+            c.insets = new Insets(3,3,3,3); //specifies margins around image
+            try {
+                image = ImageIO.read(roles.get(roles.size()-1)); //convert file to image
+            } catch (IOException ex) {
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+                return;
+            }
+            image = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+
+            if(roles.size() == 1){
+                jPanel2.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
+            }
+
+            JLabel picLabel = new JLabel(); //make a new label
+            picLabel.setIcon(icon); //add the image icon to the label
+            picLabel.setText(roles.get(roles.size()-1).getName()); //set the label text to the filename of the image
+
+            JButton picButton = new JButton(); //make a new button (for picking an explanation)
+            picButton.setText("pick explanation");
+
+            picButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                    explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
+                }
+            });
+
+            labels.add(picLabel); //add the new label to the list of labels
+            buttons.add(picButton); //add the new button to the list of buttons
+
+            //set position of label in grid
+            c.gridx = 0;
+            c.gridy = (roles.size()-1)*2;
+            jPanel2.add(picLabel,c); //draw image
+
+            //set position of button in grid
+            c.gridx = 1;
+            jPanel2.add(picButton,c); //draw button
+
+            jPanel2.revalidate(); //redraw and scale page
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
     
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
