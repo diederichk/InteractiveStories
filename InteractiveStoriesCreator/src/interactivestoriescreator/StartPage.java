@@ -1,5 +1,7 @@
 package interactivestoriescreator;
 
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -32,8 +34,12 @@ public class StartPage extends javax.swing.JFrame {
     /**
      * Creates new form StartPage
      */
-    ArrayList<File> pages = new ArrayList<File>();
-    ArrayList<File> choices = new ArrayList<File>();
+    public ArrayList<File> pages = new ArrayList<File>();
+    public ArrayList<File> choices = new ArrayList<File>();
+    
+    public ArrayList<File> story = new ArrayList<File>();
+    public ArrayList<JLabel> storyLabels = new ArrayList<JLabel>();
+    public ArrayList<JButton> deleteButtons = new ArrayList<JButton>();
     
     public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>();
     public ArrayList<JButton> pageButtons = new ArrayList<JButton>();
@@ -42,6 +48,7 @@ public class StartPage extends javax.swing.JFrame {
     public ArrayList<JButton> choiceButtons = new ArrayList<JButton>();
     
     final JFileChooser fc = new JFileChooser();
+    ComponentMover cm = new ComponentMover();
     
     public StartPage() {
         initComponents();
@@ -313,6 +320,7 @@ public class StartPage extends javax.swing.JFrame {
             picButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
                     System.out.println("add button clicked!");
+                    pageButtonActionPerformed(e.getSource());
                     //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
                 }
             });
@@ -333,6 +341,43 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void pageButtonActionPerformed(Object e){
+        for(JLabel l:storyLabels) System.out.println(l.getLocation());
+        JButton button = pageButtons.get(pageButtons.indexOf(e)); //get the button that was clicked
+        button.setText("added");
+        story.add(pages.get(pageButtons.indexOf(e)));
+        
+        GridBagConstraints c = new GridBagConstraints(); //used to position image
+        c.insets = new Insets(3,3,3,3); //specifies margins around image
+        
+        Image image = null;
+        try {
+            image = ImageIO.read(pages.get(pageButtons.indexOf(e)));
+        } catch (IOException ex) {
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        image = image.getScaledInstance(300, 169, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+        
+        if(story.size() == 1){
+            jPanel1.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
+        }
+
+        JLabel picLabel = new JLabel(); //make a new label
+        picLabel.setIcon(icon); //add the image icon to the lab
+        
+        storyLabels.add(picLabel); //add the new label to the list of labels
+        //picLabel.setLocation(50, 50);
+        
+        c.gridx = 0;
+        c.gridy = (story.size()-1)*2;
+        jPanel1.add(picLabel,c); //draw image
+        //cm.registerComponent(picLabel);
+        //cm.setSnapSize(new Dimension(40, 40));
+        
+        jPanel1.revalidate(); //redraw and scale page
+        jPanel1.repaint();
+    }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected

@@ -23,6 +23,9 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,9 +49,18 @@ public class StartPage extends javax.swing.JFrame {
     
     public ArrayList<JLabel> labels = new ArrayList<JLabel>(); //list of images, used to undraw when a picture is deleted
     public ArrayList<JButton> buttons = new ArrayList<JButton>(); //list of buttons, used to undraw when a button is deleted
+    public ArrayList<JButton> soundButtons = new ArrayList<JButton>(); //list of buttons, used to undraw when a button is deleted
+    public ArrayList<JButton> playButtons = new ArrayList<JButton>(); //list of buttons, used to undraw when a button is deleted
+    
+    public ArrayList<File> sounds = new ArrayList<File>();
     
     public File background = null; //background or context image file
+    public File backMusic = null;
     public JLabel backlabel = null; //background or context image
+    
+    MediaPlayer mediaPlayer = null;
+    
+    JFXPanel fxPanel = new JFXPanel();
     
     public StartPage() {
         initComponents();
@@ -83,6 +95,8 @@ public class StartPage extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jProgressBar2 = new javax.swing.JProgressBar();
@@ -194,13 +208,13 @@ public class StartPage extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -218,7 +232,7 @@ public class StartPage extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Roles", jPanel3);
 
-        jButton5.setText("Import");
+        jButton5.setText("Import Background");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -243,18 +257,36 @@ public class StartPage extends javax.swing.JFrame {
             .addGap(0, 367, Short.MAX_VALUE)
         );
 
+        jButton7.setText("Import background music");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Play");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(487, Short.MAX_VALUE)
-                        .addComponent(jButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(69, 69, 69))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -264,7 +296,9 @@ public class StartPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(jButton6)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
                 .addContainerGap())
         );
 
@@ -284,7 +318,7 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
-        jProgressBar2.setMaximum(9);
+        jProgressBar2.setMaximum(11);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -334,6 +368,46 @@ public class StartPage extends javax.swing.JFrame {
             button.setText("pick explanation"); //change the button text to reflect that the image has been deleted
         }
     }
+    
+    private void soundButtonActionPerformed(Object e){
+        //handles clicks of explanation buttons
+        JButton button = soundButtons.get(soundButtons.indexOf(e)); //get the button that was clicked
+        if (sounds.get(soundButtons.indexOf(e)) == null){ //if the corresponding explanation for the button has not been added yet
+            int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                File file = fc.getSelectedFile(); //get the selected file
+                sounds.set(soundButtons.indexOf(e), file); //add it to the list of explanations
+                button.setText("sound set, click to delete"); //change the button text to reflect that the image has been added
+            }
+        }
+        else{ //if the corresponding explanation has already been added
+            sounds.set(soundButtons.indexOf(e),null); //remove the explanation from the list of explanations
+            button.setText("pick sound"); //change the button text to reflect that the image has been deleted
+        }
+    }
+    
+    private void playButtonActionPerformed(Object e){
+        //handles clicks of explanation buttons
+        JButton button = playButtons.get(playButtons.indexOf(e)); //get the button that was clicked
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer = null;
+            button.setText("play");
+        }
+        else{
+            if(sounds.get(playButtons.indexOf(e)) != null){
+                try {
+                    Media hit = new Media(sounds.get(playButtons.indexOf(e)).toURI().toURL().toString());
+                    mediaPlayer = new MediaPlayer(hit);
+                    mediaPlayer.play();
+                    button.setText("stop");
+                } catch (Exception ex) {
+                    Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -376,6 +450,15 @@ public class StartPage extends javax.swing.JFrame {
                     }
                 }
                 
+                folder = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio");
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
                 //copy background
                 File outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-00.png");
                 copyFile(background, outfile);
@@ -396,33 +479,48 @@ public class StartPage extends javax.swing.JFrame {
                 }
                 jProgressBar2.setValue(3);
                 
+                //copy explanation sounds
+                for(int i = 0; i < sounds.size(); i++){
+                    if(sounds.get(i) != null){
+                        if(i<9) outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_0"+(i+1)+".mp3");
+                        else outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_"+(i+1)+".mp3");
+                        copyFile(sounds.get(i),outfile);
+                    }
+                }
+                jProgressBar2.setValue(4);
+                
+                //copy background music
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_00.mp3");
+                copyFile(backMusic, outfile);
+                jProgressBar2.setValue(5);
+                
                 //copy arrows
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\check_arrow.png");
                 File infile = new File(current+"\\resources\\check_arrow.png");
                 copyFile(infile,outfile);
-                jProgressBar2.setValue(4);
+                jProgressBar2.setValue(6);
                 
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\left_arrow.png");
                 infile = new File(current+"\\resources\\left_arrow.png");
                 copyFile(infile,outfile);
-                jProgressBar2.setValue(5);
+                jProgressBar2.setValue(7);
                 
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\right_arrow.png");
                 infile = new File(current+"\\resources\\right_arrow.png");
                 copyFile(infile,outfile);
-                jProgressBar2.setValue(6);
+                jProgressBar2.setValue(8);
                 
                 //copy html file
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\playcoordinator.html");
                 infile = new File(current+"\\resources\\playcoordinator.html");
                 copyFile(infile,outfile);
-                jProgressBar2.setValue(7);
+                jProgressBar2.setValue(9);
                 
                 //copy css file
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\storystyle.css");
                 infile = new File(current+"\\resources\\storystyle.css");
                 copyFile(infile,outfile);
-                jProgressBar2.setValue(8);
+                jProgressBar2.setValue(10);
                 
                 //import javascript file
                 infile = new File(current+"\\resources\\playcoordinator.html.0.js");
@@ -454,7 +552,7 @@ public class StartPage extends javax.swing.JFrame {
                         }
                     }
                 }
-                jProgressBar2.setValue(9);
+                jProgressBar2.setValue(11);
                 JOptionPane.showMessageDialog(null, "Save succesful"); //if everything worked, report to user
             } catch (IOException ex) {
                 Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
@@ -505,11 +603,16 @@ public class StartPage extends javax.swing.JFrame {
         if(labels.size() > 0){ //if there are roles
             jPanel2.remove(labels.get(labels.size()-1)); //undraw the label (image) of the role
             jPanel2.remove(buttons.get(buttons.size()-1)); //undraw the button of the role
+            jPanel2.remove(soundButtons.get(soundButtons.size()-1));
+            jPanel2.remove(playButtons.get(playButtons.size()-1));
 
             roles.remove(roles.size()-1); //remove the role from the list of roles
             labels.remove(labels.size()-1); //remove the corresponding label from the list of labels
             buttons.remove(buttons.size()-1); //remove the corresponding button from the list of buttons
             explanations.remove(explanations.size()-1); //remove the corresponding explanation from the list of explanations
+            sounds.remove(sounds.size()-1);
+            soundButtons.remove(soundButtons.size()-1);
+            playButtons.remove(playButtons.size()-1);
 
             jPanel2.revalidate(); //redraw the page
             jPanel2.repaint(); //redraw the background of the page
@@ -527,6 +630,7 @@ public class StartPage extends javax.swing.JFrame {
             File file = fc.getSelectedFile();
             roles.add(file); //add the file to roles
             explanations.add(null); //add a space to explanations (to be filled later)
+            sounds.add(null);
             jProgressBar1.setValue(roles.size()); //show that the role has been added on the progress bar
             Image image = null;
             GridBagConstraints c = new GridBagConstraints(); //used to position image
@@ -546,19 +650,39 @@ public class StartPage extends javax.swing.JFrame {
 
             JLabel picLabel = new JLabel(); //make a new label
             picLabel.setIcon(icon); //add the image icon to the label
-            picLabel.setText(roles.get(roles.size()-1).getName()); //set the label text to the filename of the image
+            //picLabel.setText(roles.get(roles.size()-1).getName()); //set the label text to the filename of the image
 
             JButton picButton = new JButton(); //make a new button (for picking an explanation)
             picButton.setText("pick explanation");
-
+            
             picButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
                     explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
                 }
             });
+            
+            JButton soundButton = new JButton();
+            soundButton.setText("pick sound");
+            
+            soundButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                    soundButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
+                }
+            });
+            
+            JButton playButton = new JButton();
+            playButton.setText("play");
+            
+            playButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                    playButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
+                }
+            });
 
             labels.add(picLabel); //add the new label to the list of labels
             buttons.add(picButton); //add the new button to the list of buttons
+            soundButtons.add(soundButton);
+            playButtons.add(playButton);
 
             //set position of label in grid
             c.gridx = 0;
@@ -568,7 +692,13 @@ public class StartPage extends javax.swing.JFrame {
             //set position of button in grid
             c.gridx = 1;
             jPanel2.add(picButton,c); //draw button
+            
+            c.gridx = 2;
+            jPanel2.add(soundButton,c); //draw button
 
+            c.gridx = 3;
+            jPanel2.add(playButton,c); //draw button
+            
             jPanel2.revalidate(); //redraw and scale page
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -576,6 +706,40 @@ public class StartPage extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if(backMusic == null){
+            int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                backMusic = fc.getSelectedFile();
+                jButton7.setText("Delete background music");
+            }
+        }
+        else{
+            backMusic = null;
+            jButton7.setText("Import background music");
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer = null;
+            jButton8.setText("Play");
+        }
+        else{
+            if(backMusic != null){
+                try {
+                    Media hit = new Media(backMusic.toURI().toURL().toString());
+                    mediaPlayer = new MediaPlayer(hit);
+                    mediaPlayer.play();
+                    jButton8.setText("Stop");
+                } catch (Exception ex) {
+                    Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
     
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
@@ -642,6 +806,8 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
