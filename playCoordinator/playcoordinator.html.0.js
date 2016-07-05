@@ -86,8 +86,8 @@ function init() {
 		//{id: "happy", src: musicPath + "bensound-happiness.mp3"},
 		//{id: "oops", src: musicPath + "audio_oops.mp3"},
 		{id: "coin", src: musicPath + "coin.mp3"},
-		{id: "acoustic", src: musicPath + "bensound-acousticbreeze.mp3"},
-		{id: "funny", src: musicPath + "bensound-funnysong.mp3"}
+		//{id: "acoustic", src: musicPath + "bensound-acousticbreeze.mp3"},
+		//{id: "funny", src: musicPath + "bensound-funnysong.mp3"}
 	];
 	
 	// Instantiate a music queue.

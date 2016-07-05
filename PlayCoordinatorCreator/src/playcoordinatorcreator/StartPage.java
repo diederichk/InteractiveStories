@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
@@ -45,7 +46,7 @@ public class StartPage extends javax.swing.JFrame {
     final JFileChooser fc = new JFileChooser(); //used for importing images
     public ArrayList<File> roles = new ArrayList<File>(); //list of roles, populated with image files
     public ArrayList<File> explanations = new ArrayList<File>(); //list of explanations for roles, populated with image files
-    public ArrayList people = new ArrayList(); //list of students
+    //public ArrayList people = new ArrayList(); //list of students
     
     public ArrayList<JLabel> labels = new ArrayList<JLabel>(); //list of images, used to undraw when a picture is deleted
     public ArrayList<JButton> buttons = new ArrayList<JButton>(); //list of buttons, used to undraw when a button is deleted
@@ -531,16 +532,14 @@ public class StartPage extends javax.swing.JFrame {
                 }
                 
                 //get list of students
-                ArrayList<String> people = new ArrayList<String>();
+                ArrayList<String> names = new ArrayList<String>();
                 String lines[] = jTextArea1.getText().split("\\n"); //split the string of students into an array
-                for(String line: lines) {
-                    people.add(line); //add contents of array into an arraylist
-                }
+                names.addAll(Arrays.asList(lines)); //add contents of array into an arraylist
                 
                 String peopleList = "var people = ["; //start the string for the list of people
-                for(int i = 0; i < people.size(); i++){ //for every person in the list
-                    peopleList = peopleList + "{name:\"" + people.get(i) + "\",role:-1}"; //add them to the output string
-                    if(i < people.size()-1) peopleList = peopleList +","; //if this person is not the last person add a comma
+                for(int i = 0; i < names.size(); i++){ //for every person in the list
+                    peopleList = peopleList + "{name:\"" + names.get(i) + "\",role:-1}"; //add them to the output string
+                    if(i < names.size()-1) peopleList = peopleList +","; //if this person is not the last person add a comma
                     else peopleList = peopleList + "];"; //if this person is the last person finish the string
                 }
                 try(BufferedReader br = new BufferedReader(new FileReader(infile))) { //open a file reader for the reference javascript file
