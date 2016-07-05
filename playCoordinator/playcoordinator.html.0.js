@@ -60,7 +60,7 @@ function init() {
 	createBackground();		
 	
 	var musicManifest = [
-/*		{id: "0", src: musicPath + "audio_00.mp3"},
+		{id: "0", src: musicPath + "audio_00.mp3"},
 		{id: "1", src: musicPath + "audio_01.mp3"},
 		{id: "2", src: musicPath + "audio_02.mp3"},
 		{id: "3", src: musicPath + "audio_03.mp3"},
@@ -80,7 +80,7 @@ function init() {
 		{id: "17", src: musicPath + "audio_17.mp3"},
 		{id: "18", src: musicPath + "audio_18.mp3"},
 		{id: "19", src: musicPath + "audio_19.mp3"},
-		{id: "20", src: musicPath + "audio_20.mp3"}, */
+		{id: "20", src: musicPath + "audio_20.mp3"},
 		{id: "game", src: musicPath + "M-GameBG.ogg"},
 		//{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
 		//{id: "happy", src: musicPath + "bensound-happiness.mp3"},
@@ -290,9 +290,12 @@ function roleClick(event){
     container.removeChild(roles[i]);
   }
   addCheckButton();
-  
   current_role = event.target.name;
   slide = current_role + 1;
+    
+  createjs.Sound.stop();
+  playSound(slide.toString());
+  
   bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 	// Adding to Container
 	container.addChildAt(bmp,1);
@@ -308,6 +311,10 @@ function prvClck(event){
     container.removeChild(checkShape);
     container.removeChild(checkArrow);
     addRoleButtons();
+    
+    createjs.Sound.stop();
+    playSound("0");
+  
   }
   resize();
 }
@@ -428,7 +435,7 @@ function drawResults(page){
 function loadComplete(evt) {
 		// Load completed.
 		//playSound("happy");
-		playSound("funny");
+		playSound("0");
 }
 
 function resize() {

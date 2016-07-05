@@ -4,7 +4,17 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
-var people = [{name:"Alice",role:-1},{name:"Bob",role:-1},{name:"Charley",role:-1},{name:"David",role:-1},{name:"Eric",role:-1},{name:"Florence",role:-1},{name:"Gabriela",role:-1},{name:"Henry",role:-1},{name:"TEST",role:-1}];
+var people = [
+  {name:"Alice",role:-1},
+	{name:"Bob",role:-1},
+	{name:"Charley",role:-1},
+	{name:"David",role:-1},
+	{name:"Eric",role:-1},
+	{name:"Florence",role:-1},
+	{name:"Gabriela",role:-1},
+	{name:"Henry",role:-1},
+	{name:"TEST",role:-1}
+]; // list of people, needs to be dynamic
 var results = []; // for displaying people and roles chosen
 
 var title; // text which indicates who needs to pick
@@ -14,7 +24,7 @@ var imgPath = "Story_Images_3/";
 var IMAGE_WIDTH = 2200;
 var IMAGE_HEIGHT = 1238;
 
-var NUM_ROLES = 12;
+var NUM_ROLES=12; // number of roles to chose from
 
 //variables for current slide,music playing, person picking role
 var song=0;
@@ -50,7 +60,7 @@ function init() {
 	createBackground();		
 	
 	var musicManifest = [
-/*		{id: "0", src: musicPath + "audio_00.mp3"},
+		{id: "0", src: musicPath + "audio_00.mp3"},
 		{id: "1", src: musicPath + "audio_01.mp3"},
 		{id: "2", src: musicPath + "audio_02.mp3"},
 		{id: "3", src: musicPath + "audio_03.mp3"},
@@ -70,7 +80,7 @@ function init() {
 		{id: "17", src: musicPath + "audio_17.mp3"},
 		{id: "18", src: musicPath + "audio_18.mp3"},
 		{id: "19", src: musicPath + "audio_19.mp3"},
-		{id: "20", src: musicPath + "audio_20.mp3"}, */
+		{id: "20", src: musicPath + "audio_20.mp3"},
 		{id: "game", src: musicPath + "M-GameBG.ogg"},
 		//{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
 		//{id: "happy", src: musicPath + "bensound-happiness.mp3"},
@@ -280,9 +290,12 @@ function roleClick(event){
     container.removeChild(roles[i]);
   }
   addCheckButton();
-  
   current_role = event.target.name;
   slide = current_role + 1;
+    
+  createjs.Sound.stop();
+  playSound(slide.toString());
+  
   bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 	// Adding to Container
 	container.addChildAt(bmp,1);
@@ -298,6 +311,10 @@ function prvClck(event){
     container.removeChild(checkShape);
     container.removeChild(checkArrow);
     addRoleButtons();
+    
+    createjs.Sound.stop();
+    playSound("0");
+  
   }
   resize();
 }
@@ -418,7 +435,7 @@ function drawResults(page){
 function loadComplete(evt) {
 		// Load completed.
 		//playSound("happy");
-		playSound("funny");
+		playSound("0");
 }
 
 function resize() {
