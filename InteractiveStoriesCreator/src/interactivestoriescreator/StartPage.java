@@ -1,5 +1,6 @@
 package interactivestoriescreator;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -8,16 +9,21 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,6 +45,7 @@ public class StartPage extends javax.swing.JFrame {
     
     public ArrayList<File> story = new ArrayList<File>();
     public ArrayList<JLabel> storyLabels = new ArrayList<JLabel>();
+    public ArrayList<JPanel> storyPanels = new ArrayList<JPanel>();
     public ArrayList<JButton> deleteButtons = new ArrayList<JButton>();
     
     public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>();
@@ -247,15 +254,22 @@ public class StartPage extends javax.swing.JFrame {
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder("Interactive Stories Setup"));
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(2000, 2000));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jPanel1MouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 609, Short.MAX_VALUE)
+            .addGap(0, 2000, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 611, Short.MAX_VALUE)
+            .addGap(0, 2000, Short.MAX_VALUE)
         );
 
         jScrollPane3.setViewportView(jPanel1);
@@ -265,7 +279,7 @@ public class StartPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1)
@@ -279,7 +293,7 @@ public class StartPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         pack();
@@ -347,8 +361,8 @@ public class StartPage extends javax.swing.JFrame {
         button.setText("added");
         story.add(pages.get(pageButtons.indexOf(e)));
         
-        GridBagConstraints c = new GridBagConstraints(); //used to position image
-        c.insets = new Insets(3,3,3,3); //specifies margins around image
+        //GridBagConstraints c = new GridBagConstraints(); //used to position image
+        //c.insets = new Insets(3,3,3,3); //specifies margins around image
         
         Image image = null;
         try {
@@ -360,24 +374,59 @@ public class StartPage extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(image); //make an image icon from the image
         
         if(story.size() == 1){
-            jPanel1.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
+            jPanel1.setLayout(null); // if this is the first image, set up the image layout
         }
 
+        JPanel picPanel = new JPanel();
+        picPanel.setBounds(30,storyLabels.size()*230+100,600,200);
+        picPanel.setLayout(null);
+        picPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        picPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jPanel1MouseReleased(evt);
+            }
+        });
+        handleDrag(picPanel);
+        
+        //cm.registerComponent(picPanel);
+        
         JLabel picLabel = new JLabel(); //make a new label
-        picLabel.setIcon(icon); //add the image icon to the lab
+        picLabel.setIcon(icon); //add the image icon to the lab    
+        picLabel.setBounds(15,15,300,169);
         
         storyLabels.add(picLabel); //add the new label to the list of labels
+        storyPanels.add(picPanel);
         //picLabel.setLocation(50, 50);
-        
-        c.gridx = 0;
-        c.gridy = (story.size()-1)*2;
-        jPanel1.add(picLabel,c); //draw image
+       
+        JButton deleteButton = new JButton(); //make a new button (for picking an explanation)
+        deleteButton.setText("Delete");
+        deleteButton.setBounds(505,160,80,30);
+        //c.gridx = 0;
+        //c.gridy = (story.size()-1)*2;
+        picPanel.add(deleteButton);
+        picPanel.add(picLabel);
+        jPanel1.add(picPanel); //draw image
         //cm.registerComponent(picLabel);
         //cm.setSnapSize(new Dimension(40, 40));
         
         jPanel1.revalidate(); //redraw and scale page
         jPanel1.repaint();
     }
+    
+    public void handleDrag(JPanel panel){
+        final JPanel p = panel;
+            panel.addMouseMotionListener(new MouseMotionAdapter() {
+
+                @Override
+                public void mouseDragged(MouseEvent me) {
+                    me.translatePoint(me.getComponent().getLocation().x, me.getComponent().getLocation().y);
+                    p.setLocation(me.getX(), me.getY());
+                }
+
+            });
+    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
@@ -456,6 +505,27 @@ public class StartPage extends javax.swing.JFrame {
             jPanel8.repaint(); //redraw the background of the page
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
+        for(int i=0; i<storyLabels.size(); i++){
+            JLabel highLabel = storyLabels.get(i);
+            JPanel highPanel = (JPanel) highLabel.getParent();
+            for(int j = i+1; j<storyLabels.size(); j++){
+                System.out.println("current:" + storyLabels.get(j).getParent().getY()+" highest: "+highPanel.getY());
+                if(storyLabels.get(j).getParent().getY() < highPanel.getY()){
+                    highLabel = storyLabels.get(j);
+                    highPanel = (JPanel) highLabel.getParent();
+                }
+            }
+            storyLabels.remove(highLabel);
+            storyLabels.add(i,highLabel);
+            
+            storyPanels.remove(highPanel);
+            storyPanels.add(i,highPanel);
+            //highPanel.setBounds(100,i*200+100,300,169);
+            highPanel.setLocation(30, i*230+100);
+        }
+    }//GEN-LAST:event_jPanel1MouseReleased
 
     /**
      * @param args the command line arguments
