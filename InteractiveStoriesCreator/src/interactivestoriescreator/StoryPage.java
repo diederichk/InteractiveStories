@@ -15,10 +15,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -29,11 +34,20 @@ import javax.swing.JPanel;
 public class StoryPage {
     JPanel panel;
     JLabel picture;
+    
+    File correctPicture = null; File wrongPicture1 = null; File wrongPicture2 = null;
+    
     File file;
+    File sound = null;
+    
     JPanel parentPanel;
     StartPage parentPage;
     
     boolean choicePage = false;
+    
+    final JFileChooser fc = new JFileChooser();
+    MediaPlayer mediaPlayer = null;
+    JFXPanel fxPanel = new JFXPanel();
     
     public StoryPage(File pic, JPanel parent, StartPage page){
         file = pic;
@@ -57,6 +71,7 @@ public class StoryPage {
         panel.setBounds(30,parentPage.storyPages.size()*230+100,600,200);
         panel.setLayout(null);
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        panel.setBackground(Color.gray);
         
         panel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -73,13 +88,128 @@ public class StoryPage {
                 deleteButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
             }
         });
+        
+        JButton correctButton = new JButton(); JButton wrongButton1 = new JButton(); JButton wrongButton2 = new JButton();
+        correctButton.setText("Set correct answer"); wrongButton1.setText("Set 1st wrong answer"); wrongButton2.setText("Set 2nd wrong answer");
+        correctButton.setBounds(445,20,140,30); wrongButton1.setBounds(445,50,140,30); wrongButton2.setBounds(445,80,140,30);
+        
+        correctButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(correctPicture == null){
+                    int returnVal = fc.showOpenDialog(parentPanel); //open file picker
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                        correctPicture = fc.getSelectedFile();
+                        correctButton.setText("Delete correct answer");
+                    }
+                }
+                else{
+                    correctPicture = null;
+                    correctButton.setText("Set correct answer");
+                }
+            }
+        });
+        
+        wrongButton1.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(wrongPicture1 == null){
+                    int returnVal = fc.showOpenDialog(parentPanel); //open file picker
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                        wrongPicture1 = fc.getSelectedFile();
+                        wrongButton1.setText("Delete wrong answer");
+                    }
+                }
+                else{
+                    wrongPicture1 = null;
+                    wrongButton1.setText("Set 1st wrong answer");
+                }
+            }
+        });
+                
+        wrongButton2.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(wrongPicture2 == null){
+                    int returnVal = fc.showOpenDialog(parentPanel); //open file picker
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                        wrongPicture2 = fc.getSelectedFile();
+                        wrongButton2.setText("Delete wrong answer");
+                    }
+                }
+                else{
+                    wrongPicture2 = null;
+                    wrongButton2.setText("Set 2nd wrong answer");
+                }
+            }
+        });
+        JCheckBox choiceButton = new JCheckBox(); //make a new button (for picking an explanation)
+        choiceButton.setText("Choice page");
+        choiceButton.setBounds(320,20,160,30);
+        choiceButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                if(!choicePage){
+                    panel.setBackground(Color.cyan);
+                    panel.add(correctButton); panel.add(wrongButton1); panel.add(wrongButton2);
+                    choicePage = true;
+                }
+                else{
+                    panel.remove(correctButton); panel.remove(wrongButton1); panel.remove(wrongButton2);
+                    panel.setBackground(Color.gray);
+                    choicePage = false;
+                }
+            }
+        });
+        JButton playButton = new JButton();
+        playButton.setText("Play");
+        playButton.setBounds(320,130,120,30);
+        playButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(mediaPlayer != null){
+                    mediaPlayer.stop();
+                    mediaPlayer = null;
+                }
+                else{
+                    if(sound != null){
+                        try {
+                            Media hit = new Media(sound.toURI().toURL().toString());
+                            mediaPlayer = new MediaPlayer(hit);
+                            mediaPlayer.play();
+                        } catch (Exception ex) {
+                            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                    }
+        });
+        
+        JButton soundButton = new JButton(); //make a new button (for picking an explanation)
+        soundButton.setText("Set narration");
+        soundButton.setBounds(320,160,120,30);
+        soundButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                if(sound == null){
+                    int returnVal = fc.showOpenDialog(parentPanel); //open file picker
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                        sound = fc.getSelectedFile();
+                        soundButton.setText("Delete narration");
+                        panel.add(playButton);
+                        panel.revalidate();
+                        panel.repaint();
+                    }
+                }
+                else{
+                    sound = null;
+                    soundButton.setText("Set narration");
+                    panel.remove(playButton);
+                    panel.repaint();
+                }
+            }
+        });
         //c.gridx = 0;
         //c.gridy = (story.size()-1)*2;
+        panel.add(soundButton);
+        panel.add(choiceButton);
         panel.add(deleteButton);
         panel.add(picture);
         parentPanel.add(panel); //draw image
-        //cm.registerComponent(picLabel);
-        //cm.setSnapSize(new Dimension(40, 40));
         
         parentPanel.revalidate(); //redraw and scale page
         parentPanel.repaint();
@@ -103,12 +233,7 @@ public class StoryPage {
         JPanel panel = (JPanel) button.getParent();
         parentPanel.remove(panel);
         parentPage.storyPages.remove(this);
-        
-        //int i = parentPage.storyPanels.indexOf(panel);
-        //parentPage.storyPanels.remove(i);
-        //parentPage.story.remove(i);
-        //parentPage.storyLabels.remove(i);
-        
+
         parentPanel.revalidate();
         parentPanel.repaint();
         parentPage.snapPages();
@@ -119,15 +244,6 @@ public class StoryPage {
     }
     
     public void setOrder(int i){
-        //parentPage.story.remove(file);
-        //parentPage.story.add(i,file);
-            
-        //parentPage.storyLabels.remove(picture);
-        //parentPage.storyLabels.add(i,picture);
-            
-        //parentPage.storyPanels.remove(panel);
-        //parentPage.storyPanels.add(i,panel);
-            //highPanel.setBounds(100,i*200+100,300,169);
         panel.setLocation(30, i*230+100);
         parentPanel.revalidate();
     }

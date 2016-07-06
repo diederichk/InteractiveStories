@@ -1,6 +1,5 @@
 package interactivestoriescreator;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -49,7 +47,6 @@ public class StartPage extends javax.swing.JFrame {
     public ArrayList<JButton> choiceButtons = new ArrayList<JButton>();
     
     final JFileChooser fc = new JFileChooser();
-    ComponentMover cm = new ComponentMover();
     
     public StartPage() {
         initComponents();
@@ -248,7 +245,7 @@ public class StartPage extends javax.swing.JFrame {
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder("Interactive Stories Setup"));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(2000, 2000));
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 10000));
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jPanel1MouseReleased(evt);
@@ -259,11 +256,11 @@ public class StartPage extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2000, Short.MAX_VALUE)
+            .addGap(0, 755, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2000, Short.MAX_VALUE)
+            .addGap(0, 10000, Short.MAX_VALUE)
         );
 
         jScrollPane3.setViewportView(jPanel1);
@@ -273,7 +270,7 @@ public class StartPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1)
@@ -354,7 +351,7 @@ public class StartPage extends javax.swing.JFrame {
         storyPages.add(new StoryPage(pages.get(pageButtons.indexOf(e)),jPanel1,this));
     }
     
-    public void handleDrag(JPanel panel){
+/*    public void handleDrag(JPanel panel){
         final JPanel p = panel;
             panel.addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -365,7 +362,7 @@ public class StartPage extends javax.swing.JFrame {
                 }
 
             });
-    }
+    } */
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
