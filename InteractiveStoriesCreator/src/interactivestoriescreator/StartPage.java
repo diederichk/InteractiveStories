@@ -1,15 +1,12 @@
 package interactivestoriescreator;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
@@ -40,13 +37,10 @@ public class StartPage extends javax.swing.JFrame {
     /**
      * Creates new form StartPage
      */
+    public ArrayList<StoryPage> storyPages = new ArrayList<StoryPage>();
+    
     public ArrayList<File> pages = new ArrayList<File>();
     public ArrayList<File> choices = new ArrayList<File>();
-    
-    public ArrayList<File> story = new ArrayList<File>();
-    public ArrayList<JLabel> storyLabels = new ArrayList<JLabel>();
-    public ArrayList<JPanel> storyPanels = new ArrayList<JPanel>();
-    public ArrayList<JButton> deleteButtons = new ArrayList<JButton>();
     
     public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>();
     public ArrayList<JButton> pageButtons = new ArrayList<JButton>();
@@ -333,7 +327,7 @@ public class StartPage extends javax.swing.JFrame {
 
             picButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
-                    System.out.println("add button clicked!");
+                    //System.out.println("add button clicked!");
                     pageButtonActionPerformed(e.getSource());
                     //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
                 }
@@ -356,62 +350,8 @@ public class StartPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void pageButtonActionPerformed(Object e){
-        for(JLabel l:storyLabels) System.out.println(l.getLocation());
         JButton button = pageButtons.get(pageButtons.indexOf(e)); //get the button that was clicked
-        button.setText("added");
-        story.add(pages.get(pageButtons.indexOf(e)));
-        
-        //GridBagConstraints c = new GridBagConstraints(); //used to position image
-        //c.insets = new Insets(3,3,3,3); //specifies margins around image
-        
-        Image image = null;
-        try {
-            image = ImageIO.read(pages.get(pageButtons.indexOf(e)));
-        } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        image = image.getScaledInstance(300, 169, Image.SCALE_DEFAULT); //scale the image down to fit in the window
-        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
-        
-        if(story.size() == 1){
-            jPanel1.setLayout(null); // if this is the first image, set up the image layout
-        }
-
-        JPanel picPanel = new JPanel();
-        picPanel.setBounds(30,storyLabels.size()*230+100,600,200);
-        picPanel.setLayout(null);
-        picPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        
-        picPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jPanel1MouseReleased(evt);
-            }
-        });
-        handleDrag(picPanel);
-        
-        //cm.registerComponent(picPanel);
-        
-        JLabel picLabel = new JLabel(); //make a new label
-        picLabel.setIcon(icon); //add the image icon to the lab    
-        picLabel.setBounds(15,15,300,169);
-        
-        storyLabels.add(picLabel); //add the new label to the list of labels
-        storyPanels.add(picPanel);
-        //picLabel.setLocation(50, 50);
-       
-        JButton deleteButton = new JButton(); //make a new button (for picking an explanation)
-        deleteButton.setText("Delete");
-        deleteButton.setBounds(505,160,80,30);
-        //c.gridx = 0;
-        //c.gridy = (story.size()-1)*2;
-        picPanel.add(deleteButton);
-        picPanel.add(picLabel);
-        jPanel1.add(picPanel); //draw image
-        //cm.registerComponent(picLabel);
-        //cm.setSnapSize(new Dimension(40, 40));
-        
-        jPanel1.revalidate(); //redraw and scale page
-        jPanel1.repaint();
+        storyPages.add(new StoryPage(pages.get(pageButtons.indexOf(e)),jPanel1,this));
     }
     
     public void handleDrag(JPanel panel){
@@ -506,24 +446,23 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    public void snapPages(){
+        jPanel1MouseReleased(null);
+    }
+    
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
-        for(int i=0; i<storyLabels.size(); i++){
-            JLabel highLabel = storyLabels.get(i);
-            JPanel highPanel = (JPanel) highLabel.getParent();
-            for(int j = i+1; j<storyLabels.size(); j++){
-                System.out.println("current:" + storyLabels.get(j).getParent().getY()+" highest: "+highPanel.getY());
-                if(storyLabels.get(j).getParent().getY() < highPanel.getY()){
-                    highLabel = storyLabels.get(j);
-                    highPanel = (JPanel) highLabel.getParent();
+        for(int i=0; i<storyPages.size(); i++){
+            StoryPage highest = storyPages.get(i);
+            for(int j = i+1; j<storyPages.size(); j++){
+                //System.out.println("current:" + storyPages.get(j).getY()+" highest: "+highest.getY());
+                if(storyPages.get(j).getY() < highest.getY()){
+                    highest = storyPages.get(j);
                 }
             }
-            storyLabels.remove(highLabel);
-            storyLabels.add(i,highLabel);
-            
-            storyPanels.remove(highPanel);
-            storyPanels.add(i,highPanel);
+            storyPages.remove(highest);
+            storyPages.add(i,highest);
+            highest.setOrder(i);
             //highPanel.setBounds(100,i*200+100,300,169);
-            highPanel.setLocation(30, i*230+100);
         }
     }//GEN-LAST:event_jPanel1MouseReleased
 
