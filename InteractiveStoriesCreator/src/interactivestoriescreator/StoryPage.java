@@ -37,7 +37,7 @@ public class StoryPage {
     
     File correctPicture = null; File wrongPicture1 = null; File wrongPicture2 = null;
     
-    File file;
+    File file = null;
     File sound = null;
     
     JPanel parentPanel;
@@ -142,7 +142,7 @@ public class StoryPage {
         });
         JCheckBox choiceButton = new JCheckBox(); //make a new button (for picking an explanation)
         choiceButton.setText("Choice page");
-        choiceButton.setBounds(320,20,160,30);
+        choiceButton.setBounds(320,20,120,30);
         choiceButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
                 if(!choicePage){
@@ -228,9 +228,6 @@ public class StoryPage {
             });
     }
     public void deleteButtonActionPerformed(Object e){
-        JButton button = (JButton) e;
-        
-        JPanel panel = (JPanel) button.getParent();
         parentPanel.remove(panel);
         parentPage.storyPages.remove(this);
 

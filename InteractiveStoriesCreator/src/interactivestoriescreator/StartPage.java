@@ -1,5 +1,6 @@
 package interactivestoriescreator;
 
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -9,7 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /*
@@ -39,6 +44,9 @@ public class StartPage extends javax.swing.JFrame {
     
     public ArrayList<File> pages = new ArrayList<File>();
     public ArrayList<File> choices = new ArrayList<File>();
+    
+    public File correctChoice = null; public File wrongChoice = null;
+    public JLabel correctPicture = null; public JLabel wrongPicture = null;
     
     public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>();
     public ArrayList<JButton> pageButtons = new ArrayList<JButton>();
@@ -73,11 +81,16 @@ public class StartPage extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
 
@@ -162,56 +175,101 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addContainerGap())
+        jButton7.setText("Delete");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Import");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 221, Short.MAX_VALUE)
         );
+
+        jLabel1.setText("Wrong answer display");
+
+        jLabel2.setText("Correct answer display");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 491, Short.MAX_VALUE)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel8);
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton8))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jButton6)
+                    .addComponent(jButton5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Choices", jPanel2);
+        jTabbedPane1.addTab("Settings", jPanel2);
 
         jButton1.setText("Exit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -221,13 +279,26 @@ public class StartPage extends javax.swing.JFrame {
         });
 
         jButton2.setText("Save");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("Story Name");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
@@ -239,7 +310,8 @@ public class StartPage extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -367,51 +439,23 @@ public class StartPage extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-            File file = fc.getSelectedFile();
-            choices.add(file); //add the file to roles
+            correctChoice = fc.getSelectedFile();
             Image image = null;
-            GridBagConstraints c = new GridBagConstraints(); //used to position image
-            c.insets = new Insets(3,3,3,3); //specifies margins around image
             try {
-                image = ImageIO.read(choices.get(choices.size()-1)); //convert file to image
+                image = ImageIO.read(correctChoice); //convert file to image
             } catch (IOException ex) {
                 Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
                 return;
             }
-            image = image.getScaledInstance(114, 180, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+            image = image.getScaledInstance(260, 147, Image.SCALE_DEFAULT); //scale the image down to fit in the window
             ImageIcon icon = new ImageIcon(image); //make an image icon from the image
 
-            if(choices.size() == 1){
-                jPanel8.setLayout(new GridBagLayout()); // if this is the first image, set up the image layout
-            }
+            correctPicture = new JLabel();
+            correctPicture.setIcon(icon);
 
-            JLabel picLabel = new JLabel(); //make a new label
-            picLabel.setIcon(icon); //add the image icon to the label
-            //picLabel.setText(pages.get(pages.size()-1).getName()); //set the label text to the filename of the image
-
-            JButton picButton = new JButton(); //make a new button (for picking an explanation)
-            picButton.setText("add");
-
-            picButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
-                    System.out.println("add button clicked!");
-                    //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
-                }
-            });
-
-            choiceLabels.add(picLabel); //add the new label to the list of labels
-            choiceButtons.add(picButton); //add the new button to the list of buttons
-
-            //set position of label in grid
-            c.gridx = 0;
-            c.gridy = (pages.size()-1)*2;
-            jPanel8.add(picLabel,c); //draw image
-
-            //set position of button in grid
-            c.gridx = 1;
-            jPanel8.add(picButton,c); //draw button
-
-            jPanel8.revalidate(); //redraw and scale page
+            jPanel3.setLayout(new FlowLayout()); // if this is the first image, set up the image layout
+            jPanel3.add(correctPicture);
+            jPanel3.revalidate();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -430,17 +474,12 @@ public class StartPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(choiceLabels.size() > 0){ //if there are roles
-            jPanel8.remove(choiceLabels.get(choiceLabels.size()-1)); //undraw the label (image) of the role
-            jPanel8.remove(choiceButtons.get(choiceButtons.size()-1)); //undraw the button of the role
-
-            choices.remove(choices.size()-1); //remove the role from the list of roles
-            choiceLabels.remove(choiceLabels.size()-1); //remove the corresponding label from the list of labels
-            choiceButtons.remove(choiceButtons.size()-1); //remove the corresponding button from the list of buttons
-
-            jPanel8.revalidate(); //redraw the page
-            jPanel8.repaint(); //redraw the background of the page
-        }
+        if(correctPicture != null) jPanel3.remove(correctPicture);
+        correctPicture = null;
+        correctChoice = null;
+        
+        jPanel3.revalidate();
+        jPanel3.repaint();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     public void snapPages(){
@@ -463,6 +502,151 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jPanel1MouseReleased
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        boolean soundsAdded = true;
+        for(int i = 0; i < storyPages.size(); i++){
+            if(storyPages.get(i).sound == null) soundsAdded = false;
+        }
+        
+        boolean choicesAdded = true;
+        for(int i = 0; i < storyPages.size(); i++){
+            if(storyPages.get(i).choicePage && (storyPages.get(i).correctPicture == null || storyPages.get(i).wrongPicture1 == null || storyPages.get(i).wrongPicture2 == null))
+                choicesAdded = false;
+        }
+        
+        if(!soundsAdded) JOptionPane.showMessageDialog(null, "Please set narration for all pages","pages missing narration",JOptionPane.WARNING_MESSAGE);
+        else if(!choicesAdded) JOptionPane.showMessageDialog(null, "Please set all options for choice pages","pages missing options",JOptionPane.WARNING_MESSAGE);
+        else if(correctChoice == null || wrongChoice == null) JOptionPane.showMessageDialog(null, "Please set wrong and correct pages","wrong/correct pages missing",JOptionPane.WARNING_MESSAGE);
+        else{ //if all the checks are passed
+            try {
+                String current = new java.io.File( "." ).getCanonicalPath(); //find working directory
+                
+                //make folders for pictures and audio
+                File folder = new File(current+"\\"+jTextField1.getText());
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
+                folder = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3");
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
+                folder = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio");
+                if (!folder.exists()) {
+                    if (folder.mkdir()) {
+                        System.out.println("Directory is created!");
+                    } else {
+                        System.out.println("Failed to create directory!");
+                    }
+                }
+                
+                //copy correct choice
+                File outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\highfive-01.png");
+                copyFile(correctChoice, outfile);
+                
+                //copy wrong choice
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\oops-01.png");
+                copyFile(wrongChoice, outfile);
+                
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\storystyle.css");
+                File infile = new File(current+"\\resources\\storystyle.css");
+                copyFile(infile,outfile);
+                
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-0"+i+".png");
+                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-"+i+".png");
+                    copyFile(storyPages.get(i).file,outfile);
+                    
+                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-0"+i+".mp3");
+                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-"+i+".mp3");
+                    copyFile(storyPages.get(i).sound,outfile);
+                    
+                    if(storyPages.get(i).choicePage){
+                        outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\correct-choice-"+i+".png");
+                        copyFile(storyPages.get(i).correctPicture,outfile);
+                        
+                        outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice1-"+i+".png");
+                        copyFile(storyPages.get(i).correctPicture,outfile);
+                        
+                        outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice2-"+i+".png");
+                        copyFile(storyPages.get(i).correctPicture,outfile);
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
+                JOptionPane.showMessageDialog(null, "Save failed"); //tell the user the save didn't work
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if(!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        }
+        finally {
+            if(source != null) {
+                source.close();
+            }
+            if(destination != null) {
+                destination.close();
+            }
+        }
+    }
+    
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if(wrongPicture != null) jPanel8.remove(wrongPicture);
+        wrongPicture = null;
+        wrongChoice = null;
+        
+        jPanel8.revalidate();
+        jPanel8.repaint();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+            wrongChoice = fc.getSelectedFile();
+            Image image = null;
+            try {
+                image = ImageIO.read(wrongChoice); //convert file to image
+            } catch (IOException ex) {
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+                return;
+            }
+            image = image.getScaledInstance(260, 147, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+
+            wrongPicture = new JLabel();
+            wrongPicture.setIcon(icon);
+
+            jPanel8.setLayout(new FlowLayout()); // if this is the first image, set up the image layout
+            jPanel8.add(wrongPicture);
+            jPanel8.revalidate();
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -474,7 +658,7 @@ public class StartPage extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -505,18 +689,23 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
