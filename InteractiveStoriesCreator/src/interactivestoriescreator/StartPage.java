@@ -9,12 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -561,6 +565,14 @@ public class StartPage extends javax.swing.JFrame {
                 File infile = new File(current+"\\resources\\storystyle.css");
                 copyFile(infile,outfile);
                 
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\left_arrow.png");
+                infile = new File(current+"\\resources\\left_arrow.png");
+                copyFile(infile,outfile);
+                
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\right_arrow.png");
+                infile = new File(current+"\\resources\\right_arrow.png");
+                copyFile(infile,outfile);
+                
                 for(int i = 0; i < storyPages.size(); i++){
                     if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-0"+i+".png");
                     else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-"+i+".png");
@@ -575,12 +587,88 @@ public class StartPage extends javax.swing.JFrame {
                         copyFile(storyPages.get(i).correctPicture,outfile);
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice1-"+i+".png");
-                        copyFile(storyPages.get(i).correctPicture,outfile);
+                        copyFile(storyPages.get(i).wrongPicture1,outfile);
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice2-"+i+".png");
-                        copyFile(storyPages.get(i).correctPicture,outfile);
+                        copyFile(storyPages.get(i).wrongPicture2,outfile);
                     }
                 }
+                
+                //import javascript file
+                infile = new File(current+"\\resources\\storymain_choices.html");
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\storymain_choices.html");
+                
+                if(!outfile.exists()) { //if the output location doesn't have a javascript file
+                    outfile.createNewFile(); //make a new javascript file
+                }
+                
+                //make story page import string
+                String storyImports = "";
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(i<10) storyImports = storyImports + "{id:\'"+i+"\', src: imgPath + \'story1-newratio-0"+i+".png\'},\n";
+                    else storyImports = storyImports + "{id:\'"+i+"\', src: imgPath + \'story1-newratio-"+i+".png\'},\n";
+                }
+                
+                //make sound import string
+                String soundImports = "";
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(i<10) soundImports = soundImports + "{id:\'"+i+"\', src: musicPath + \"audio_0"+i+".mp3\"},\n";
+                    else soundImports = soundImports + "{id:\'"+i+"\', src: musicPath + \"audio_"+i+".mp3\"},\n";
+                }
+                
+                //make choice import string
+                String choiceImports = "";
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(storyPages.get(i).choicePage){
+                        choiceImports = choiceImports + "{id:\'correct-choice-"+i+"\', src: imgPath + \'correct-choice-"+i+".png\'},\n";
+                        choiceImports = choiceImports + "{id:\'wrong-choice1-"+i+"\', src: imgPath + \'wrong-choice1-"+i+".png\'},\n";
+                        choiceImports = choiceImports + "{id:\'wrong-choice2-"+i+"\', src: imgPath + \'wrong-choice2-"+i+".png\'},\n";
+                    }
+                }
+                
+                //make choice button string
+                String choiceButtons = "";
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(storyPages.get(i).choicePage){
+                        choiceButtons = choiceButtons + "if (slide =="+i+") {"+
+                            "\n"+"addLeftImage(\"wrong-choice1-"+i+"\",300, 250, 0);"+
+                            "\n"+"addMiddleImage(\"wrong-choice2-"+i+"\",780, 250, 0);"+
+                            "\n"+"addRightImage(\"correct-choice-"+i+"\",1450, 250, 1);"+
+                            "\n"+"}"+"\n";
+                            
+                    }
+                }
+                
+                //make correct choice string
+                String correctClick = "";
+                for(int i = 0; i < storyPages.size(); i++){
+                    if(storyPages.get(i).choicePage){
+                        int j = i; while(storyPages.get(j).choicePage) j++;
+                        correctClick = correctClick + "if (slide =="+i+") {"+
+                        "\n"+"slide ="+(j-1)+";"+
+                        "\n"+"song ="+(j-1)+";"+
+                        "\n"+"nxtClck();"+
+                        "\n"+"}"+"\n";
+                    }
+                }
+                
+                try(BufferedReader br = new BufferedReader(new FileReader(infile))) { //open a file reader for the reference javascript file
+                    try(FileWriter fw = new FileWriter(outfile)){ //open a file writer for the new javasctipt file
+                        for(String line; (line = br.readLine()) != null; ) { //loop through the reference file by line
+                            if(line.contains("if (slide > 20)")) line = "if (slide > " + storyPages.size() + "){"; 
+                            if(line.contains("slide = 20;")) line = "slide = "+storyPages.size()+";"; 
+                            if(line.contains("if (song > 20)")) line = "if (song > " + storyPages.size() + "){";
+                            if(line.contains("song = 20;")) line = "song = "+storyPages.size()+";";
+                            if(line.contains("//ADD STORY IMPORTS HERE")) line = storyImports;
+                            if(line.contains("//ADD CHOICE IMPORTS HERE")) line = choiceImports;
+                            if(line.contains("//ADD CHOICE SLIDES HERE")) line = choiceButtons;
+                            if(line.contains("//ADD CORRECT ANSWERS HERE")) line = correctClick;
+                            if(line.contains("//ADD SOUND IMPORTS HERE")) line = soundImports;
+                            fw.write(line+"\n");
+                        }
+                    }
+                }
+                
             } catch (IOException ex) {
                 Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
                 JOptionPane.showMessageDialog(null, "Save failed"); //tell the user the save didn't work

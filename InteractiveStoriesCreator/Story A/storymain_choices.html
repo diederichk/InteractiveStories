@@ -88,7 +88,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		createBackground();		
 		
 		var musicManifest = [
-			//ADD SOUND IMPORTS HERE
+{id:'0', src: musicPath + "audio_00.mp3"},
+{id:'1', src: musicPath + "audio_01.mp3"},
+{id:'2', src: musicPath + "audio_02.mp3"},
+
 			{id: "game", src: musicPath + "M-GameBG.ogg"},
 			{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
 			{id: "happy", src: musicPath + "bensound-happiness.mp3"},
@@ -123,8 +126,14 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		
 		imgqueue.loadManifest([
-					//ADD STORY IMPORTS HERE
-					//ADD CHOICE IMPORTS HERE
+{id:'0', src: imgPath + 'story1-newratio-00.png'},
+{id:'1', src: imgPath + 'story1-newratio-01.png'},
+{id:'2', src: imgPath + 'story1-newratio-02.png'},
+
+{id:'correct-choice-1', src: imgPath + 'correct-choice-1.png'},
+{id:'wrong-choice1-1', src: imgPath + 'wrong-choice1-1.png'},
+{id:'wrong-choice2-1', src: imgPath + 'wrong-choice2-1.png'},
+
 					{id:'oops-01', src: imgPath + 'oops-01.png'},
 					{id:'oops-02', src: imgPath + 'oops-02.png'},
 					{id:'right', src: imgPath + 'right_arrow.png'},
@@ -301,14 +310,19 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Middle:	780x250px	660x850px
 		// Right:	1500x250px	450x850px
 		
-		//ADD CHOICE SLIDES HERE
+if (slide ==1) {
+addLeftImage("wrong-choice1-1",300, 250, 0);
+addMiddleImage("wrong-choice2-1",780, 250, 0);
+addRightImage("correct-choice-1",1500, 250, 1);
+}
+
 		
 		// Adding to Container
 		container.addChildAt(bmp,1);
 		
 		// Run thru images
-		if (slide > 20) { //Stop counter from going past end of slide ids
-			slide = 20;
+if (slide > 3){
+slide = 3;
 			
 			/*BUG*/
 			// Remove Event Listener when story is complete
@@ -321,8 +335,8 @@ https://github.com/CreateJS/EaselJS/issues/343
 				
 		// Run thru songs
 		// For use with audio for each slide
-		if (song > 20) { //Stop counter from going past end of song ids
-			song = 20;
+if (song > 3){
+song = 3;
 		}
 		playSound(song.toString());
 		
@@ -410,7 +424,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 	 */
 	function correctChoice(event) {
 		
-		//ADD CORRECT ANSWERS HERE
+if (slide ==1) {
+slide =2;
+song =2;
+nxtClck();
+}
+
 
 	}
 	
