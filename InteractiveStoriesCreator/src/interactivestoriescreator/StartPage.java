@@ -575,9 +575,9 @@ public class StartPage extends javax.swing.JFrame {
                 for(int i = 0; i < storyPages.size(); i++){
                     if(storyPages.get(i).choicePage){
                         choiceButtons = choiceButtons + "if (slide =="+i+") {"+
-                            "\n"+"addLeftImage(\"wrong-choice1-"+i+"\",300, 250, 0);"+
-                            "\n"+"addMiddleImage(\"wrong-choice2-"+i+"\",780, 250, 0);"+
-                            "\n"+"addRightImage(\"correct-choice-"+i+"\",1450, 250, 1);"+
+                            "\n"+"addLeftImage(\"wrong-choice1-"+i+"\",200, 230, 0);"+
+                            "\n"+"addMiddleImage(\"wrong-choice2-"+i+"\",850, 230, 0);"+
+                            "\n"+"addRightImage(\"correct-choice-"+i+"\",1500, 230, 1);"+
                             "\n"+"}"+"\n";
                             
                     }

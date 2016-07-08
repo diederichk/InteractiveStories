@@ -266,7 +266,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		//For testing
 		soundInstance = createjs.Sound.play(name);
-		//soundInstance.addEventListener("complete", nxtClck);
+		soundInstance.addEventListener("complete", nxtClck);
 		//return createjs.Sound.play(name);
 	}
 	
@@ -354,7 +354,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 		
-		//ADD CHOICES HERE		
+		//ADD CHOICE SLIDES HERE		
 		
 		// Adding to Container
 		container.addChildAt(bmp,1);
