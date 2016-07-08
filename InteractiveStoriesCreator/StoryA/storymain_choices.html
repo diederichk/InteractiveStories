@@ -88,9 +88,11 @@ https://github.com/CreateJS/EaselJS/issues/343
 		createBackground();		
 		
 		var musicManifest = [
-{id:'0', src: musicPath + "audio_00.mp3"},
-{id:'1', src: musicPath + "audio_01.mp3"},
-{id:'2', src: musicPath + "audio_02.mp3"},
+{id:'0', src: musicPath + "audio-00.mp3"},
+{id:'1', src: musicPath + "audio-01.mp3"},
+{id:'2', src: musicPath + "audio-02.mp3"},
+{id:'3', src: musicPath + "audio-03.mp3"},
+{id:'4', src: musicPath + "audio-04.mp3"},
 
 			{id: "game", src: musicPath + "M-GameBG.ogg"},
 			{id: "higher", src: musicPath + "bensound-goinghigher.mp3"},
@@ -129,10 +131,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 {id:'0', src: imgPath + 'story1-newratio-00.png'},
 {id:'1', src: imgPath + 'story1-newratio-01.png'},
 {id:'2', src: imgPath + 'story1-newratio-02.png'},
+{id:'3', src: imgPath + 'story1-newratio-03.png'},
+{id:'4', src: imgPath + 'story1-newratio-04.png'},
 
-{id:'correct-choice-1', src: imgPath + 'correct-choice-1.png'},
-{id:'wrong-choice1-1', src: imgPath + 'wrong-choice1-1.png'},
-{id:'wrong-choice2-1', src: imgPath + 'wrong-choice2-1.png'},
+{id:'correct-choice-2', src: imgPath + 'correct-choice-2.png'},
+{id:'wrong-choice1-2', src: imgPath + 'wrong-choice1-2.png'},
+{id:'wrong-choice2-2', src: imgPath + 'wrong-choice2-2.png'},
 
 					{id:'oops-01', src: imgPath + 'oops-01.png'},
 					{id:'oops-02', src: imgPath + 'oops-02.png'},
@@ -275,7 +279,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		//For testing
 		soundInstance = createjs.Sound.play(name);
-		soundInstance.addEventListener("complete", nxtClck);
+		//soundInstance.addEventListener("complete", nxtClck);
 		//return createjs.Sound.play(name);
 	}
 	
@@ -310,10 +314,10 @@ https://github.com/CreateJS/EaselJS/issues/343
 		// Middle:	780x250px	660x850px
 		// Right:	1500x250px	450x850px
 		
-if (slide ==1) {
-addLeftImage("wrong-choice1-1",300, 250, 0);
-addMiddleImage("wrong-choice2-1",780, 250, 0);
-addRightImage("correct-choice-1",1500, 250, 1);
+if (slide ==2) {
+addLeftImage("wrong-choice1-2",300, 250, 0);
+addMiddleImage("wrong-choice2-2",780, 250, 0);
+addRightImage("correct-choice-2",1450, 250, 1);
 }
 
 		
@@ -321,8 +325,8 @@ addRightImage("correct-choice-1",1500, 250, 1);
 		container.addChildAt(bmp,1);
 		
 		// Run thru images
-if (slide > 3){
-slide = 3;
+if (slide > 5){
+slide = 5;
 			
 			/*BUG*/
 			// Remove Event Listener when story is complete
@@ -335,8 +339,8 @@ slide = 3;
 				
 		// Run thru songs
 		// For use with audio for each slide
-if (song > 3){
-song = 3;
+if (song > 5){
+song = 5;
 		}
 		playSound(song.toString());
 		
@@ -424,7 +428,7 @@ song = 3;
 	 */
 	function correctChoice(event) {
 		
-if (slide ==1) {
+if (slide ==2) {
 slide =2;
 song =2;
 nxtClck();

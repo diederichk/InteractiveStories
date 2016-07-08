@@ -711,12 +711,12 @@ public class StartPage extends javax.swing.JFrame {
             int returnVal = fc.showOpenDialog(jPanel1); //open file picker
             if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
                 backMusic = fc.getSelectedFile();
-                jButton7.setText("Delete background music");
+                jButton5.setText("Delete background music");
             }
         }
         else{
             backMusic = null;
-            jButton7.setText("Import background music");
+            jButton5.setText("Import background music");
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
