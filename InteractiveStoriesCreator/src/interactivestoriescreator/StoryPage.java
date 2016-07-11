@@ -45,6 +45,9 @@ public class StoryPage {
     
     boolean choicePage = false;
     
+    JButton soundButton; JCheckBox choiceButton; JButton playButton;
+    JButton correctButton; JButton wrongButton1; JButton wrongButton2;
+    
     final JFileChooser fc = new JFileChooser();
     MediaPlayer mediaPlayer = null;
     JFXPanel fxPanel = new JFXPanel();
@@ -89,7 +92,7 @@ public class StoryPage {
             }
         });
         
-        JButton correctButton = new JButton(); JButton wrongButton1 = new JButton(); JButton wrongButton2 = new JButton();
+        correctButton = new JButton(); wrongButton1 = new JButton(); wrongButton2 = new JButton();
         correctButton.setText("Set correct answer"); wrongButton1.setText("Set 1st wrong answer"); wrongButton2.setText("Set 2nd wrong answer");
         correctButton.setBounds(445,20,140,30); wrongButton1.setBounds(445,50,140,30); wrongButton2.setBounds(445,80,140,30);
         
@@ -140,24 +143,17 @@ public class StoryPage {
                 }
             }
         });
-        JCheckBox choiceButton = new JCheckBox(); //make a new button (for picking an explanation)
+        
+        choiceButton = new JCheckBox(); //make a new button (for picking an explanation)
         choiceButton.setText("Choice page");
         choiceButton.setBounds(320,20,120,30);
         choiceButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
-                if(!choicePage){
-                    panel.setBackground(Color.cyan);
-                    panel.add(correctButton); panel.add(wrongButton1); panel.add(wrongButton2);
-                    choicePage = true;
-                }
-                else{
-                    panel.remove(correctButton); panel.remove(wrongButton1); panel.remove(wrongButton2);
-                    panel.setBackground(Color.gray);
-                    choicePage = false;
-                }
+                choiceButtonActionPerformed(e);
             }
         });
-        JButton playButton = new JButton();
+        
+        playButton = new JButton();
         playButton.setText("Play");
         playButton.setBounds(320,130,120,30);
         playButton.addActionListener(new ActionListener(){
@@ -180,7 +176,7 @@ public class StoryPage {
                     }
         });
         
-        JButton soundButton = new JButton(); //make a new button (for picking an explanation)
+        soundButton = new JButton(); //make a new button (for picking an explanation)
         soundButton.setText("Set narration");
         soundButton.setBounds(320,160,120,30);
         soundButton.addActionListener(new ActionListener(){
@@ -227,6 +223,20 @@ public class StoryPage {
 
             });
     }
+    
+    public void choiceButtonActionPerformed(ActionEvent e){
+        if(!choicePage){
+            panel.setBackground(Color.cyan);
+            panel.add(correctButton); panel.add(wrongButton1); panel.add(wrongButton2);
+            choicePage = true;
+        }
+        else{
+            panel.remove(correctButton); panel.remove(wrongButton1); panel.remove(wrongButton2);
+            panel.setBackground(Color.gray);
+            choicePage = false;
+        }
+    }
+    
     public void deleteButtonActionPerformed(Object e){
         parentPanel.remove(panel);
         parentPage.storyPages.remove(this);

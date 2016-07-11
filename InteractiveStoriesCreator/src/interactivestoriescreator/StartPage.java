@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,6 +100,7 @@ public class StartPage extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
+        jButton9 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
 
@@ -143,7 +145,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 288, Short.MAX_VALUE)
+            .addGap(0, 304, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +189,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 306, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +223,7 @@ public class StartPage extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(18, 44, Short.MAX_VALUE)
+                        .addGap(18, 60, Short.MAX_VALUE)
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
@@ -287,17 +289,26 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
+        jButton9.setText("Load");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addComponent(jTextField1)
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addComponent(jButton1))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,7 +317,8 @@ public class StartPage extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton9))
                 .addContainerGap())
         );
 
@@ -323,7 +335,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 745, Short.MAX_VALUE)
+            .addGap(0, 729, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,7 +349,7 @@ public class StartPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1)
@@ -464,10 +476,11 @@ public class StartPage extends javax.swing.JFrame {
                 choicesAdded = false;
         }
         
-        if(!soundsAdded) JOptionPane.showMessageDialog(null, "Please set narration for all pages","pages missing narration",JOptionPane.WARNING_MESSAGE);
-        else if(!choicesAdded) JOptionPane.showMessageDialog(null, "Please set all options for choice pages","pages missing options",JOptionPane.WARNING_MESSAGE);
+        //if(!soundsAdded) JOptionPane.showMessageDialog(null, "Please set narration for all pages","pages missing narration",JOptionPane.WARNING_MESSAGE);
+        if(!choicesAdded) JOptionPane.showMessageDialog(null, "Please set all options for choice pages","pages missing options",JOptionPane.WARNING_MESSAGE);
         else{ //if all the checks are passed
             try {
+                if(!soundsAdded) JOptionPane.showMessageDialog(null, "Some pages are missing narration","pages missing narration",JOptionPane.WARNING_MESSAGE);
                 String current = new java.io.File( "." ).getCanonicalPath(); //find working directory
                 
                 //make folders for pictures and audio
@@ -514,7 +527,7 @@ public class StartPage extends javax.swing.JFrame {
                 infile = new File(current+"\\resources\\right_arrow.png");
                 copyFile(infile,outfile);
                 
-                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio-oops.mp3");
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_oops.mp3");
                 copyFile(wrongSound,outfile);
                 
                 for(int i = 0; i < storyPages.size(); i++){
@@ -524,7 +537,8 @@ public class StartPage extends javax.swing.JFrame {
                     
                     if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-0"+i+".mp3");
                     else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-"+i+".mp3");
-                    copyFile(storyPages.get(i).sound,outfile);
+                    if(storyPages.get(i).sound != null) copyFile(storyPages.get(i).sound,outfile);
+                    else copyFile(new File(current+"\\resources\\1min.mp3"),outfile);
                     
                     if(storyPages.get(i).choicePage){
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\correct-choice-"+i+".png");
@@ -613,6 +627,8 @@ public class StartPage extends javax.swing.JFrame {
                     }
                 }
                 
+                JOptionPane.showMessageDialog(null, "Save succesful");
+                
             } catch (IOException ex) {
                 Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
                 JOptionPane.showMessageDialog(null, "Save failed"); //tell the user the save didn't work
@@ -656,25 +672,29 @@ public class StartPage extends javax.swing.JFrame {
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
             wrongChoice = fc.getSelectedFile();
-            Image image = null;
-            try {
-                image = ImageIO.read(wrongChoice); //convert file to image
-            } catch (IOException ex) {
-                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
-                return;
-            }
-            image = image.getScaledInstance(260, 147, Image.SCALE_DEFAULT); //scale the image down to fit in the window
-            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
-
-            wrongPicture = new JLabel();
-            wrongPicture.setIcon(icon);
-
-            jPanel8.setLayout(new FlowLayout()); // if this is the first image, set up the image layout
-            jPanel8.add(wrongPicture);
-            jPanel8.revalidate();
+            drawWrongChoice();
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void drawWrongChoice(){
+        Image image = null;
+        try {
+            image = ImageIO.read(wrongChoice); //convert file to image
+        } catch (IOException ex) {
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+            return;
+        }
+        image = image.getScaledInstance(260, 147, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+
+        wrongPicture = new JLabel();
+        wrongPicture.setIcon(icon);
+
+        jPanel8.setLayout(new FlowLayout()); // if this is the first image, set up the image layout
+        jPanel8.add(wrongPicture);
+        jPanel8.revalidate();
+    }
+    
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -684,12 +704,12 @@ public class StartPage extends javax.swing.JFrame {
             int returnVal = fc.showOpenDialog(jPanel1); //open file picker
             if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
                 wrongSound = fc.getSelectedFile();
-                jButton7.setText("Delete");
+                jButton5.setText("Delete");
             }
         }
         else{
             wrongSound = null;
-            jButton7.setText("Import");
+            jButton5.setText("Import");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -710,6 +730,56 @@ public class StartPage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
+            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+                String directory = fc.getSelectedFile().toString();
+                int i = 0;
+                File f = new File(directory+"\\Story_Images_3\\story1-newratio-00.png");
+                if(!f.exists()){
+                    JOptionPane.showMessageDialog(null, "This folder doesn't contain a story","wrong folder",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                
+                wrongSound = new File(directory+"\\Story_Audio\\audio_oops.mp3");
+                jButton5.setText("Delete");
+                
+                wrongChoice = new File(directory+"\\Story_Images_3\\oops-01.png");
+                drawWrongChoice();
+                
+                while(f.exists()){
+                    StoryPage page = new StoryPage(f,jPanel1,this);
+                    
+                    if(i<10) page.sound = new File(directory+"\\Story_Audio\\audio-0"+i+".mp3");
+                    else page.sound = new File(directory+"\\Story_Audio\\audio-"+i+".mp3");
+                    page.soundButton.setText("Delete narration");
+                    page.panel.add(page.playButton);
+                    
+                    File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png");
+                    if(correctChoice.exists()){
+                        page.choiceButton.setSelected(true);
+                        System.out.println("found choice page!");
+                        page.choiceButtonActionPerformed(null);
+                        
+                        page.correctPicture = correctChoice;
+                        page.correctButton.setText("Delete correct answer");
+                        
+                        page.wrongPicture1 = new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png");
+                        page.wrongButton1.setText("Delete wrong answer");
+                        
+                        page.wrongPicture2 = new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png");
+                        page.wrongButton2.setText("Delete wrong answer");
+                    }
+                    
+                    storyPages.add(page);
+                    i++;
+                    if(i<10) f = new File(directory+"\\Story_Images_3\\story1-newratio-0"+i+".png");
+                    else f = new File(directory+"\\Story_Images_3\\story1-newratio-"+i+".png");
+                }
+            }
+    }//GEN-LAST:event_jButton9ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -755,6 +825,7 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
