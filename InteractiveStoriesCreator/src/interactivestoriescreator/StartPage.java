@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,10 +14,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
@@ -31,7 +27,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -101,6 +96,7 @@ public class StartPage extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
 
@@ -145,7 +141,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 304, Short.MAX_VALUE)
+            .addGap(0, 396, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,12 +155,12 @@ public class StartPage extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -172,6 +168,15 @@ public class StartPage extends javax.swing.JFrame {
         jTabbedPane1.addTab("Pages", jPanel4);
 
         jButton7.setText("Delete");
+        File delete = new File("resources\\delete.png");
+        Image deleteImage = null;
+        try{
+            deleteImage = ImageIO.read(delete);
+            deleteImage = deleteImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon deleteIcon = new ImageIcon(deleteImage);
+        jButton7.setIcon(deleteIcon);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -179,6 +184,15 @@ public class StartPage extends javax.swing.JFrame {
         });
 
         jButton8.setText("Import");
+        File importFile2 = new File("resources\\import.png");
+        Image importImage2 = null;
+        try{
+            importImage2 = ImageIO.read(importFile2);
+            importImage2 = importImage2.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon importIcon2 = new ImageIcon(importImage2);
+        jButton8.setIcon(importIcon2);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -189,7 +203,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 306, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,6 +213,15 @@ public class StartPage extends javax.swing.JFrame {
         jLabel2.setText("Wrong answer sound");
 
         jButton5.setText("Import");
+        File importFile = new File("resources\\import.png");
+        Image importImage = null;
+        try{
+            importImage = ImageIO.read(importFile);
+            importImage = importImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon importIcon = new ImageIcon(importImage);
+        jButton5.setIcon(importIcon);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -206,6 +229,15 @@ public class StartPage extends javax.swing.JFrame {
         });
 
         jButton6.setText("Play");
+        File play = new File("resources\\play.png");
+        Image playImage = null;
+        try{
+            playImage = ImageIO.read(play);
+            playImage = playImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon playIcon = new ImageIcon(playImage);
+        jButton6.setIcon(playIcon);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -223,7 +255,7 @@ public class StartPage extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(18, 60, Short.MAX_VALUE)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
@@ -239,7 +271,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(275, Short.MAX_VALUE)
+                .addContainerGap(258, Short.MAX_VALUE)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -268,14 +300,30 @@ public class StartPage extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Settings", jPanel2);
 
-        jButton1.setText("Exit");
+        File exitFile = new File("resources\\exit.png");
+        Image exitImage = null;
+        try{
+            exitImage = ImageIO.read(exitFile);
+            exitImage = exitImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon exitIcon = new ImageIcon(exitImage);
+        jButton1.setIcon(exitIcon);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Save");
+        File saveFile = new File("resources\\save.png");
+        Image saveImage = null;
+        try{
+            saveImage = ImageIO.read(saveFile);
+            saveImage = saveImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon saveIcon = new ImageIcon(saveImage);
+        jButton2.setIcon(saveIcon);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -289,7 +337,15 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
-        jButton9.setText("Load");
+        File importFile3 = new File("resources\\import.png");
+        Image importImage3 = null;
+        try{
+            importImage3 = ImageIO.read(importFile3);
+            importImage3 = importImage3.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+        }
+        catch(IOException ex){}
+        ImageIcon importIcon3 = new ImageIcon(importImage3);
+        jButton9.setIcon(importIcon3);
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -301,19 +357,25 @@ public class StartPage extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addGap(34, 34, 34))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -335,7 +397,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 729, Short.MAX_VALUE)
+            .addGap(0, 713, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,7 +411,7 @@ public class StartPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1)
@@ -742,13 +804,13 @@ public class StartPage extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "This folder doesn't contain a story","wrong folder",JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                
                 wrongSound = new File(directory+"\\Story_Audio\\audio_oops.mp3");
                 jButton5.setText("Delete");
                 
                 wrongChoice = new File(directory+"\\Story_Images_3\\oops-01.png");
                 drawWrongChoice();
-                
+                System.out.println("wrong choice imported");
+
                 while(f.exists()){
                     StoryPage page = new StoryPage(f,jPanel1,this);
                     
@@ -760,7 +822,6 @@ public class StartPage extends javax.swing.JFrame {
                     File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png");
                     if(correctChoice.exists()){
                         page.choiceButton.setSelected(true);
-                        System.out.println("found choice page!");
                         page.choiceButtonActionPerformed(null);
                         
                         page.correctPicture = correctChoice;
@@ -777,7 +838,10 @@ public class StartPage extends javax.swing.JFrame {
                     i++;
                     if(i<10) f = new File(directory+"\\Story_Images_3\\story1-newratio-0"+i+".png");
                     else f = new File(directory+"\\Story_Images_3\\story1-newratio-"+i+".png");
+                    
+                    System.out.println("page "+i+" imported");
                 }
+                JOptionPane.showMessageDialog(null, "Import succesful");
             }
     }//GEN-LAST:event_jButton9ActionPerformed
     
@@ -836,6 +900,7 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSlider jSlider1;
