@@ -5,17 +5,92 @@
  */
 package interactivestoriescreator;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author alexa
  */
 public class EditorPage extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EditorPage
-     */
-    public EditorPage() {
+    int currentIndex; ArrayList<StoryPage> pages;
+    StartPage parentPage;
+    
+    ArrayList<Image> componentImages = new ArrayList<Image>();
+    ArrayList<JLabel> componentLabels = new ArrayList<JLabel>();
+    ArrayList<JLabel> addedComponentLabels = new ArrayList<JLabel>();
+    ArrayList<JButton> componentButtons = new ArrayList<JButton>();
+    
+    JLabel picture;
+    
+    JLabel currentComponentLabel = null;
+    Image currentComponent = null;
+    
+    JFileChooser fc = new JFileChooser();
+    
+    JPanel optionPanel = null;
+    
+    public EditorPage(ArrayList<StoryPage> storyPages, int i, StartPage parent) {
         initComponents();
+        
+        pages = storyPages;
+        currentIndex = i;
+        
+        parentPage = parent;
+        jPanel2.setLayout(new GridBagLayout());
+        for(File file:parentPage.components){
+            addImage(file);
+        }
+        
+        jLayeredPane1.setLayout(null);
+        jLayeredPane1.setBounds(10, 10, 450, 800);
+        jLayeredPane1.setBorder(BorderFactory.createLineBorder(Color.black));
+        jLayeredPane1.setBackground(Color.gray);
+        drawBackground(currentIndex);
+        for(JLabel component:pages.get(currentIndex).componentLabels){
+                jLayeredPane1.add(component);
+        }
+    }
+    
+    private void drawBackground(int index){
+        Image image = null;
+        try {
+            image = ImageIO.read(pages.get(index).file);
+        } catch (IOException ex) {
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        image = image.getScaledInstance(800, 450, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+        
+        picture = new JLabel(); //make a new label
+        picture.setIcon(icon); //add the image icon to the lab    
+        picture.setBounds(0,45,800,450);
+        jLayeredPane1.add(picture,JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.revalidate();
+        jLayeredPane1.repaint();
     }
 
     /**
@@ -27,92 +102,228 @@ public class EditorPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jButton1.setText("Next");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("jButton1");
+        jButton2.setText("Previous");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        jButton3.setText("Outline");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("jButton3");
-
-        jCheckBox1.setText("jCheckBox1");
+        jCheckBox1.setText("Choice page");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 154, Short.MAX_VALUE)
+            .addGap(0, 272, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel2);
+
+        jButton4.setText("Save");
+
+        jButton5.setText("Import");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 592, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton2)
+                        .addGap(672, 672, 672)
+                        .addComponent(jButton1))
+                    .addComponent(jLayeredPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jCheckBox1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 51, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1))
+                    .addComponent(jLayeredPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(currentIndex < pages.size()-1){
+            jLayeredPane1.remove(picture);
+            
+            for(JLabel component:pages.get(currentIndex).componentLabels){
+                jLayeredPane1.remove(component);
+            }
+                        
+            currentIndex ++;
+            drawBackground(currentIndex);
+            
+            for(JLabel component:pages.get(currentIndex).componentLabels){
+                jLayeredPane1.add(component);
+            }
+
+            jLayeredPane1.revalidate();
+            jLayeredPane1.repaint();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(currentIndex > 0){
+            jLayeredPane1.remove(picture);
+            
+            for(JLabel component:pages.get(currentIndex).componentLabels){
+                jLayeredPane1.remove(component);
+            }
+                        
+            currentIndex --;
+            drawBackground(currentIndex);
+            
+            for(JLabel component:pages.get(currentIndex).componentLabels){
+                jLayeredPane1.add(component);
+            }
+
+            jLayeredPane1.revalidate();
+            jLayeredPane1.repaint();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int returnVal = fc.showOpenDialog(jLayeredPane1); //open file picker
+        if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
+            File file = fc.getSelectedFile();
+            parentPage.components.add(file); //add the file to roles
+            addImage(file);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void addImage(File file){
+        System.out.println("adding Image!");
+        System.out.println(file);
+        Image image = null;
+        GridBagConstraints c = new GridBagConstraints(); //used to position image
+        c.insets = new Insets(3,3,3,3); //specifies margins around image
+        try {
+            image = ImageIO.read(file); //convert file to image
+        } catch (IOException ex) {
+            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+            return;
+        }
+        componentImages.add(image);
+        image = image.getScaledInstance(200, 113, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+
+        JLabel picLabel = new JLabel(); //make a new label
+        picLabel.setIcon(icon); //add the image icon to the label
+        //picLabel.setText(pages.get(pages.size()-1).getName()); //set the label text to the filename of the image
+
+        JButton picButton = new JButton(); //make a new button (for picking an explanation)
+        picButton.setText("add");
+
+        picButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                //System.out.println("add button clicked!");
+                addButtonActionPerformed(e.getSource());
+                //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
+            }
+        });
+
+        componentLabels.add(picLabel); //add the new label to the list of labels
+        componentButtons.add(picButton); //add the new button to the list of buttons
+
+        //set position of label in grid
+        c.gridx = 0;
+        c.gridy = (componentImages.size()-1)*2;
+        jPanel2.add(picLabel,c); //draw image
+
+        //set position of button in grid
+        c.gridx = 1;
+        jPanel2.add(picButton,c); //draw button
+
+        jPanel2.revalidate(); //redraw and scale page
+    }
+    
+    private void addButtonActionPerformed(Object e){
+        int i = componentButtons.indexOf(e);
+        Image image = componentImages.get(i);
+        drawSizedImage(image,10);
+    }
     /**
      * @param args the command line arguments
      */
@@ -141,19 +352,94 @@ public class EditorPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditorPage().setVisible(true);
+        //java.awt.EventQueue.invokeLater(new Runnable() {
+        //    public void run() {
+        //        new EditorPage().setVisible(true);
+        //    }
+        //});
+    }
+    
+    public void handleOptionClick(JLabel label){
+        final JLabel p = label;
+        label.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseClicked(MouseEvent me){
+                currentComponentLabel = label;
+                System.out.println("making option panel");
+                if(optionPanel != null) jLayeredPane1.remove(optionPanel);
+                optionPanel = new JPanel();
+                optionPanel.setBounds(label.getX(),label.getY()-50,160,50);
+                optionPanel.setBackground(Color.gray);
+                optionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+                jLayeredPane1.add(optionPanel,JLayeredPane.POPUP_LAYER);
+                
+                optionPanel.setLayout(null);
+                
+                JButton deleteButton = new JButton();
+                deleteButton.setText("del");
+                deleteButton.setBounds(5, 5, 50, 40);
+                optionPanel.add(deleteButton);
+                
+                JButton plusButton = new JButton();
+                plusButton.setText(" + ");
+                plusButton.setBounds(55,5,50,40);
+                optionPanel.add(plusButton);
+                
+                JButton minusButton = new JButton();
+                minusButton.setText(" - ");
+                minusButton.setBounds(105,5,50,40);
+                optionPanel.add(minusButton);
+                
+                jLayeredPane1.revalidate();
+                jLayeredPane1.repaint();
             }
         });
+    }
+    
+    public void handleDrag(JLabel label){
+        final JLabel p = label;
+        label.addMouseMotionListener(new MouseMotionAdapter() {
+
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                if(optionPanel != null) jLayeredPane1.remove(optionPanel);
+                optionPanel = null;
+                jLayeredPane1.repaint();
+                me.translatePoint(me.getComponent().getLocation().x, me.getComponent().getLocation().y);
+                p.setLocation(me.getX(), me.getY());
+            }
+
+        });
+    }
+    
+    public void drawSizedImage(Image image, int scale){
+        Image scaledImage = image.getScaledInstance(image.getWidth(null)/scale, image.getHeight(null)/scale, Image.SCALE_DEFAULT);
+        ImageIcon icon = new ImageIcon(scaledImage); //make an image icon from the image
+        
+        JLabel picLabel = new JLabel(); //make a new label
+        picLabel.setIcon(icon); //add the image icon to the label
+        
+        System.out.println(image.getWidth(null)+","+image.getHeight(null));
+        picLabel.setBounds(10, 10, scaledImage.getWidth(null), scaledImage.getHeight(null));
+       
+        jLayeredPane1.add(picLabel,JLayeredPane.PALETTE_LAYER);
+        
+        jLayeredPane1.revalidate();
+        jLayeredPane1.repaint();
+        
+        handleDrag(picLabel);
+        handleOptionClick(picLabel);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

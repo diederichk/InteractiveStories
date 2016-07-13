@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
@@ -36,6 +37,8 @@ public class StoryPage {
     JLabel picture;
     
     File correctPicture = null; File wrongPicture1 = null; File wrongPicture2 = null;
+    ArrayList<Image> components = new ArrayList<Image>();
+    ArrayList<JLabel> componentLabels = new ArrayList<JLabel>();
     
     File file = null;
     File sound = null;
@@ -199,9 +202,19 @@ public class StoryPage {
                 }
             }
         });
+        
+        JButton editButton = new JButton(); //make a new button (for picking an explanation)
+        editButton.setText("Edit");
+        editButton.setBounds(200,160,120,30);
+        editButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                editButtonActionPerformed(e);
+            }
+        });
         //c.gridx = 0;
         //c.gridy = (story.size()-1)*2;
         panel.add(soundButton);
+        panel.add(editButton);
         panel.add(choiceButton);
         panel.add(deleteButton);
         panel.add(picture);
@@ -244,6 +257,12 @@ public class StoryPage {
         parentPanel.revalidate();
         parentPanel.repaint();
         parentPage.snapPages();
+    }
+    
+    public void editButtonActionPerformed(Object e){
+        System.out.println(parentPage.storyPages.indexOf(this));
+        EditorPage testFrame = new EditorPage(parentPage.storyPages,parentPage.storyPages.indexOf(this), parentPage);
+        testFrame.setVisible(true);
     }
     
     public int getY(){

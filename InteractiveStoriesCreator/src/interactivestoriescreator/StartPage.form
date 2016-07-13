@@ -40,11 +40,11 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Component id="jTabbedPane1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
           <Component id="jScrollPane3" pref="0" max="32767" attributes="0"/>
       </Group>
@@ -316,8 +316,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jProgressBar1" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="jTextField1" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -336,7 +336,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jProgressBar1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -382,7 +382,10 @@
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File importFile3 = new File(&quot;resources\\import.png&quot;);&#xa;Image importImage3 = null;&#xa;try{&#xa;    importImage3 = ImageIO.read(importFile3);&#xa;    importImage3 = importImage3.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon importIcon3 = new ImageIcon(importImage3);&#xa;jButton9.setIcon(importIcon3);"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Story controls"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
