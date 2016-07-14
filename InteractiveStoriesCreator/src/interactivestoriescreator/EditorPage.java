@@ -62,7 +62,7 @@ public class EditorPage extends javax.swing.JFrame {
         parentPage = parent;
         jPanel2.setLayout(new GridBagLayout());
         for(File file:parentPage.components){
-            addImage(file);
+            ImportImage(file);
         }
         
         jLayeredPane1.setLayout(null);
@@ -226,13 +226,18 @@ public class EditorPage extends javax.swing.JFrame {
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.remove(component);
+                System.out.println("component removed! " + component);
             }
+            
+            jLayeredPane1.revalidate();
+            jLayeredPane1.repaint();
                         
             currentIndex ++;
             drawBackground(currentIndex);
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.add(component);
+                System.out.println("component added! " + component);
             }
 
             jLayeredPane1.revalidate();
@@ -246,6 +251,7 @@ public class EditorPage extends javax.swing.JFrame {
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.remove(component);
+                System.out.println("component removed! " + component);
             }
                         
             currentIndex --;
@@ -253,6 +259,7 @@ public class EditorPage extends javax.swing.JFrame {
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.add(component);
+                System.out.println("component added! " + component);
             }
 
             jLayeredPane1.revalidate();
@@ -269,11 +276,11 @@ public class EditorPage extends javax.swing.JFrame {
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
             File file = fc.getSelectedFile();
             parentPage.components.add(file); //add the file to roles
-            addImage(file);
+            ImportImage(file);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void addImage(File file){
+    private void ImportImage(File file){
         System.out.println("adding Image!");
         System.out.println(file);
         Image image = null;
@@ -321,8 +328,11 @@ public class EditorPage extends javax.swing.JFrame {
     
     private void addButtonActionPerformed(Object e){
         int i = componentButtons.indexOf(e);
+        System.out.println(i);
         Image image = componentImages.get(i);
-        drawSizedImage(image,10);
+        pages.get(currentIndex).components.add(image);
+        pages.get(currentIndex).componentLabels.add(drawSizedImage(image,0.1));
+        System.out.println(pages.get(currentIndex).componentLabels);
     }
     /**
      * @param args the command line arguments
@@ -365,36 +375,88 @@ public class EditorPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                currentComponentLabel = label;
-                System.out.println("making option panel");
-                if(optionPanel != null) jLayeredPane1.remove(optionPanel);
-                optionPanel = new JPanel();
-                optionPanel.setBounds(label.getX(),label.getY()-50,160,50);
-                optionPanel.setBackground(Color.gray);
-                optionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-                jLayeredPane1.add(optionPanel,JLayeredPane.POPUP_LAYER);
-                
-                optionPanel.setLayout(null);
-                
-                JButton deleteButton = new JButton();
-                deleteButton.setText("del");
-                deleteButton.setBounds(5, 5, 50, 40);
-                optionPanel.add(deleteButton);
-                
-                JButton plusButton = new JButton();
-                plusButton.setText(" + ");
-                plusButton.setBounds(55,5,50,40);
-                optionPanel.add(plusButton);
-                
-                JButton minusButton = new JButton();
-                minusButton.setText(" - ");
-                minusButton.setBounds(105,5,50,40);
-                optionPanel.add(minusButton);
-                
-                jLayeredPane1.revalidate();
-                jLayeredPane1.repaint();
+                makeOptionPanel(label);
             }
         });
+    }
+    
+    public void makeOptionPanel(JLabel label){
+        currentComponentLabel = label;
+        System.out.println("making option panel");
+        if(optionPanel != null) jLayeredPane1.remove(optionPanel);
+        optionPanel = new JPanel();
+        optionPanel.setBounds(label.getX(),label.getY()-50,160,50);
+        optionPanel.setBackground(Color.gray);
+        optionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        jLayeredPane1.add(optionPanel,JLayeredPane.POPUP_LAYER);
+
+        optionPanel.setLayout(null);
+
+        JButton deleteButton = new JButton();
+        deleteButton.setText("del");
+        deleteButton.setBounds(5, 5, 50, 40);
+        optionPanel.add(deleteButton);
+        deleteButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                int i = pages.get(currentIndex).componentLabels.indexOf(currentComponentLabel);
+                pages.get(currentIndex).components.remove(i);
+                jLayeredPane1.remove(currentComponentLabel);
+                jLayeredPane1.remove(optionPanel); optionPanel = null;
+                pages.get(currentIndex).componentLabels.remove(currentComponentLabel);
+                jLayeredPane1.revalidate(); jLayeredPane1.repaint();
+            }
+        });
+
+        JButton plusButton = new JButton();
+        plusButton.setText(" + ");
+        plusButton.setBounds(55,5,50,40);
+        optionPanel.add(plusButton);
+        plusButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                int i = pages.get(currentIndex).componentLabels.indexOf(currentComponentLabel);
+                int x = currentComponentLabel.getX(); int y = currentComponentLabel.getY();
+                Image image = pages.get(currentIndex).components.get(i);
+
+                Double scale = (double) currentComponentLabel.getHeight()/image.getHeight(null);
+
+                jLayeredPane1.remove(currentComponentLabel);
+                jLayeredPane1.remove(optionPanel); optionPanel = null;
+                pages.get(currentIndex).componentLabels.remove(currentComponentLabel);
+
+                currentComponentLabel = drawSizedImage(image,scale+0.01,x,y);
+                pages.get(currentIndex).componentLabels.add(currentComponentLabel);
+                makeOptionPanel(currentComponentLabel);
+
+                jLayeredPane1.revalidate(); jLayeredPane1.repaint();
+            }
+        });
+
+        JButton minusButton = new JButton();
+        minusButton.setText(" - ");
+        minusButton.setBounds(105,5,50,40);
+        optionPanel.add(minusButton);
+        minusButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                int i = pages.get(currentIndex).componentLabels.indexOf(currentComponentLabel);
+                int x = currentComponentLabel.getX(); int y = currentComponentLabel.getY();
+                Image image = pages.get(currentIndex).components.get(i);
+
+                Double scale = (double) currentComponentLabel.getHeight()/image.getHeight(null);
+
+                jLayeredPane1.remove(currentComponentLabel);
+                jLayeredPane1.remove(optionPanel); optionPanel = null;
+                pages.get(currentIndex).componentLabels.remove(currentComponentLabel);
+
+                currentComponentLabel = drawSizedImage(image,scale-0.01,x,y);
+                pages.get(currentIndex).componentLabels.add(currentComponentLabel);
+                makeOptionPanel(currentComponentLabel);
+
+                jLayeredPane1.revalidate(); jLayeredPane1.repaint();
+            }
+        });
+                
+        jLayeredPane1.revalidate();
+        jLayeredPane1.repaint();
     }
     
     public void handleDrag(JLabel label){
@@ -413,8 +475,10 @@ public class EditorPage extends javax.swing.JFrame {
         });
     }
     
-    public void drawSizedImage(Image image, int scale){
-        Image scaledImage = image.getScaledInstance(image.getWidth(null)/scale, image.getHeight(null)/scale, Image.SCALE_DEFAULT);
+    public JLabel drawSizedImage(Image image, double scale){
+        Double widthScale = scale*image.getWidth(null);
+        Double heightScale = scale*image.getHeight(null);
+        Image scaledImage = image.getScaledInstance(widthScale.intValue(), heightScale.intValue(), Image.SCALE_DEFAULT);
         ImageIcon icon = new ImageIcon(scaledImage); //make an image icon from the image
         
         JLabel picLabel = new JLabel(); //make a new label
@@ -430,6 +494,29 @@ public class EditorPage extends javax.swing.JFrame {
         
         handleDrag(picLabel);
         handleOptionClick(picLabel);
+        return picLabel;
+    }
+    
+    public JLabel drawSizedImage(Image image, double scale, int x, int y){
+        Double widthScale = scale*image.getWidth(null);
+        Double heightScale = scale*image.getHeight(null);
+        Image scaledImage = image.getScaledInstance(widthScale.intValue(), heightScale.intValue(), Image.SCALE_DEFAULT);
+        ImageIcon icon = new ImageIcon(scaledImage); //make an image icon from the image
+        
+        JLabel picLabel = new JLabel(); //make a new label
+        picLabel.setIcon(icon); //add the image icon to the label
+        
+        System.out.println(image.getWidth(null)+","+image.getHeight(null));
+        picLabel.setBounds(x, y, scaledImage.getWidth(null), scaledImage.getHeight(null));
+       
+        jLayeredPane1.add(picLabel,JLayeredPane.PALETTE_LAYER);
+        
+        jLayeredPane1.revalidate();
+        jLayeredPane1.repaint();
+        
+        handleDrag(picLabel);
+        handleOptionClick(picLabel);
+        return picLabel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
