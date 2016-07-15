@@ -4,6 +4,8 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
+var roleSquares = []; // background squares for roles
+
 var people = [
   {name:"Alice",role:-1},
 	{name:"Bob",role:-1},
@@ -208,7 +210,14 @@ function addRoleButtons(){
     button.x = (i%4)*400+270;
     button.y = Math.floor(i/4)*320+200;
     
+    var backShape = new createjs.Shape();
+    backShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 400, 400, 30);
+  	backShape.x = 40;
+	  backShape.y = 40;
+    backShape.alpha = 0.01;
+    
     button.addEventListener("click", roleClick);
+    button.hitArea = backShape;
     
     container.addChild(button);
     container.setChildIndex(button,1);

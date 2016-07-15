@@ -7,6 +7,8 @@ package interactivestoriescreator;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -16,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,6 +154,11 @@ public class EditorPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jPanel2);
 
         jButton4.setText("Save");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Import");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -222,31 +230,18 @@ public class EditorPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(currentIndex < pages.size()-1){
-            jLayeredPane1.remove(picture);
-            
-            for(JLabel component:pages.get(currentIndex).componentLabels){
-                jLayeredPane1.remove(component);
-                System.out.println("component removed! " + component);
-            }
-            
-            jLayeredPane1.revalidate();
-            jLayeredPane1.repaint();
-                        
-            currentIndex ++;
-            drawBackground(currentIndex);
-            
-            for(JLabel component:pages.get(currentIndex).componentLabels){
-                jLayeredPane1.add(component);
-                System.out.println("component added! " + component);
-            }
-
-            jLayeredPane1.revalidate();
-            jLayeredPane1.repaint();
+            goToPage(currentIndex+1);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(currentIndex > 0){
+            goToPage(currentIndex-1);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public void goToPage(int page){
+        if(page>=0 && page<pages.size()){
             jLayeredPane1.remove(picture);
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
@@ -254,7 +249,7 @@ public class EditorPage extends javax.swing.JFrame {
                 System.out.println("component removed! " + component);
             }
                         
-            currentIndex --;
+            currentIndex = page;
             drawBackground(currentIndex);
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
@@ -265,10 +260,9 @@ public class EditorPage extends javax.swing.JFrame {
             jLayeredPane1.revalidate();
             jLayeredPane1.repaint();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -280,6 +274,54 @@ public class EditorPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            BufferedImage background = ImageIO.read(parentPage.storyPages.get(currentIndex).file);
+            BufferedImage newImage = new BufferedImage(background.getWidth(), background.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics g = newImage.getGraphics();
+            double scaleFactor = (double)background.getWidth()/picture.getWidth();
+            for(int i = 0; i < parentPage.storyPages.get(currentIndex).components.size(); i++){
+                Image img = parentPage.storyPages.get(currentIndex).components.get(i);
+                int x = (int)Math.round(parentPage.storyPages.get(currentIndex).componentLabels.get(i).getX()*scaleFactor);
+                int y = (int)Math.round(parentPage.storyPages.get(currentIndex).componentLabels.get(i).getY()*scaleFactor);
+                int width = (int)Math.round(componentLabels.get(i).getWidth()*scaleFactor);
+                int height = (int)Math.round(componentLabels.get(i).getHeight()*scaleFactor);
+                BufferedImage image = toBufferedImage(img.getScaledInstance(width, height, Image.SCALE_DEFAULT));
+                g.drawImage(image, x, y, null);
+                jLayeredPane1.remove(parentPage.storyPages.get(currentIndex).componentLabels.get(i));
+            }
+            g.drawImage(background, 0, 0, null);
+            parentPage.storyPages.get(currentIndex).componentLabels = new ArrayList<JLabel>();
+            parentPage.storyPages.get(currentIndex).components = new ArrayList<Image>();
+            
+            ImageIO.write(newImage,"png",parentPage.storyPages.get(currentIndex).file);
+            
+            drawBackground(currentIndex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(EditorPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    
+    public static BufferedImage toBufferedImage(Image img)
+    {
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
+    }
     private void ImportImage(File file){
         System.out.println("adding Image!");
         System.out.println(file);

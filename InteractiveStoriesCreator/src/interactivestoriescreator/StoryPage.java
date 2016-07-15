@@ -261,8 +261,8 @@ public class StoryPage {
     
     public void editButtonActionPerformed(Object e){
         System.out.println(parentPage.storyPages.indexOf(this));
-        EditorPage testFrame = new EditorPage(parentPage.storyPages,parentPage.storyPages.indexOf(this), parentPage);
-        testFrame.setVisible(true);
+        parentPage.editor.setVisible(true);
+        parentPage.editor.goToPage(parentPage.storyPages.indexOf(this));
     }
     
     public int getY(){

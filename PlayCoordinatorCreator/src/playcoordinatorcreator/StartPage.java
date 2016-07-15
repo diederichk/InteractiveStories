@@ -473,7 +473,9 @@ public class StartPage extends javax.swing.JFrame {
                 jProgressBar2.setValue(2);
                 
                 //copy explanations
+                System.out.println(explanations.size());
                 for(int i = 0; i < explanations.size(); i++){
+                    System.out.println("Saved: "+(i+1));
                     if(i<9) outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\story1-newratio-0"+(i+1)+".png");
                     else outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\story1-newratio-"+(i+1)+".png");
                     copyFile(explanations.get(i),outfile);

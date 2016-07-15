@@ -63,6 +63,8 @@ public class StartPage extends javax.swing.JFrame {
     MediaPlayer mediaPlayer = null;
     JFXPanel fxPanel = new JFXPanel();
     
+    EditorPage editor = null;
+    
     public StartPage() {
         initComponents();
     }
@@ -494,6 +496,10 @@ public class StartPage extends javax.swing.JFrame {
     private void pageButtonActionPerformed(Object e){
         JButton button = pageButtons.get(pageButtons.indexOf(e)); //get the button that was clicked
         storyPages.add(new StoryPage(pages.get(pageButtons.indexOf(e)),jPanel1,this));
+        if(editor == null){
+            editor = new EditorPage(storyPages,0,this);
+            editor.setVisible(false);
+        }
     }
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
