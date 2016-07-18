@@ -493,8 +493,10 @@ public class StartPage extends javax.swing.JFrame {
                 jProgressBar2.setValue(4);
                 
                 //copy background music
-                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_00.mp3");
-                copyFile(backMusic, outfile);
+                if(backMusic != null){
+                    outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_00.mp3");
+                    copyFile(backMusic, outfile);
+                }
                 jProgressBar2.setValue(5);
                 
                 //copy arrows

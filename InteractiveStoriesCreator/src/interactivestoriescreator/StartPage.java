@@ -470,10 +470,14 @@ public class StartPage extends javax.swing.JFrame {
             picButton.setText("add");
 
             picButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
+                public void actionPerformed(ActionEvent e){ try {
+                    //if the button is clicked, handle in explanationButtonActionPerformed
                     //System.out.println("add button clicked!");
                     pageButtonActionPerformed(e.getSource());
                     //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
+                    } catch (IOException ex) {
+                        Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
 
@@ -493,9 +497,8 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void pageButtonActionPerformed(Object e){
-        JButton button = pageButtons.get(pageButtons.indexOf(e)); //get the button that was clicked
-        storyPages.add(new StoryPage(pages.get(pageButtons.indexOf(e)),jPanel1,this));
+    private void pageButtonActionPerformed(Object e) throws IOException{
+        storyPages.add(new StoryPage(ImageIO.read(pages.get(pageButtons.indexOf(e))),jPanel1,this));
         if(editor == null){
             editor = new EditorPage(storyPages,0,this);
             editor.setVisible(false);
@@ -605,7 +608,7 @@ public class StartPage extends javax.swing.JFrame {
                 for(int i = 0; i < storyPages.size(); i++){
                     if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-0"+i+".png");
                     else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-"+i+".png");
-                    copyFile(storyPages.get(i).file,outfile);
+                    ImageIO.write(storyPages.get(i).background,"png",outfile);
                     
                     if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-0"+i+".mp3");
                     else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-"+i+".mp3");
@@ -614,13 +617,13 @@ public class StartPage extends javax.swing.JFrame {
                     
                     if(storyPages.get(i).choicePage){
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\correct-choice-"+i+".png");
-                        copyFile(storyPages.get(i).correctPicture,outfile);
+                        ImageIO.write(storyPages.get(i).correctPicture,"png",outfile);
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice1-"+i+".png");
-                        copyFile(storyPages.get(i).wrongPicture1,outfile);
+                        ImageIO.write(storyPages.get(i).wrongPicture1,"png",outfile);
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice2-"+i+".png");
-                        copyFile(storyPages.get(i).wrongPicture2,outfile);
+                        ImageIO.write(storyPages.get(i).wrongPicture2,"png",outfile);
                     }
                 }
                 
@@ -822,7 +825,12 @@ public class StartPage extends javax.swing.JFrame {
                 System.out.println("wrong choice imported");
 
                 while(f.exists()){
-                    StoryPage page = new StoryPage(f,jPanel1,this);
+                    StoryPage page = null;
+                    try {
+                        page = new StoryPage(ImageIO.read(f),jPanel1,this);
+                    } catch (IOException ex) {
+                        Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     if(i<10) page.sound = new File(directory+"\\Story_Audio\\audio-0"+i+".mp3");
                     else page.sound = new File(directory+"\\Story_Audio\\audio-"+i+".mp3");
@@ -831,17 +839,21 @@ public class StartPage extends javax.swing.JFrame {
                     
                     File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png");
                     if(correctChoice.exists()){
-                        page.choiceButton.setSelected(true);
-                        page.choiceButtonActionPerformed(null);
-                        
-                        page.correctPicture = correctChoice;
-                        page.correctButton.setText("Delete correct answer");
-                        
-                        page.wrongPicture1 = new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png");
-                        page.wrongButton1.setText("Delete wrong answer");
-                        
-                        page.wrongPicture2 = new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png");
-                        page.wrongButton2.setText("Delete wrong answer");
+                        try {
+                            page.choiceButton.setSelected(true);
+                            page.choiceButtonActionPerformed(null);
+                            
+                            page.correctPicture = ImageIO.read(correctChoice);
+                            page.correctButton.setText("Delete correct answer");
+                            
+                            page.wrongPicture1 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png"));
+                            page.wrongButton1.setText("Delete wrong answer");
+                            
+                            page.wrongPicture2 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png"));
+                            page.wrongButton2.setText("Delete wrong answer");
+                        } catch (IOException ex) {
+                            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     
                     storyPages.add(page);
@@ -854,6 +866,11 @@ public class StartPage extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Import succesful");             
             }
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            
+            if(editor == null){
+                editor = new EditorPage(storyPages,0,this);
+                editor.setVisible(false);
+            }
     }//GEN-LAST:event_jButton9ActionPerformed
     
     /**

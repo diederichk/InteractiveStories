@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,11 +37,12 @@ public class StoryPage {
     JPanel panel;
     JLabel picture;
     
-    File correctPicture = null; File wrongPicture1 = null; File wrongPicture2 = null;
+    BufferedImage correctPicture = null; BufferedImage wrongPicture1 = null; BufferedImage wrongPicture2 = null;
     ArrayList<Image> components = new ArrayList<Image>();
     ArrayList<JLabel> componentLabels = new ArrayList<JLabel>();
     
-    File file = null;
+    //File file = null;
+    BufferedImage background = null;
     File sound = null;
     
     JPanel parentPanel;
@@ -55,18 +57,18 @@ public class StoryPage {
     MediaPlayer mediaPlayer = null;
     JFXPanel fxPanel = new JFXPanel();
     
-    public StoryPage(File pic, JPanel parent, StartPage page){
-        file = pic;
+    public StoryPage(BufferedImage pic, JPanel parent, StartPage page){
+        background = pic;
         parentPanel = parent;
         parentPage = page;
         
-        Image image = null;
-        try {
-            image = ImageIO.read(file);
-        } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        image = image.getScaledInstance(300, 169, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        //Image image = null;
+        //try {
+        //    image = ImageIO.read(file);
+        //} catch (IOException ex) {
+        //    Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+        //}
+        Image image = background.getScaledInstance(300, 169, Image.SCALE_DEFAULT); //scale the image down to fit in the window
         ImageIcon icon = new ImageIcon(image); //make an image icon from the image
         
         picture = new JLabel(); //make a new label
@@ -103,8 +105,12 @@ public class StoryPage {
             public void actionPerformed(ActionEvent e){
                 if(correctPicture == null){
                     int returnVal = fc.showOpenDialog(parentPanel); //open file picker
-                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-                        correctPicture = fc.getSelectedFile();
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ try {
+                        //when a file is selected
+                        correctPicture = ImageIO.read(fc.getSelectedFile());
+                        } catch (IOException ex) {
+                            Logger.getLogger(StoryPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         correctButton.setText("Delete correct answer");
                     }
                 }
@@ -119,8 +125,12 @@ public class StoryPage {
             public void actionPerformed(ActionEvent e){
                 if(wrongPicture1 == null){
                     int returnVal = fc.showOpenDialog(parentPanel); //open file picker
-                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-                        wrongPicture1 = fc.getSelectedFile();
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ try {
+                        //when a file is selected
+                        wrongPicture1 = ImageIO.read(fc.getSelectedFile());
+                        } catch (IOException ex) {
+                            Logger.getLogger(StoryPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         wrongButton1.setText("Delete wrong answer");
                     }
                 }
@@ -135,8 +145,12 @@ public class StoryPage {
             public void actionPerformed(ActionEvent e){
                 if(wrongPicture2 == null){
                     int returnVal = fc.showOpenDialog(parentPanel); //open file picker
-                    if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-                        wrongPicture2 = fc.getSelectedFile();
+                    if(returnVal == JFileChooser.APPROVE_OPTION){ try {
+                        //when a file is selected
+                        wrongPicture2 = ImageIO.read(fc.getSelectedFile());
+                        } catch (IOException ex) {
+                            Logger.getLogger(StoryPage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         wrongButton2.setText("Delete wrong answer");
                     }
                 }

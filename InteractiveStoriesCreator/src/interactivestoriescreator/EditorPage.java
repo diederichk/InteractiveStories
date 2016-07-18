@@ -5,6 +5,7 @@
  */
 package interactivestoriescreator;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -44,13 +45,15 @@ public class EditorPage extends javax.swing.JFrame {
     
     ArrayList<Image> componentImages = new ArrayList<Image>();
     ArrayList<JLabel> componentLabels = new ArrayList<JLabel>();
-    ArrayList<JLabel> addedComponentLabels = new ArrayList<JLabel>();
     ArrayList<JButton> componentButtons = new ArrayList<JButton>();
     
-    JLabel picture;
+    JLabel picture = null;
     
     JLabel currentComponentLabel = null;
     Image currentComponent = null;
+    
+    JButton correctButton; JButton wrongButton1; JButton wrongButton2;
+    JLabel correctChoice = null; JLabel wrongChoice1 = null; JLabel wrongChoice2 = null;
     
     JFileChooser fc = new JFileChooser();
     
@@ -72,25 +75,27 @@ public class EditorPage extends javax.swing.JFrame {
         jLayeredPane1.setBounds(10, 10, 450, 800);
         jLayeredPane1.setBorder(BorderFactory.createLineBorder(Color.black));
         jLayeredPane1.setBackground(Color.gray);
-        drawBackground(currentIndex);
-        for(JLabel component:pages.get(currentIndex).componentLabels){
-                jLayeredPane1.add(component);
-        }
+        
+        goToPage(currentIndex);
+        //drawBackground(currentIndex);
+        //for(JLabel component:pages.get(currentIndex).componentLabels){
+        //        jLayeredPane1.add(component);
+        //}
+        
+        correctButton = new JButton(); wrongButton1 = new JButton(); wrongButton2 = new JButton();
+        correctButton.setText("Set correct answer"); wrongButton1.setText("Set 1st wrong answer"); wrongButton2.setText("Set 2nd wrong answer");
+        correctButton.setBounds(130,300,140,30); wrongButton1.setBounds(330,300,140,30); wrongButton2.setBounds(530,300,140,30);
     }
     
     private void drawBackground(int index){
-        Image image = null;
-        try {
-            image = ImageIO.read(pages.get(index).file);
-        } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        image = image.getScaledInstance(800, 450, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        if(picture != null) jLayeredPane1.remove(picture);
+        Image image = pages.get(index).background.getScaledInstance(800, 450, Image.SCALE_DEFAULT); //scale the image down to fit in the window
         ImageIcon icon = new ImageIcon(image); //make an image icon from the image
         
         picture = new JLabel(); //make a new label
         picture.setIcon(icon); //add the image icon to the lab    
         picture.setBounds(0,45,800,450);
+        
         jLayeredPane1.add(picture,JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.revalidate();
         jLayeredPane1.repaint();
@@ -139,6 +144,11 @@ public class EditorPage extends javax.swing.JFrame {
         });
 
         jCheckBox1.setText("Choice page");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -240,21 +250,56 @@ public class EditorPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void goToPage(int page){
-        if(page>=0 && page<pages.size()){
-            jLayeredPane1.remove(picture);
+    public void goToPage(int index){
+        if(index>=0 && index<pages.size()){
+            if(picture != null) jLayeredPane1.remove(picture);
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.remove(component);
                 System.out.println("component removed! " + component);
             }
+            
+            if(correctChoice != null){jLayeredPane1.remove(correctChoice); correctChoice = null;}
+            if(wrongChoice1 != null){jLayeredPane1.remove(wrongChoice1); wrongChoice1 = null;}
+            if(wrongChoice2 != null){jLayeredPane1.remove(wrongChoice2); wrongChoice2 = null;}
                         
-            currentIndex = page;
+            currentIndex = index;
             drawBackground(currentIndex);
             
             for(JLabel component:pages.get(currentIndex).componentLabels){
                 jLayeredPane1.add(component);
                 System.out.println("component added! " + component);
+            }
+            
+            if(pages.get(currentIndex).choicePage){
+                jCheckBox1.setSelected(true);
+                if(pages.get(currentIndex).correctPicture != null){
+                    ImageIcon icon = new ImageIcon(pages.get(currentIndex).correctPicture.getScaledInstance(140, 200, Image.SCALE_DEFAULT));
+                    correctChoice = new JLabel();
+                    correctChoice.setIcon(icon);
+                    correctChoice.setBounds(530, 200, 140, 200);
+                    jLayeredPane1.add(correctChoice, JLayeredPane.PALETTE_LAYER);
+                }
+                
+                if(pages.get(currentIndex).wrongPicture1 != null){
+                    ImageIcon icon = new ImageIcon(pages.get(currentIndex).wrongPicture1.getScaledInstance(140, 200, Image.SCALE_DEFAULT));
+                    wrongChoice1 = new JLabel();
+                    wrongChoice1.setIcon(icon);
+                    wrongChoice1.setBounds(130, 200, 140, 200);
+                    jLayeredPane1.add(wrongChoice1, JLayeredPane.PALETTE_LAYER);
+                }
+                                
+                if(pages.get(currentIndex).wrongPicture2 != null){
+                    ImageIcon icon = new ImageIcon(pages.get(currentIndex).wrongPicture2.getScaledInstance(140, 200, Image.SCALE_DEFAULT));
+                    wrongChoice2 = new JLabel();
+                    wrongChoice2.setIcon(icon);
+                    wrongChoice2.setBounds(330, 200, 140, 200);
+                    jLayeredPane1.add(wrongChoice2, JLayeredPane.PALETTE_LAYER);
+                }
+            }
+            
+            else{
+                jCheckBox1.setSelected(false);
             }
 
             jLayeredPane1.revalidate();
@@ -275,33 +320,64 @@ public class EditorPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            BufferedImage background = ImageIO.read(parentPage.storyPages.get(currentIndex).file);
-            BufferedImage newImage = new BufferedImage(background.getWidth(), background.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics g = newImage.getGraphics();
-            double scaleFactor = (double)background.getWidth()/picture.getWidth();
-            for(int i = 0; i < parentPage.storyPages.get(currentIndex).components.size(); i++){
-                Image img = parentPage.storyPages.get(currentIndex).components.get(i);
-                int x = (int)Math.round(parentPage.storyPages.get(currentIndex).componentLabels.get(i).getX()*scaleFactor);
-                int y = (int)Math.round(parentPage.storyPages.get(currentIndex).componentLabels.get(i).getY()*scaleFactor);
-                int width = (int)Math.round(componentLabels.get(i).getWidth()*scaleFactor);
-                int height = (int)Math.round(componentLabels.get(i).getHeight()*scaleFactor);
-                BufferedImage image = toBufferedImage(img.getScaledInstance(width, height, Image.SCALE_DEFAULT));
-                g.drawImage(image, x, y, null);
-                jLayeredPane1.remove(parentPage.storyPages.get(currentIndex).componentLabels.get(i));
-            }
-            g.drawImage(background, 0, 0, null);
-            parentPage.storyPages.get(currentIndex).componentLabels = new ArrayList<JLabel>();
-            parentPage.storyPages.get(currentIndex).components = new ArrayList<Image>();
+        BufferedImage background = pages.get(currentIndex).background;
+        //BufferedImage newImage = new BufferedImage(background.getWidth(), background.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D g2d = background.createGraphics();
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+       
+        //g2d.drawImage(background, 0, 0, null);
+        
+        double scaleFactor = (double)background.getWidth()/picture.getWidth();
+        System.out.println("scale: " + scaleFactor);
+        for(int i = 0; i < pages.get(currentIndex).components.size(); i++){
+            Image img = pages.get(currentIndex).components.get(i);
+            int x = (int)Math.floor(pages.get(currentIndex).componentLabels.get(i).getX()*scaleFactor);
+            int y = (int)Math.floor((pages.get(currentIndex).componentLabels.get(i).getY()-45)*scaleFactor);
+            int width = (int)Math.floor(pages.get(currentIndex).componentLabels.get(i).getWidth()*scaleFactor);
+            int height = (int)Math.floor(pages.get(currentIndex).componentLabels.get(i).getHeight()*scaleFactor);
+            System.out.println("x:" + x + " y:" + y + " width:" + width + " height:" + height);
+            BufferedImage image = toBufferedImage(img.getScaledInstance(width, height, Image.SCALE_DEFAULT));
             
-            ImageIO.write(newImage,"png",parentPage.storyPages.get(currentIndex).file);
-            
-            drawBackground(currentIndex);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(EditorPage.class.getName()).log(Level.SEVERE, null, ex);
+            g2d.drawImage(image, x, y, null);
+            jLayeredPane1.remove(pages.get(currentIndex).componentLabels.get(i));
         }
+        
+        pages.get(currentIndex).componentLabels = new ArrayList<JLabel>();
+        pages.get(currentIndex).components = new ArrayList<Image>();
+        
+        //pages.get(currentIndex).background = background;
+        //ImageIO.write(newImage,"png",pages.get(currentIndex).file);
+
+        drawBackground(currentIndex);
+        
+        Image image = background.getScaledInstance(300, 169, Image.SCALE_DEFAULT);
+        ImageIcon icon = new ImageIcon(image);
+        
+        picture = new JLabel(); //make a new label
+        picture.setIcon(icon); //add the image icon to the lab    
+        picture.setBounds(15,15,300,169);
+        
+        pages.get(currentIndex).panel.remove(pages.get(currentIndex).picture);
+        pages.get(currentIndex).panel.add(picture);
+        pages.get(currentIndex).panel.repaint();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if(!pages.get(currentIndex).choicePage){
+            jLayeredPane1.add(correctButton, JLayeredPane.POPUP_LAYER);
+            jLayeredPane1.add(wrongButton1, JLayeredPane.POPUP_LAYER);
+            jLayeredPane1.add(wrongButton2, JLayeredPane.POPUP_LAYER);
+            pages.get(currentIndex).choicePage = true;
+        }
+        else{
+            jLayeredPane1.remove(correctButton);
+            jLayeredPane1.remove(wrongButton1);
+            jLayeredPane1.remove(wrongButton2);
+            pages.get(currentIndex).choicePage = false;
+            jLayeredPane1.repaint();
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     
     public static BufferedImage toBufferedImage(Image img)
@@ -322,6 +398,7 @@ public class EditorPage extends javax.swing.JFrame {
         // Return the buffered image
         return bimage;
     }
+    
     private void ImportImage(File file){
         System.out.println("adding Image!");
         System.out.println(file);
@@ -335,8 +412,8 @@ public class EditorPage extends javax.swing.JFrame {
             return;
         }
         componentImages.add(image);
-        image = image.getScaledInstance(200, 113, Image.SCALE_DEFAULT); //scale the image down to fit in the window
-        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+        Image image2 = image.getScaledInstance(200, 113, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+        ImageIcon icon = new ImageIcon(image2); //make an image icon from the image
 
         JLabel picLabel = new JLabel(); //make a new label
         picLabel.setIcon(icon); //add the image icon to the label
