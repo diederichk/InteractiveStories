@@ -65,6 +65,8 @@ public class EditorPage extends javax.swing.JFrame {
     MediaPlayer mediaPlayer = null;
     JFXPanel fxPanel = new JFXPanel();
     
+    int offsetX = 0; int offsetY = 0;
+    
     public EditorPage(ArrayList<StoryPage> storyPages, int i, StartPage parent) {
         parentPage = parent;
         
@@ -652,7 +654,8 @@ public class EditorPage extends javax.swing.JFrame {
         //picLabel.setText(pages.get(pages.size()-1).getName()); //set the label text to the filename of the image
 
         JButton picButton = new JButton(); //make a new button (for picking an explanation)
-        picButton.setText("add");
+        //picButton.setText("add");
+        picButton.setIcon(parentPage.addIcon);
 
         picButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){ //if the button is clicked, handle in explanationButtonActionPerformed
@@ -685,40 +688,6 @@ public class EditorPage extends javax.swing.JFrame {
         pages.get(currentIndex).componentLabels.add(drawSizedImage(image,0.1));
         System.out.println(pages.get(currentIndex).componentLabels);
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(new Runnable() {
-        //    public void run() {
-        //        new EditorPage().setVisible(true);
-        //    }
-        //});
-    }
     
     public void handleOptionClick(JLabel label){
         final JLabel p = label;
@@ -744,7 +713,8 @@ public class EditorPage extends javax.swing.JFrame {
         optionPanel.setLayout(null);
 
         JButton deleteButton = new JButton();
-        deleteButton.setText("del");
+        //deleteButton.setText("del");
+        deleteButton.setIcon(parentPage.deleteIcon);
         deleteButton.setBounds(5, 5, 50, 40);
         optionPanel.add(deleteButton);
         deleteButton.addActionListener(new ActionListener(){
@@ -759,7 +729,8 @@ public class EditorPage extends javax.swing.JFrame {
         });
 
         JButton plusButton = new JButton();
-        plusButton.setText(" + ");
+        //plusButton.setText(" + ");
+        plusButton.setIcon(parentPage.enlargeIcon);
         plusButton.setBounds(55,5,50,40);
         optionPanel.add(plusButton);
         plusButton.addActionListener(new ActionListener(){
@@ -783,7 +754,8 @@ public class EditorPage extends javax.swing.JFrame {
         });
 
         JButton minusButton = new JButton();
-        minusButton.setText(" - ");
+        //minusButton.setText(" - ");
+        minusButton.setIcon(parentPage.shrinkIcon);
         minusButton.setBounds(105,5,50,40);
         optionPanel.add(minusButton);
         minusButton.addActionListener(new ActionListener(){
@@ -812,6 +784,15 @@ public class EditorPage extends javax.swing.JFrame {
     
     public void handleDrag(JLabel label){
         final JLabel p = label;
+        label.addMouseListener(new MouseAdapter(){
+            
+            @Override
+            public void mousePressed(MouseEvent me){
+                offsetX = me.getX();
+                offsetY = me.getY();
+            }
+        });
+        
         label.addMouseMotionListener(new MouseMotionAdapter() {
 
             @Override
@@ -819,8 +800,9 @@ public class EditorPage extends javax.swing.JFrame {
                 if(optionPanel != null) jLayeredPane1.remove(optionPanel);
                 optionPanel = null;
                 jLayeredPane1.repaint();
+                //System.out.println(me.getComponent().getLocation().x + "," + me.getComponent().getLocation().y);
                 me.translatePoint(me.getComponent().getLocation().x, me.getComponent().getLocation().y);
-                p.setLocation(me.getX(), me.getY());
+                p.setLocation(me.getX()-offsetX, me.getY()-offsetY);
             }
 
         });
@@ -868,6 +850,41 @@ public class EditorPage extends javax.swing.JFrame {
         handleDrag(picLabel);
         handleOptionClick(picLabel);
         return picLabel;
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(EditorPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        //java.awt.EventQueue.invokeLater(new Runnable() {
+        //    public void run() {
+        //        new EditorPage().setVisible(true);
+        //    }
+        //});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

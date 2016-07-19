@@ -67,6 +67,7 @@ public class StartPage extends javax.swing.JFrame {
     
     ImageIcon playIcon; ImageIcon importIcon; ImageIcon exitIcon; ImageIcon deleteIcon; ImageIcon saveIcon;
     ImageIcon editIcon; ImageIcon addIcon; ImageIcon outlineIcon; ImageIcon nextIcon; ImageIcon prvIcon;
+    ImageIcon enlargeIcon; ImageIcon shrinkIcon;
     
     public StartPage() {
         try{
@@ -109,6 +110,14 @@ public class StartPage extends javax.swing.JFrame {
             tempImage = ImageIO.read(new File("resources\\previous.png"));
             tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
             prvIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\enlarge.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            enlargeIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\shrink.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            shrinkIcon = new ImageIcon(tempImage);
         }
         
         catch(IOException ex){
@@ -156,14 +165,14 @@ public class StartPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton3.setText("Import");
+        jButton3.setIcon(importIcon);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Delete");
+        jButton4.setIcon(deleteIcon);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -189,9 +198,10 @@ public class StartPage extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3)
+                        .addComponent(jButton4))
                     .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -219,7 +229,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
