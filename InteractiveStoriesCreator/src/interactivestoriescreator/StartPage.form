@@ -89,6 +89,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButton4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButton3" min="-2" max="-2" attributes="0"/>
@@ -103,6 +105,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -125,6 +128,11 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel4">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pages"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -236,7 +244,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File delete = new File(&quot;resources\\delete.png&quot;);&#xa;Image deleteImage = null;&#xa;try{&#xa;    deleteImage = ImageIO.read(delete);&#xa;    deleteImage = deleteImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon deleteIcon = new ImageIcon(deleteImage);&#xa;jButton7.setIcon(deleteIcon);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton7.setIcon(deleteIcon);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton8">
@@ -249,7 +257,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File importFile2 = new File(&quot;resources\\import.png&quot;);&#xa;Image importImage2 = null;&#xa;try{&#xa;    importImage2 = ImageIO.read(importFile2);&#xa;    importImage2 = importImage2.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon importIcon2 = new ImageIcon(importImage2);&#xa;jButton8.setIcon(importIcon2);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton8.setIcon(importIcon);"/>
                   </AuxValues>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel8">
@@ -282,7 +290,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File importFile = new File(&quot;resources\\import.png&quot;);&#xa;Image importImage = null;&#xa;try{&#xa;    importImage = ImageIO.read(importFile);&#xa;    importImage = importImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon importIcon = new ImageIcon(importImage);&#xa;jButton5.setIcon(importIcon);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton5.setIcon(importIcon);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton6">
@@ -295,7 +303,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File play = new File(&quot;resources\\play.png&quot;);&#xa;Image playImage = null;&#xa;try{&#xa;    playImage = ImageIO.read(play);&#xa;    playImage = playImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon playIcon = new ImageIcon(playImage);&#xa;jButton6.setIcon(playIcon);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton6.setIcon(playIcon);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel1">
@@ -355,7 +363,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File exitFile = new File(&quot;resources\\exit.png&quot;);&#xa;Image exitImage = null;&#xa;try{&#xa;    exitImage = ImageIO.read(exitFile);&#xa;    exitImage = exitImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon exitIcon = new ImageIcon(exitImage);&#xa;jButton1.setIcon(exitIcon);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton1.setIcon(exitIcon);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
@@ -363,7 +371,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File saveFile = new File(&quot;resources\\save.png&quot;);&#xa;Image saveImage = null;&#xa;try{&#xa;    saveImage = ImageIO.read(saveFile);&#xa;    saveImage = saveImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon saveIcon = new ImageIcon(saveImage);&#xa;jButton2.setIcon(saveIcon);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton2.setIcon(saveIcon);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1">
@@ -379,7 +387,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton9ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="File importFile3 = new File(&quot;resources\\import.png&quot;);&#xa;Image importImage3 = null;&#xa;try{&#xa;    importImage3 = ImageIO.read(importFile3);&#xa;    importImage3 = importImage3.getScaledInstance(20, 20, Image.SCALE_DEFAULT);&#xa;}&#xa;catch(IOException ex){}&#xa;ImageIcon importIcon3 = new ImageIcon(importImage3);&#xa;jButton9.setIcon(importIcon3);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton9.setIcon(importIcon);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">

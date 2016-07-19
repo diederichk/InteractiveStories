@@ -65,7 +65,56 @@ public class StartPage extends javax.swing.JFrame {
     
     EditorPage editor = null;
     
+    ImageIcon playIcon; ImageIcon importIcon; ImageIcon exitIcon; ImageIcon deleteIcon; ImageIcon saveIcon;
+    ImageIcon editIcon; ImageIcon addIcon; ImageIcon outlineIcon; ImageIcon nextIcon; ImageIcon prvIcon;
+    
     public StartPage() {
+        try{
+            Image tempImage = ImageIO.read(new File("resources\\play.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            playIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\import.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            importIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\exit.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            exitIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\delete.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            deleteIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\save.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            saveIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\edit.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            editIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\add.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            addIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\outline.png"));
+            tempImage = tempImage.getScaledInstance(20, 10, Image.SCALE_DEFAULT);
+            outlineIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\next.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            nextIcon = new ImageIcon(tempImage);
+            
+            tempImage = ImageIO.read(new File("resources\\previous.png"));
+            tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            prvIcon = new ImageIcon(tempImage);
+        }
+        
+        catch(IOException ex){
+            ex.printStackTrace();
+        }
+        
         initComponents();
     }
 
@@ -84,6 +133,7 @@ public class StartPage extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -120,12 +170,16 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Pages");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
@@ -137,7 +191,8 @@ public class StartPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -172,14 +227,6 @@ public class StartPage extends javax.swing.JFrame {
         jTabbedPane1.addTab("Pages", jPanel4);
 
         jButton7.setText("Delete");
-        File delete = new File("resources\\delete.png");
-        Image deleteImage = null;
-        try{
-            deleteImage = ImageIO.read(delete);
-            deleteImage = deleteImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon deleteIcon = new ImageIcon(deleteImage);
         jButton7.setIcon(deleteIcon);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,15 +235,7 @@ public class StartPage extends javax.swing.JFrame {
         });
 
         jButton8.setText("Import");
-        File importFile2 = new File("resources\\import.png");
-        Image importImage2 = null;
-        try{
-            importImage2 = ImageIO.read(importFile2);
-            importImage2 = importImage2.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon importIcon2 = new ImageIcon(importImage2);
-        jButton8.setIcon(importIcon2);
+        jButton8.setIcon(importIcon);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -217,14 +256,6 @@ public class StartPage extends javax.swing.JFrame {
         jLabel2.setText("Wrong answer sound");
 
         jButton5.setText("Import");
-        File importFile = new File("resources\\import.png");
-        Image importImage = null;
-        try{
-            importImage = ImageIO.read(importFile);
-            importImage = importImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon importIcon = new ImageIcon(importImage);
         jButton5.setIcon(importIcon);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,14 +264,6 @@ public class StartPage extends javax.swing.JFrame {
         });
 
         jButton6.setText("Play");
-        File play = new File("resources\\play.png");
-        Image playImage = null;
-        try{
-            playImage = ImageIO.read(play);
-            playImage = playImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon playIcon = new ImageIcon(playImage);
         jButton6.setIcon(playIcon);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,14 +327,6 @@ public class StartPage extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Settings", jPanel2);
 
-        File exitFile = new File("resources\\exit.png");
-        Image exitImage = null;
-        try{
-            exitImage = ImageIO.read(exitFile);
-            exitImage = exitImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon exitIcon = new ImageIcon(exitImage);
         jButton1.setIcon(exitIcon);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,14 +334,6 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
-        File saveFile = new File("resources\\save.png");
-        Image saveImage = null;
-        try{
-            saveImage = ImageIO.read(saveFile);
-            saveImage = saveImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon saveIcon = new ImageIcon(saveImage);
         jButton2.setIcon(saveIcon);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,15 +348,7 @@ public class StartPage extends javax.swing.JFrame {
             }
         });
 
-        File importFile3 = new File("resources\\import.png");
-        Image importImage3 = null;
-        try{
-            importImage3 = ImageIO.read(importFile3);
-            importImage3 = importImage3.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        }
-        catch(IOException ex){}
-        ImageIcon importIcon3 = new ImageIcon(importImage3);
-        jButton9.setIcon(importIcon3);
+        jButton9.setIcon(importIcon);
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -467,7 +466,8 @@ public class StartPage extends javax.swing.JFrame {
             //picLabel.setText(pages.get(pages.size()-1).getName()); //set the label text to the filename of the image
 
             JButton picButton = new JButton(); //make a new button (for picking an explanation)
-            picButton.setText("add");
+            //picButton.setText("add");
+            picButton.setIcon(addIcon);
 
             picButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ try {
@@ -834,23 +834,16 @@ public class StartPage extends javax.swing.JFrame {
                     
                     if(i<10) page.sound = new File(directory+"\\Story_Audio\\audio-0"+i+".mp3");
                     else page.sound = new File(directory+"\\Story_Audio\\audio-"+i+".mp3");
-                    page.soundButton.setText("Delete narration");
-                    page.panel.add(page.playButton);
                     
                     File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png");
                     if(correctChoice.exists()){
                         try {
-                            page.choiceButton.setSelected(true);
-                            page.choiceButtonActionPerformed(null);
+                            page.makeChoice();
                             
-                            page.correctPicture = ImageIO.read(correctChoice);
-                            page.correctButton.setText("Delete correct answer");
-                            
-                            page.wrongPicture1 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png"));
-                            page.wrongButton1.setText("Delete wrong answer");
-                            
+                            page.correctPicture = ImageIO.read(correctChoice);                          
+                            page.wrongPicture1 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png"));                            
                             page.wrongPicture2 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png"));
-                            page.wrongButton2.setText("Delete wrong answer");
+                            
                         } catch (IOException ex) {
                             Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -921,6 +914,7 @@ public class StartPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
