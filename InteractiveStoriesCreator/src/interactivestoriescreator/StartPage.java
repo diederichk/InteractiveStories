@@ -36,41 +36,37 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author alexa
+ * @author Alex Popov
  */
 public class StartPage extends javax.swing.JFrame {
 
     /**
      * Creates new form StartPage
      */
-    public ArrayList<StoryPage> storyPages = new ArrayList<StoryPage>();
+    public ArrayList<StoryPage> storyPages = new ArrayList<StoryPage>(); //pages in the outline
     
-    public ArrayList<File> pages = new ArrayList<File>();
-    public ArrayList<File> choices = new ArrayList<File>();
+    public ArrayList<File> pages = new ArrayList<File>(); //backgrounds that have been imported but not added to outline
     
-    public File wrongChoice = null; public File wrongSound = null;
-    public JLabel correctPicture = null; public JLabel wrongPicture = null;
+    public File wrongChoice = null; public File wrongSound = null; public JLabel wrongPicture = null; //file, sound and picture displayed when wrong answer is picked
     
-    public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>();
-    public ArrayList<JButton> pageButtons = new ArrayList<JButton>();
+    public ArrayList<JLabel> pageLabels = new ArrayList<JLabel>(); //small icons for page backgrounds
+    public ArrayList<JButton> pageButtons = new ArrayList<JButton>(); //buttons for adding page backgrounds
     
-    public ArrayList<JLabel> choiceLabels = new ArrayList<JLabel>();
-    public ArrayList<JButton> choiceButtons = new ArrayList<JButton>();
+    public ArrayList<File> components = new ArrayList<File>(); //stores characters for adding in the editor
     
-    public ArrayList<File> components = new ArrayList<File>();
+    final JFileChooser fc = new JFileChooser(); //allows for choosing of files
+    MediaPlayer mediaPlayer = null; //allows for playing of music
+    JFXPanel fxPanel = new JFXPanel(); //allows for playing of music (required by MediaPlayer)
     
-    final JFileChooser fc = new JFileChooser();
-    MediaPlayer mediaPlayer = null;
-    JFXPanel fxPanel = new JFXPanel();
+    EditorPage editor = null; //editor page will be created when a page is created/imported
     
-    EditorPage editor = null;
-    
-    ImageIcon playIcon; ImageIcon importIcon; ImageIcon exitIcon; ImageIcon deleteIcon; ImageIcon saveIcon;
-    ImageIcon editIcon; ImageIcon addIcon; ImageIcon outlineIcon; ImageIcon nextIcon; ImageIcon prvIcon;
-    ImageIcon enlargeIcon; ImageIcon shrinkIcon;
+    //Icons for buttons
+    ImageIcon playIcon; ImageIcon importIcon; ImageIcon exitIcon; ImageIcon deleteIcon; ImageIcon saveIcon; ImageIcon editIcon; 
+    ImageIcon addIcon; ImageIcon outlineIcon; ImageIcon nextIcon; ImageIcon prvIcon; ImageIcon enlargeIcon; ImageIcon shrinkIcon;
     
     public StartPage() {
         try{
+            //import icons for buttons from files in the resources folder
             Image tempImage = ImageIO.read(new File("resources\\play.png"));
             tempImage = tempImage.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
             playIcon = new ImageIcon(tempImage);
@@ -100,7 +96,7 @@ public class StartPage extends javax.swing.JFrame {
             addIcon = new ImageIcon(tempImage);
             
             tempImage = ImageIO.read(new File("resources\\outline.png"));
-            tempImage = tempImage.getScaledInstance(20, 10, Image.SCALE_DEFAULT);
+            tempImage = tempImage.getScaledInstance(36, 18, Image.SCALE_DEFAULT);
             outlineIcon = new ImageIcon(tempImage);
             
             tempImage = ImageIO.read(new File("resources\\next.png"));
@@ -121,7 +117,8 @@ public class StartPage extends javax.swing.JFrame {
         }
         
         catch(IOException ex){
-            ex.printStackTrace();
+            System.out.println("ICONS COULDN'T BE IMPORTED. Is the resource folder in the correct location?");
+            ex.printStackTrace(); //BAD THINGS (can happen if the resource folder isn't found)        
         }
         
         initComponents();
@@ -447,7 +444,7 @@ public class StartPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.exit(0);
+        System.exit(0); //if the exit button is clicked, exit
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -507,11 +504,12 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    //add page to outline button clicked
     private void pageButtonActionPerformed(Object e) throws IOException{
-        storyPages.add(new StoryPage(ImageIO.read(pages.get(pageButtons.indexOf(e))),jPanel1,this));
-        if(editor == null){
-            editor = new EditorPage(storyPages,0,this);
-            editor.setVisible(false);
+        storyPages.add(new StoryPage(ImageIO.read(pages.get(pageButtons.indexOf(e))),jPanel1,this)); //make a new page from the chosen background
+        if(editor == null){ //if the editor doesn't yet exist
+            editor = new EditorPage(storyPages,0,this); //make the editor
+            editor.setVisible(false); //hide the editor until "edit" is clicked
         }
     }
     
@@ -550,6 +548,11 @@ public class StartPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       if(storyPages.size() == 0){
+           JOptionPane.showMessageDialog(null, "Please add at least one page","story incomplete",JOptionPane.WARNING_MESSAGE);
+           return;
+       }
+       
         boolean soundsAdded = true;
         for(int i = 0; i < storyPages.size(); i++){
             if(storyPages.get(i).sound == null) soundsAdded = false;
@@ -566,9 +569,10 @@ public class StartPage extends javax.swing.JFrame {
         else{ //if all the checks are passed
             try {
                 if(!soundsAdded) JOptionPane.showMessageDialog(null, "Some pages are missing narration","pages missing narration",JOptionPane.WARNING_MESSAGE);
+                
                 String current = new java.io.File( "." ).getCanonicalPath(); //find working directory
                 
-                //make folders for pictures and audio
+                //make root folder and folders for pictures and audio
                 File folder = new File(current+"\\"+jTextField1.getText());
                 if (!folder.exists()) {
                     if (folder.mkdir()) {
@@ -596,44 +600,48 @@ public class StartPage extends javax.swing.JFrame {
                     }
                 }
                 
-                //copy wrong choice
+                //copy wrong choice image
                 File outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\oops-01.png");
                 copyFile(wrongChoice, outfile);
                 
+                //copy wrong choice sound
+                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_oops.mp3");
+                copyFile(wrongSound,outfile);
+                
+                //copy css file
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\storystyle.css");
                 File infile = new File(current+"\\resources\\storystyle.css");
                 copyFile(infile,outfile);
                 
+                //copy left arrow image
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\left_arrow.png");
                 infile = new File(current+"\\resources\\left_arrow.png");
                 copyFile(infile,outfile);
                 
+                //copy right arrow image
                 outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Images_3\\right_arrow.png");
                 infile = new File(current+"\\resources\\right_arrow.png");
                 copyFile(infile,outfile);
                 
-                outfile = new File(current+"\\"+jTextField1.getText()+"\\Story_Audio\\audio_oops.mp3");
-                copyFile(wrongSound,outfile);
-                
-                for(int i = 0; i < storyPages.size(); i++){
-                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-0"+i+".png");
-                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-"+i+".png");
-                    ImageIO.write(storyPages.get(i).background,"png",outfile);
+                for(int i = 0; i < storyPages.size(); i++){ //for every page in the outline
+                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-0"+i+".png"); //specifies where to copy
+                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\story1-newratio-"+i+".png"); //specifies where to copy
+                    ImageIO.write(storyPages.get(i).background,"png",outfile); //copy background image of the page
                     
-                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-0"+i+".mp3");
-                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-"+i+".mp3");
-                    if(storyPages.get(i).sound != null) copyFile(storyPages.get(i).sound,outfile);
-                    else copyFile(new File(current+"\\resources\\1min.mp3"),outfile);
+                    if(i<10) outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-0"+i+".mp3"); //specifies where to copy
+                    else outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Audio\\audio-"+i+".mp3"); //specifies where to copy
+                    if(storyPages.get(i).sound != null) copyFile(storyPages.get(i).sound,outfile); //if there is sound, copy sound for the page
+                    else copyFile(new File(current+"\\resources\\1min.mp3"),outfile); //if there isn't sound, copy 1 min. silent sound file
                     
-                    if(storyPages.get(i).choicePage){
+                    if(storyPages.get(i).choicePage){ //if page has choices on it
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\correct-choice-"+i+".png");
-                        ImageIO.write(storyPages.get(i).correctPicture,"png",outfile);
+                        ImageIO.write(storyPages.get(i).correctPicture,"png",outfile); //copy correct choice
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice1-"+i+".png");
-                        ImageIO.write(storyPages.get(i).wrongPicture1,"png",outfile);
+                        ImageIO.write(storyPages.get(i).wrongPicture1,"png",outfile); //copy 1st wrong choice
                         
                         outfile = new File(current+"\\"+jTextField1.getText()+"\\"+"Story_Images_3\\wrong-choice2-"+i+".png");
-                        ImageIO.write(storyPages.get(i).wrongPicture2,"png",outfile);
+                        ImageIO.write(storyPages.get(i).wrongPicture2,"png",outfile); //copy 2nd wrong choice
                     }
                 }
                 
@@ -698,8 +706,8 @@ public class StartPage extends javax.swing.JFrame {
                 try(BufferedReader br = new BufferedReader(new FileReader(infile))) { //open a file reader for the reference javascript file
                     try(FileWriter fw = new FileWriter(outfile)){ //open a file writer for the new javasctipt file
                         for(String line; (line = br.readLine()) != null; ) { //loop through the reference file by line
-                            if(line.contains("if (slide > 20)")) line = "if (slide > " + storyPages.size() + "){"; 
-                            if(line.contains("slide = 20;")) line = "slide = "+storyPages.size()+";"; 
+                            if(line.contains("if (slide > 20)")) line = "if (slide > " + storyPages.size() + "){";
+                            if(line.contains("slide = 20;")) line = "slide = "+storyPages.size()+";";
                             if(line.contains("if (song > 20)")) line = "if (song > " + storyPages.size() + "){";
                             if(line.contains("song = 20;")) line = "song = "+storyPages.size()+";";
                             if(line.contains("//ADD STORY IMPORTS HERE")) line = storyImports;
@@ -712,7 +720,7 @@ public class StartPage extends javax.swing.JFrame {
                     }
                 }
                 
-                JOptionPane.showMessageDialog(null, "Save succesful");
+                JOptionPane.showMessageDialog(null, "Save succesful"); //notify user that the save worked
                 
             } catch (IOException ex) {
                 Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the save directory can't be made or files can't be saved)
@@ -721,9 +729,10 @@ public class StartPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     
+    //copies a file from a source to a destination
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
-            destFile.createNewFile();
+            destFile.createNewFile(); //if the destination file doesn't exist, create it
         }
 
         FileChannel source = null;
@@ -732,7 +741,7 @@ public class StartPage extends javax.swing.JFrame {
         try {
             source = new FileInputStream(sourceFile).getChannel();
             destination = new FileOutputStream(destFile).getChannel();
-            destination.transferFrom(source, 0, source.size());
+            destination.transferFrom(source, 0, source.size()); //transfer file from source to destination
         }
         finally {
             if(source != null) {
@@ -744,23 +753,26 @@ public class StartPage extends javax.swing.JFrame {
         }
     }
     
+    //delete button (for wrong choice picture) clicked
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if(wrongPicture != null) jPanel8.remove(wrongPicture);
-        wrongPicture = null;
-        wrongChoice = null;
+        if(wrongPicture != null) jPanel8.remove(wrongPicture); //if there is a wrong picture, undraw it
+        wrongPicture = null; //delete the wrong picture
+        wrongChoice = null; //delete the wrong picture file
         
         jPanel8.revalidate();
-        jPanel8.repaint();
+        jPanel8.repaint(); //redraw the panel
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    //import button (for wrong choice picture) clicked
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         int returnVal = fc.showOpenDialog(jPanel1); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-            wrongChoice = fc.getSelectedFile();
-            drawWrongChoice();
+            wrongChoice = fc.getSelectedFile(); //set the wrong choice picture to the file
+            drawWrongChoice(); //draw the wrong choice picture
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    //draws the wrong choice image from the wrong choice file
     private void drawWrongChoice(){
         Image image = null;
         try {
@@ -773,106 +785,113 @@ public class StartPage extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(image); //make an image icon from the image
 
         wrongPicture = new JLabel();
-        wrongPicture.setIcon(icon);
+        wrongPicture.setIcon(icon); //make a label with the icon
 
-        jPanel8.setLayout(new FlowLayout()); // if this is the first image, set up the image layout
-        jPanel8.add(wrongPicture);
-        jPanel8.revalidate();
+        jPanel8.setLayout(new FlowLayout()); //set up the image layout
+        jPanel8.add(wrongPicture); //draw the label
+        jPanel8.revalidate(); //redraw the window
     }
     
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    //import/delete button (for wrong choice sound) clicked
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(wrongSound == null){
+        if(wrongSound == null){ //if there isn't a sound imported yet
             int returnVal = fc.showOpenDialog(jPanel1); //open file picker
             if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-                wrongSound = fc.getSelectedFile();
+                wrongSound = fc.getSelectedFile(); //set the wrong choice sound to the file
                 jButton5.setText("Delete");
+                jButton5.setIcon(deleteIcon); //switch the button icon and text to "delete"
             }
         }
-        else{
-            wrongSound = null;
+        else{ //if there already is a sound imported
+            wrongSound = null; //delete the sound
             jButton5.setText("Import");
+            jButton5.setIcon(importIcon); //set the button icon and text to "import"
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    //play button (for wrong choice sound) clicked
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(mediaPlayer != null){
-            mediaPlayer.stop();
-            mediaPlayer = null;
+        if(mediaPlayer != null){ //if a sound is already playing
+            mediaPlayer.stop(); //stop the sound
+            mediaPlayer = null; //delete the player for the sound
         }
-        else{
-            if(wrongSound != null){
+        else{ //if nothing is playing
+            if(wrongSound != null){ //if there is a wrong choice sound
                 try {
-                    Media hit = new Media(wrongSound.toURI().toURL().toString());
-                    mediaPlayer = new MediaPlayer(hit);
-                    mediaPlayer.play();
+                    Media hit = new Media(wrongSound.toURI().toURL().toString()); //convert the wrong choice sound file to a media
+                    mediaPlayer = new MediaPlayer(hit); //make a new media player for the media
+                    mediaPlayer.play(); //play the sound
                 } catch (Exception ex) {
-                    Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the sound can't be played)
                 }
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    //import story button is clicked
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnVal = fc.showOpenDialog(jPanel1); //open file picker
-            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
-                String directory = fc.getSelectedFile().toString();
-                int i = 0;
-                File f = new File(directory+"\\Story_Images_3\\story1-newratio-00.png");
-                if(!f.exists()){
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); //switch file picker to only pick folders
+        int returnVal = fc.showOpenDialog(jPanel1); //open folder picker
+            if(returnVal == JFileChooser.APPROVE_OPTION){ //when a folder is selected
+                String directory = fc.getSelectedFile().toString(); //get the location of the foler
+                int i = 0; //number of page being imported
+                File f = new File(directory+"\\Story_Images_3\\story1-newratio-00.png"); //find the first page
+                if(!f.exists()){ //if the first page doesn't exist in the specified folder
                     JOptionPane.showMessageDialog(null, "This folder doesn't contain a story","wrong folder",JOptionPane.WARNING_MESSAGE);
-                    return;
+                    return; //warn the user that they have selected the wrong folder and return
                 }
-                wrongSound = new File(directory+"\\Story_Audio\\audio_oops.mp3");
-                jButton5.setText("Delete");
                 
-                wrongChoice = new File(directory+"\\Story_Images_3\\oops-01.png");
-                drawWrongChoice();
+                wrongSound = new File(directory+"\\Story_Audio\\audio_oops.mp3"); //import the wrong choice sound
+                jButton5.setText("Delete");
+                jButton5.setIcon(deleteIcon); //set the button icon and text to "delete"
+                
+                wrongChoice = new File(directory+"\\Story_Images_3\\oops-01.png"); //import the wrong choice image
+                drawWrongChoice(); //draw the wrong choice image
                 System.out.println("wrong choice imported");
 
-                while(f.exists()){
+                while(f.exists()){ //while there are more pages to import
                     StoryPage page = null;
                     try {
-                        page = new StoryPage(ImageIO.read(f),jPanel1,this);
+                        page = new StoryPage(ImageIO.read(f),jPanel1,this); //make a new page with the imported background
                     } catch (IOException ex) {
-                        Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the background can't be imported)
                     }
                     
-                    if(i<10) page.sound = new File(directory+"\\Story_Audio\\audio-0"+i+".mp3");
-                    else page.sound = new File(directory+"\\Story_Audio\\audio-"+i+".mp3");
+                    if(i<10) page.sound = new File(directory+"\\Story_Audio\\audio-0"+i+".mp3"); //set page narration to imported sound
+                    else page.sound = new File(directory+"\\Story_Audio\\audio-"+i+".mp3"); //set page narration to imported sound
                     
-                    File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png");
-                    if(correctChoice.exists()){
+                    File correctChoice = new File(directory+"\\Story_Images_3\\correct-choice-"+i+".png"); //import the correct choice (for choice pages)
+                    if(correctChoice.exists()){ //if the correct choice file exists
                         try {
-                            page.makeChoice();
+                            page.makeChoice(); //make the page a choice page
                             
-                            page.correctPicture = ImageIO.read(correctChoice);                          
-                            page.wrongPicture1 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png"));                            
-                            page.wrongPicture2 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png"));
+                            page.correctPicture = ImageIO.read(correctChoice); //set the correct choice                          
+                            page.wrongPicture1 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice1-"+i+".png")); //import and set 1st wrong choice                       
+                            page.wrongPicture2 = ImageIO.read(new File(directory+"\\Story_Images_3\\wrong-choice2-"+i+".png")); //import and set 2nd wrong choice
                             
                         } catch (IOException ex) {
-                            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the choices can't be imported
                         }
                     }
                     
-                    storyPages.add(page);
-                    i++;
-                    if(i<10) f = new File(directory+"\\Story_Images_3\\story1-newratio-0"+i+".png");
-                    else f = new File(directory+"\\Story_Images_3\\story1-newratio-"+i+".png");
+                    storyPages.add(page); //add the page to the list of pages in the outline
+                    i++; //advance the counter of imported pages
+                    if(i<10) f = new File(directory+"\\Story_Images_3\\story1-newratio-0"+i+".png"); //begin import of the next page
+                    else f = new File(directory+"\\Story_Images_3\\story1-newratio-"+i+".png"); //begin import of the next page
                     
                     System.out.println("page "+i+" imported");
                 }
-                JOptionPane.showMessageDialog(null, "Import succesful");             
+                JOptionPane.showMessageDialog(null, "Import succesful"); //tell the user the import worked
             }
-            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY); //switch file picker to only pick files
             
-            if(editor == null){
-                editor = new EditorPage(storyPages,0,this);
-                editor.setVisible(false);
+            if(editor == null){ //if the editor doesn't yet exist
+                editor = new EditorPage(storyPages,0,this); //make the editor
+                editor.setVisible(false); //hide the editor until "edit" is clicked
             }
     }//GEN-LAST:event_jButton9ActionPerformed
     
