@@ -1,0 +1,6 @@
+StartPage:
+	Framework for outline view for adding and rearanging pages
+
+	Variables:
+		List of pages in outline (storyPages)
+		List of pages imported but not in outline (pages)

@@ -110,19 +110,19 @@ public class StoryPage {
             });
     }
     
-    //make the page a choice page
+    //makes the page a choice page
     public void makeChoice(){
         panel.setBackground(Color.cyan); //color the panel blue to visually indicate a choice page
         choicePage = true; //set the page to be a choice page
     }
     
-    //make the page a normal page
+    //makes the page a normal page
     public void makeNotChoice(){
             panel.setBackground(Color.gray);//color the panel grey to visually indicate a normal page
             choicePage = false; //set the page to be a normal page
         }
     
-    //handles clicks of the delete page button
+    //handles clicks of the "delete" button
     public void deleteButtonActionPerformed(Object e){
         parentPanel.remove(panel); //undraw the page's panel from the outline
         parentPage.storyPages.remove(this); //remove the page from the list of pages
@@ -132,7 +132,7 @@ public class StoryPage {
         parentPage.snapPages(); //put the pages back in order
     }
     
-    //handles clicks of the edit page button
+    //handles clicks of the "edit" button
     public void editButtonActionPerformed(Object e){
         parentPage.editor.setVisible(true); //open the editor
         parentPage.editor.goToPage(parentPage.storyPages.indexOf(this)); //set the editor page to the page where the edit button was clicked

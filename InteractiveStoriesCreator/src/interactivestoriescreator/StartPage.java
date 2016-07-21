@@ -470,18 +470,13 @@ public class StartPage extends javax.swing.JFrame {
 
             JLabel picLabel = new JLabel(); //make a new label
             picLabel.setIcon(icon); //add the image icon to the label
-            //picLabel.setText(pages.get(pages.size()-1).getName()); //set the label text to the filename of the image
 
-            JButton picButton = new JButton(); //make a new button (for picking an explanation)
-            //picButton.setText("add");
+            JButton picButton = new JButton(); //make a new button (for adding the page to the outline)
             picButton.setIcon(addIcon);
 
             picButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ try {
-                    //if the button is clicked, handle in explanationButtonActionPerformed
-                    //System.out.println("add button clicked!");
                     pageButtonActionPerformed(e.getSource());
-                    //explanationButtonActionPerformed(e.getSource()); //pass the button to explanationButtonActionPerformed
                     } catch (IOException ex) {
                         Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -514,11 +509,11 @@ public class StartPage extends javax.swing.JFrame {
     }
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(pageLabels.size() > 0){ //if there are roles
-            jPanel6.remove(pageLabels.get(pageLabels.size()-1)); //undraw the label (image) of the role
-            jPanel6.remove(pageButtons.get(pageButtons.size()-1)); //undraw the button of the role
+        if(pageLabels.size() > 0){ //if there are pages in imports
+            jPanel6.remove(pageLabels.get(pageLabels.size()-1)); //undraw the label of the page
+            jPanel6.remove(pageButtons.get(pageButtons.size()-1)); //undraw the button of the page
 
-            pages.remove(pages.size()-1); //remove the role from the list of roles
+            pages.remove(pages.size()-1); //remove the page from the list of page
             pageLabels.remove(pageLabels.size()-1); //remove the corresponding label from the list of labels
             pageButtons.remove(pageButtons.size()-1); //remove the corresponding button from the list of buttons
 
@@ -528,10 +523,6 @@ public class StartPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public void snapPages(){
-        jPanel1MouseReleased(null);
-    }
-    
-    private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         for(int i=0; i<storyPages.size(); i++){
             StoryPage highest = storyPages.get(i);
             for(int j = i+1; j<storyPages.size(); j++){
@@ -543,8 +534,11 @@ public class StartPage extends javax.swing.JFrame {
             storyPages.remove(highest);
             storyPages.add(i,highest);
             highest.setOrder(i);
-            //highPanel.setBounds(100,i*200+100,300,169);
         }
+    }
+    
+    private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
+            snapPages();
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -52,7 +52,7 @@ public class EditorPage extends javax.swing.JFrame {
     
     JLabel currentComponentLabel = null; //currently selected component/character label (used to draw option panel)
     
-    JButton correctButton; JButton wrongButton1; JButton wrongButton2; //buttons for selecting/deleting choices on choice pages
+    JButton correctButton; JButton wrongButton1; JButton wrongButton2; //buttons for importing/deleting choices on choice pages
     JLabel correctChoice = null; JLabel wrongChoice1 = null; JLabel wrongChoice2 = null; //labels for choices on choice pages
     
     JFileChooser fc = new JFileChooser(); //allows for choosing of files
