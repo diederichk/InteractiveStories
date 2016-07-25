@@ -581,24 +581,23 @@ public class StartPage extends javax.swing.JFrame {
         int returnVal = fc.showOpenDialog(jPanel5); //open file picker
         if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
             background = fc.getSelectedFile(); //import the file
+            Image image = null;
+            try {
+                image = ImageIO.read(background); //convert file to image
+            } catch (IOException ex) {
+                Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
+                return;
+            }
+            image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT); //scale the image down to fit in the window
+            ImageIcon icon = new ImageIcon(image); //make an image icon from the image
+            jPanel5.setLayout(new FlowLayout()); //set the layout for the image
+
+            backlabel = new JLabel(); //make a new label
+            backlabel.setIcon(icon); //add the image icon to a label
+
+            jPanel5.add(backlabel); //draw the label
+            jPanel5.revalidate(); //redraw and scale page
         }
-
-        Image image = null;
-        try {
-            image = ImageIO.read(background); //convert file to image
-        } catch (IOException ex) {
-            Logger.getLogger(StartPage.class.getName()).log(Level.SEVERE, null, ex); //BAD THINGS (can happen if the file is not an image)
-            return;
-        }
-        image = image.getScaledInstance(600, 338, Image.SCALE_DEFAULT); //scale the image down to fit in the window
-        ImageIcon icon = new ImageIcon(image); //make an image icon from the image
-        jPanel5.setLayout(new FlowLayout()); //set the layout for the image
-
-        backlabel = new JLabel(); //make a new label
-        backlabel.setIcon(icon); //add the image icon to a label
-
-        jPanel5.add(backlabel); //draw the label
-        jPanel5.revalidate(); //redraw and scale page
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -715,12 +714,12 @@ public class StartPage extends javax.swing.JFrame {
             int returnVal = fc.showOpenDialog(jPanel1); //open file picker
             if(returnVal == JFileChooser.APPROVE_OPTION){ //when a file is selected
                 backMusic = fc.getSelectedFile();
-                jButton5.setText("Delete background music");
+                jButton7.setText("Delete background music");
             }
         }
         else{
             backMusic = null;
-            jButton5.setText("Import background music");
+            jButton7.setText("Import background music");
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
