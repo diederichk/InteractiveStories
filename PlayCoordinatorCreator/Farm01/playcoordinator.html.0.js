@@ -4,7 +4,7 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
-var people = []; // list of people, needs to be dynamic
+var people = [{name:"Nora",role:-1},{name:"Hayden",role:-1},{name:"Jonathan",role:-1},{name:"George",role:-1}];
 var results = []; // for displaying people and roles chosen
 
 var title; // text which indicates who needs to pick
