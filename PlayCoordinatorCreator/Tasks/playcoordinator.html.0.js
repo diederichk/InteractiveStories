@@ -102,9 +102,9 @@ function init() {
 	imgqueue.addEventListener("complete", createContainer); // Calls handleCmplt when load is finished
 	
 	imgqueue.loadManifest([
-			  {id:'0', src: imgPath + 'story1-newratio-00.png'},
+				{id:'0', src: imgPath + 'story1-newratio-00.png'},
 				{id:'1', src: imgPath + 'story1-newratio-01.png'},
-			  {id:'2', src: imgPath + 'story1-newratio-02.png'},
+				{id:'2', src: imgPath + 'story1-newratio-02.png'},
 				{id:'3', src: imgPath + 'story1-newratio-03.png'},
 				{id:'4', src: imgPath + 'story1-newratio-04.png'},
 				{id:'5', src: imgPath + 'story1-newratio-05.png'},
@@ -382,7 +382,7 @@ function drawResults(page){
     container.removeChild(prevArrow);
     container.removeChild(prevShape);
   }
-  
+  var tasks = [];
 	//draw names of users, roles underneath names
   for(var i = (page-1)*8; i < page*8; i++){
     if(people[i] !== undefined){
@@ -394,8 +394,11 @@ function drawResults(page){
       container.addChild(text);
       
       var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
+	  image.name = people[i].role; /*CHANGE*/ // This line must be added to original
       image.x = (((i-(page-1)*8)%4)*450)+200;
       image.y = Math.floor((i-(page-1)*8)/4)*600+200;
+	  image.addEventListener("click", taskClick);
+	  
       container.addChild(image);
       
       results.push(text);
@@ -447,6 +450,20 @@ function drawResults(page){
   	container.addChild(prevShape);
   	container.setChildIndex(prevShape, 1);  
 	}
+	resize();
+}
+/*CHANGE*/
+// Called to remember a chosen task. Plays the audio for a given task.
+function taskClick(event){
+	console.log("CLICK WORKED!",event.target.name);
+	console.log("text: " + container.getChildIndex(title));
+
+	var current_task = event.target.name;
+	var tsk = current_task + 1;
+    
+	createjs.Sound.stop();
+	playSound(tsk.toString());
+
 	resize();
 }
 
