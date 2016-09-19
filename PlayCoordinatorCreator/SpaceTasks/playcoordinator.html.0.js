@@ -4,7 +4,7 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
-var people = []; // list of people, needs to be dynamic
+var people = [{name:"Hayden",role:-1},{name:"Jonathan",role:-1},{name:"George",role:-1}];
 var results = []; // for displaying people and roles chosen
 
 var title; // text which indicates who needs to pick
@@ -14,7 +14,7 @@ var imgPath = "Story_Images_3/";
 var IMAGE_WIDTH = 2200;
 var IMAGE_HEIGHT = 1238;
 
-var NUM_ROLES=12; // number of roles to chose from
+var NUM_ROLES=3; // number of roles to chose from
 
 //variables for current slide,music playing, person picking role
 var song=0;
@@ -409,7 +409,7 @@ function drawResults(page){
 			container.addChild(text);
 			
 			var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
-			image.name = people[i].role;
+			image.name = people[i].role; /*CHANGE*/ // This line must be added to original
 			image.x = (((i-(page-1)*8)%4)*450)+200;
 			image.y = Math.floor((i-(page-1)*8)/4)*600+200;
 			image.addEventListener("click", taskClick);
@@ -433,11 +433,9 @@ function drawResults(page){
 		
 		nextShape = new createjs.Shape();
 		nextShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
-		//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 		nextShape.x = IMAGE_WIDTH-310;
 		nextShape.y = 40;
 		nextShape.alpha = 0.01;
-		//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 		nextShape.addEventListener("click", nextPage);
 
 		container.addChild(nextShape);
@@ -468,6 +466,7 @@ function drawResults(page){
 	resize();
 }
 
+/*CHANGE*/
 // Called to remember a chosen task. Plays the audio for a given task.
 function taskClick(event){
 	console.log("CLICK WORKED!",event.target.name);
