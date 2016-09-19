@@ -213,33 +213,48 @@ function handleImageLoad() {
 
 //create role buttons and title text and wait for clicks
 function addRoleButtons(){
-  for(var i = 0; i < NUM_ROLES; i++){
-	  var button = new createjs.Bitmap(imgqueue.getResult("role"+(i+1)));
-	  button.name = i;
-    button.x = (i%4)*400+270;
-    button.y = Math.floor(i/4)*320+200;
-
- var backShape = new createjs.Shape();
-    backShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 400, 400, 30);
-  	backShape.x = 40;
-	  backShape.y = 40;
-    backShape.alpha = 0.01;
-    
-    button.addEventListener("click", roleClick);
-    button.hitArea = backShape;
-    
-    container.addChild(button);
-    container.setChildIndex(button,1);
-    
-	  roles[i] = button;
-    //container.setChildIndex(title,2);
+	var match = false;	// Used to determine if a role has been previously chosen
+	
+	for(var i = 0; i < NUM_ROLES; i++){
+		
+		// Add logic to check if a role is assigned to a certain person, then do not display the role
+		// Loop to determine if match 
+		for(var j = 0; j < people.length; j++) {
+			if( i == people[j].role) {
+				match = true;
+			}
+		}
+		if (match) {
+			match = false;
+			continue;
+		} //End of matching
+		
+		var button = new createjs.Bitmap(imgqueue.getResult("role"+(i+1)));
+		button.name = i;
+		button.x = (i%4)*400+270;
+		button.y = Math.floor(i/4)*320+200;
+	
+		var backShape = new createjs.Shape();
+		backShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 400, 400, 30);
+		backShape.x = 40;
+		backShape.y = 40;
+		backShape.alpha = 0.01;
+		
+		button.addEventListener("click", roleClick);
+		button.hitArea = backShape;
+		
+		container.addChild(button);
+		container.setChildIndex(button,1);
+		
+		roles[i] = button;
+		//container.setChildIndex(title,2);
 	}
-  title = new createjs.Text("Pass to: "+ people[person].name, "80px Comic Sans MS", "#ff7700");
-  title.x = 330;
-  title.y = 180;
-  title.textBaseline = "alphabetic";
+	title = new createjs.Text("Pass to: "+ people[person].name, "80px Comic Sans MS", "#ff7700");
+	title.x = 330;
+	title.y = 180;
+	title.textBaseline = "alphabetic";
     
-  container.addChild(title);
+	container.addChild(title);
 }
 
 //create back button and background shape
@@ -276,7 +291,7 @@ function addCheckButton(){
 	container.addChild(checkArrow);
 	container.setChildIndex(checkArrow, 1);
 	
-  checkShape = new createjs.Shape();
+	checkShape = new createjs.Shape();
 	checkShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30); // Original orange color: #ff8c00
 	//nxtShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
 	checkShape.x = IMAGE_WIDTH - 310;
@@ -301,20 +316,20 @@ function playSound(name) {
 
 //called when a role is picked. Remove role buttons and allow user to confirm selection or return
 function roleClick(event){
-  console.log("CLICK WORKED!",event.target.name);
-  console.log("text: " + container.getChildIndex(title));
-  container.removeChild(title);
-  for(var i = 0; i < NUM_ROLES; i++){
-    container.removeChild(roles[i]);
-  }
-  addCheckButton();
-  current_role = event.target.name;
-  slide = current_role + 1;
+	console.log("CLICK WORKED!",event.target.name);
+	console.log("text: " + container.getChildIndex(title));
+	container.removeChild(title);
+	for(var i = 0; i < NUM_ROLES; i++){
+		container.removeChild(roles[i]);
+	}
+	addCheckButton();
+	current_role = event.target.name;
+	slide = current_role + 1;
     
-  createjs.Sound.stop();
-  playSound(slide.toString());
-  
-  bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
+	createjs.Sound.stop();
+	playSound(slide.toString());
+	
+	bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
 	// Adding to Container
 	container.addChildAt(bmp,1);
 	resize();
@@ -322,138 +337,138 @@ function roleClick(event){
 
 //called when back button is pressed. If not already on the initial screen, return and draw role buttons
 function prvClck(event){
-  console.log("BACK CLICK WORKED!");
-  if(slide !== 0){
-    slide = 0;
-    container.removeChild(bmp);
-    container.removeChild(checkShape);
-    container.removeChild(checkArrow);
-    addRoleButtons();
-    
-    createjs.Sound.stop();
-    playSound("0");
-  
-  }
-  resize();
+	console.log("BACK CLICK WORKED!");
+	if(slide !== 0){
+		slide = 0;
+		container.removeChild(bmp);
+		container.removeChild(checkShape);
+		container.removeChild(checkArrow);
+		addRoleButtons();
+		
+		createjs.Sound.stop();
+		playSound("0");
+	
+	}
+	resize();
 }
 
 //called when check button is pressed
 function nxtClck(event){
-  people[person].role = current_role;
-  //if there are still people to pick, return to the initial screen
-  if(person < people.length-1){
-    person++;
-    prvClck();
-  }
-  //if everybody has picked, draw final carousel
-  else{
-    drawResults(resultSlide);
-  }
-  resize();
+	people[person].role = current_role;
+	//if there are still people to pick, return to the initial screen
+	if(person < people.length-1){
+		person++;
+		prvClck();
+	}
+	//if everybody has picked, draw final carousel
+	else{
+		drawResults(resultSlide);
+	}
+	resize();
 }
 
 function nextPage(event){
-  resultSlide++;
-  drawResults(resultSlide);
+	resultSlide++;
+	drawResults(resultSlide);
 }
 
 function prevPage(event){
-  resultSlide--;
-  drawResults(resultSlide);
+	resultSlide--;
+	drawResults(resultSlide);
 }
 
 function drawResults(page){
-  container.removeChild(bmp);
-  container.removeChild(checkShape);
-  container.removeChild(checkArrow);
-  container.removeChild(backArrow);
-  container.removeChild(backShape);
+	container.removeChild(bmp);
+	container.removeChild(checkShape);
+	container.removeChild(checkArrow);
+	container.removeChild(backArrow);
+	container.removeChild(backShape);
   
-  for(var j = 0; j < results.length; j++){
-    container.removeChild(results[j]);
-  }
+	for(var j = 0; j < results.length; j++){
+		container.removeChild(results[j]);
+	}
+	
+	if(nextArrow !== undefined){
+		container.removeChild(nextArrow);
+		container.removeChild(nextShape);
+	}
   
-  if(nextArrow !== undefined){
-    container.removeChild(nextArrow);
-    container.removeChild(nextShape);
-  }
-  
-  if(prevArrow !== undefined){
-    container.removeChild(prevArrow);
-    container.removeChild(prevShape);
-  }
-  
+	if(prevArrow !== undefined){
+		container.removeChild(prevArrow);
+		container.removeChild(prevShape);
+	}
+	
 	//draw names of users, roles underneath names
-  for(var i = (page-1)*8; i < page*8; i++){
-    if(people[i] !== undefined){
-      console.log(people[i].name + ": " + people[i].role);
-      var text = new createjs.Text(people[i].name, "80px Comic Sans MS", "#ff7700");
-      text.x = (((i-(page-1)*8)%4)*450)+300;
-      text.y = Math.floor((i-(page-1)*8)/4)*600+180;
-      text.textBaseline = "alphabetic";
-      container.addChild(text);
-      
-      var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
-      image.x = (((i-(page-1)*8)%4)*450)+200;
-      image.y = Math.floor((i-(page-1)*8)/4)*600+200;
-      container.addChild(image);
-      
-      results.push(text);
-      results.push(image);
-    }
-  }
+	for(var i = (page-1)*8; i < page*8; i++){
+		if(people[i] !== undefined){
+			console.log(people[i].name + ": " + people[i].role);
+			var text = new createjs.Text(people[i].name, "80px Comic Sans MS", "#ff7700");
+			text.x = (((i-(page-1)*8)%4)*450)+300;
+			text.y = Math.floor((i-(page-1)*8)/4)*600+180;
+			text.textBaseline = "alphabetic";
+			container.addChild(text);
+			
+			var image = new createjs.Bitmap(imgqueue.getResult("role"+(people[i].role+1)));
+			image.x = (((i-(page-1)*8)%4)*450)+200;
+			image.y = Math.floor((i-(page-1)*8)/4)*600+200;
+			container.addChild(image);
+			
+			results.push(text);
+			results.push(image);
+		}
+	}
 	
 	//make next arrow
 	if(page*8<people.length){
-  	nextArrow = new createjs.Bitmap(imgqueue.getResult("right"));
-  	nextArrow.x = IMAGE_WIDTH-280;
-  	nextArrow.y = 40;
-  	nextArrow.addEventListener("click", nextPage);/*BUG*/	// Including this following line of code will cause the images to display
-  															// but will prevent all event listeners from functioning.
-  	container.addChild(nextArrow);
-  	container.setChildIndex(nextArrow, 1);
-  	
-  	nextShape = new createjs.Shape();
-  	nextShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
-  	//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
-  	nextShape.x = IMAGE_WIDTH-310;
-  	nextShape.y = 40;
-  	nextShape.alpha = 0.01;
-  	//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-  	nextShape.addEventListener("click", nextPage);
-  	
-  	container.addChild(nextShape);
-  	container.setChildIndex(nextShape, 1);  
+		nextArrow = new createjs.Bitmap(imgqueue.getResult("right"));
+		nextArrow.x = IMAGE_WIDTH-280;
+		nextArrow.y = 40;
+		nextArrow.addEventListener("click", nextPage);/*BUG*/	// Including this following line of code will cause the images to display
+																// but will prevent all event listeners from functioning.
+		container.addChild(nextArrow);
+		container.setChildIndex(nextArrow, 1);
+		
+		nextShape = new createjs.Shape();
+		nextShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
+		//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		nextShape.x = IMAGE_WIDTH-310;
+		nextShape.y = 40;
+		nextShape.alpha = 0.01;
+		//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		nextShape.addEventListener("click", nextPage);
+
+		container.addChild(nextShape);
+		container.setChildIndex(nextShape, 1);  
 	}
 	
 	if(page !== 1){
-  	prevArrow = new createjs.Bitmap(imgqueue.getResult("left"));
-  	prevArrow.x = 40;
-  	prevArrow.y = 40;
-  	prevArrow.addEventListener("click", prevPage);/*BUG*/	// Including this following line of code will cause the images to display
-  															// but will prevent all event listeners from functioning.
-  	container.addChild(prevArrow);
-  	container.setChildIndex(prevArrow, 1);
+		prevArrow = new createjs.Bitmap(imgqueue.getResult("left"));
+		prevArrow.x = 40;
+		prevArrow.y = 40;
+		prevArrow.addEventListener("click", prevPage);/*BUG*/	// Including this following line of code will cause the images to display
+																// but will prevent all event listeners from functioning.
+		container.addChild(prevArrow);
+		container.setChildIndex(prevArrow, 1);
+
+		prevShape = new createjs.Shape();
+		prevShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
+		//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		prevShape.x = 40;
+		prevShape.y = 40;
+		prevShape.alpha = 0.01;
+		//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+		prevShape.addEventListener("click", prevPage);
   	
-  	prevShape = new createjs.Shape();
-  	prevShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);  // Original orange color: #ff8c00
-  	//prvShape.graphics.beginStroke("#000000").setStrokeStyle(3).drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
-  	prevShape.x = 40;
-  	prevShape.y = 40;
-  	prevShape.alpha = 0.01;
-  	//prvShape.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-  	prevShape.addEventListener("click", prevPage);
-  	
-  	container.addChild(prevShape);
-  	container.setChildIndex(prevShape, 1);  
+		container.addChild(prevShape);
+		container.setChildIndex(prevShape, 1);  
 	}
 	resize();
 }
 
 function loadComplete(evt) {
-		// Load completed.
-		//playSound("happy");
-		playSound("0");
+	// Load completed.
+	//playSound("happy");
+	playSound("0");
 }
 
 function resize() {
