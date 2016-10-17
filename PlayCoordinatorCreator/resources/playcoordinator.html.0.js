@@ -7,6 +7,11 @@ var roles = []; // role buttons
 var people = []; // list of people, needs to be dynamic
 var results = []; // for displaying people and roles chosen
 
+// Creating a queue to manage click events
+var taskQueue = [];		// Simply an array that can be turned into a queue
+//queue.push;			// Method call for adding to a queue
+//queue.shift;			// Method call for removing from the queue
+
 var title; // text which indicates who needs to pick
 
 var musicPath = "Story_Audio/";
@@ -28,6 +33,8 @@ var current_role = -1;
 // Sound Variables
 var src;            // the audio src we are trying to play
 var soundInstance;  // the soundInstance returned by Sound when we create or play a src
+soundInstance.addEventListener('complete', playQueueSound);
+var playingSound = false;
 var canvas;  		// the canvas we draw to
 
 var nextArrow, prevArrow;
@@ -305,15 +312,6 @@ function addCheckButton(){
 	playSound("coin");
 }
 
-function playSound(name) {
-	// Play the sound using the ID created above.
-	//soundInstance = createjs.Sound.play(name);
-	
-	//For testing
-	soundInstance = createjs.Sound.play(name);
-	//return createjs.Sound.play(name);
-}
-
 //called when a role is picked. Remove role buttons and allow user to confirm selection or return
 function roleClick(event){
 	console.log("CLICK WORKED!",event.target.name);
@@ -469,17 +467,65 @@ function drawResults(page){
 }
 
 // Called to remember a chosen task. Plays the audio for a given task.
+// Calls to this function should be added to the queue and only played when the queue is empty
 function taskClick(event){
 	console.log("CLICK WORKED!",event.target.name);
 	console.log("text: " + container.getChildIndex(title));
 
+	var inQueue = false;
+	
 	var current_task = event.target.name;
 	var tsk = current_task + 1;
     
-	createjs.Sound.stop();
-	playSound(tsk.toString());
+	// Check taskQueue to see if task is currently in queue
+	// Add to queue if not currently in 
+	for(var i = 0; i < taskQueue.length; i++) {
+		if(tsk == taskQueue[i]) {
+			// Found task in queue
+			inQueue = true;
+		}
+	}
+	
+	if(!inQueue){
+		// Add tsk to taskQueue
+		taskQueue.push(tsk);
+		//alert(tsk.toString() + " added to queue")
+	}
+    
+	
+	if (!playingSound) {
+		// Check to see if the queue is empty
+		if(taskQueue.length > 0) {	
+			createjs.Sound.stop();
 
+			// Remove and play the first element in the queue
+			tsk = taskQueue.shift();
+			playingSound = true;
+			playSound(tsk.toString());
+		}
+	}
+	
 	resize();
+}
+
+function playQueueSound(event) {
+	//alert("Sound complete listener fires");
+	playingSound = false;
+	// Check to see if the queue is empty
+	if(taskQueue.length > 0) {	
+		//createjs.Sound.stop();	
+		
+		// Remove and play the first element in the queue
+		tsk = taskQueue.shift();
+		playingSound = true;
+		playSound(tsk.toString());
+	}
+}
+
+function playSound(name) {
+	// Play the sound using the ID created above.
+	soundInstance = createjs.Sound.play(name);
+	soundInstance.addEventListener('complete', playQueueSound);
 }
 
 function loadComplete(evt) {

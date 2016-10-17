@@ -4,7 +4,7 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
-var people = [{name:"Jonathon",role:-1},{name:"Hayden",role:-1},{name:"George",role:-1}];
+var people = [{name:"Jonathon",role:-1},{name:"George",role:-1},{name:"Hayden",role:-1}];
 var results = []; // for displaying people and roles chosen
 
 // Creating a queue to manage click events
@@ -19,7 +19,7 @@ var imgPath = "Story_Images_3/";
 var IMAGE_WIDTH = 2200;
 var IMAGE_HEIGHT = 1238;
 
-var NUM_ROLES=4; // number of roles to chose from
+var NUM_ROLES=12; // number of roles to chose from
 
 //variables for current slide,music playing, person picking role
 var song=0;
@@ -410,8 +410,8 @@ function drawResults(page){
 			image.name = people[i].role;
 			image.x = (((i-(page-1)*8)%4)*450)+200;
 			image.y = Math.floor((i-(page-1)*8)/4)*600+200;
-			image.addEventListener("click", taskClick);		// These events must be caught in a queue and only
-															// played when the queue is empty
+			image.addEventListener("click", taskClick);
+			
 			container.addChild(image);
 			
 			results.push(text);
@@ -471,12 +471,12 @@ function drawResults(page){
 function taskClick(event){
 	console.log("CLICK WORKED!",event.target.name);
 	console.log("text: " + container.getChildIndex(title));
-	
-	var inQueue = false;
 
+	var inQueue = false;
+	
 	var current_task = event.target.name;
 	var tsk = current_task + 1;
-	
+    
 	// Check taskQueue to see if task is currently in queue
 	// Add to queue if not currently in 
 	for(var i = 0; i < taskQueue.length; i++) {
@@ -496,8 +496,8 @@ function taskClick(event){
 	if (!playingSound) {
 		// Check to see if the queue is empty
 		if(taskQueue.length > 0) {	
-			createjs.Sound.stop();	
-			
+			createjs.Sound.stop();
+
 			// Remove and play the first element in the queue
 			tsk = taskQueue.shift();
 			playingSound = true;
@@ -525,6 +525,7 @@ function playQueueSound(event) {
 function playSound(name) {
 	// Play the sound using the ID created above.
 	soundInstance = createjs.Sound.play(name);
+	soundInstance.addEventListener('complete', playQueueSound);
 }
 
 function loadComplete(evt) {
