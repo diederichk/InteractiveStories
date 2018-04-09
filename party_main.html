@@ -45,9 +45,9 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var imgqueue;		// Queue for all images
 	var musicqueue;		// Queue for all sounds
 	var container, bmp;	// Container object, image object
-	var prvShape, nxtShape;
-	var prvArrow, nxtArrow;
-	var running = false;
+	//var prvShape, nxtShape;
+	//var prvArrow, nxtArrow;
+	//var running = false;
 	
 	var leftImg, middleImg, rightImg;	// Variables to hold choice image objects
 	
@@ -56,19 +56,19 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var imgPath = "Party_Story_Images/";
 	var IMAGE_WIDTH = 2200;
 	var IMAGE_HEIGHT = 1238;
-	var ARROW_SIDE = 230;
-	var NUM_PAGES = 24
+	//var ARROW_SIDE = 230;
+	var NUM_PAGES = 24;
 	
 	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
 	
 	// Text Variables
-	var txtintro;
-	var prevtxt;
-	var nexttxt;
+	//var txtintro;
+	//var prevtxt;
+	//var nexttxt;
 	
 	// Sound Variables
-	var src;            // the audio src we are trying to play
+	//var src;            // the audio src we are trying to play
 	var soundInstance;  // the soundInstance returned by Sound when we create or play a src
 	var canvas;  		// the canvas we draw to
 	
@@ -114,7 +114,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 			{id: "22", src: musicPath + "22_page.mp3"},
 			{id: "23", src: musicPath + "23_page.mp3"},
 			{id: "24", src: musicPath + "bensound-dance.mp3"},
-		]
+		];
 		
 		// Instantiate a music queue.
 		musicqueue = new createjs.LoadQueue();
@@ -389,7 +389,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 		}
 		
 		// Background: full screen redraw 
-		bg.graphics.clear()
+		bg.graphics.clear();
 		bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 		
 		// Content: centered
