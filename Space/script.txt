@@ -1,0 +1,126 @@
+Story: Space Explorers
+
+Slide: 1
+Narrator: Our story begins with four friends exploring space on a trip to the moon.
+
+Slide: 2
+Narrator: As they arrived at the moon, the four heroes began to land.  Suddenly, there was a problem with their rocket.
+
+Slide: 3
+Sound effect: POW!, CRASH!
+
+Slide: 4
+Narrator: This problem caused the heroes to become stuck on the moon.
+
+Slide: 5
+[Slide with cat speech bubble.]
+Cat: Oh-oh!
+
+Slide: 6
+[Slide with monkey speech bubble.]
+Monkey: Oopsy daisy!
+
+Slide: 7
+[Slide with horse speech bubble.]
+Horse: What now!?
+
+Slide: 8
+[Slide with bear speech bubble.]
+Bear: We are in trouble!
+
+Slide: 9
+[Slide with bear speech bubble.]
+Bear: Now that we are stuck on the moon.  What should we do, team?
+
+Slide: 10
+[Slide with cat speech bubble.]
+Cat: I can make the shelter so that we can have a safe place.
+
+Slide: 11
+[Slide with horse speech bubble.]
+Horse: I can plant and grow food. Because of me, we will not go hungry.
+
+Slide: 12
+[Slide with monkey speech bubble.]
+Monkey: I will start to fix the moon rover so that we can get around on the moon.
+
+Slide: 13
+[Slide with bear speech bubble.]
+Bear: That sounds great!  I will collect the parts of the radio, so that we can call home.
+Narrator: The four team member all run to begin their jobs.
+
+Slide: 14
+[Slide with cat speech bubble.]
+Cat: I have almost finished building the shelter.  I should find out from horse what is needed to store the food.
+
+Slide: 15
+[Slide with horse and cat, only cat with speech bubble.]
+Cat: Horse, what do you need to store the food?
+
+Slide: 16
+[Same slide with horse and cat, only horse with speech bubble.]
+Horse: Thanks cat! I need you to build me a refrigerator for the food I am growing.
+
+Slide: 17
+[Slide with monkey and bear, only monkey with speech bubble.]
+Monkey: Hi Bear, I just finished fixing the rover. Did you find all the parts so that I can fix the radio?
+
+Slide: 18
+[Same slide with monkey and bear, only bear with speech bubble.]
+Bear: These are all the parts I could find. Am I missing any?
+
+Slide: 19
+[Same slide with monkey and bear, only monkey with speech bubble.]
+Monkey: Yes, you are missing the antena.
+
+Slide: 20
+[Bear and monkey on moon rover, bear speech bubble.]
+Bear: I will drive you in the moon buggy until we find it.
+
+Slide: 21
+[Monkey pointing on moon buggy.]
+Narrator: Bear drives the moon buggy around the wreck of the rocket, until suddenly monkey shouts:
+Monkey: There it is! The antena! Take me over there!
+
+Slide: 22
+[Slide with monkey and bear, only bear has speech bubble.]
+Narrator: Monkey runs to grab the antena. When Monkey returns, bear asks:
+Bear: Can you get the radio working now?
+
+Slide: 23
+[Slide with monkey and bear, only monkey has speech bubble.]
+Monkey: Yes, but we need to get back to the shelter first.
+Narrator: Bear drives the moon buggy with monkey back the the shelter.
+
+Slide: 24
+[Cat greets monkey and bear.]
+Cat: Welcome back. I have just finished the shelter.
+
+Slide: 25
+[Slide with horse speech bubble.]
+Horse: I have just finished growing food, so now we can all eat dinner.
+Narrator: The four friends were glad that they could eat, because they all had a long day.
+
+Slide: 26
+[Slide with heroes in bed.]
+Narrator: After their meal, the four heroes were super tired and went to sleep. Who knows what will happen tomorrow on the moon.
+
+Slide: 27
+[Slide with the end.]
+Narrator: The End.
+
+Slide: 28
+[Slide with cat speech bubble.]
+Cat: I am a maker.  I am make anything new that our team needs.
+
+Slide: 29
+[Slide with monkey speech bubble.]
+Monkey: I am a grower.  I can grow anything that our team needs.
+
+Slide: 30
+[Slide with horse speech bubble.]
+Horse: I am a fixer.  I can fix any broken thing.
+
+Slide: 31
+[Slide with bear speech bubble.]
+Bear: I am a driver.  I can drive any vehicle that we find.
