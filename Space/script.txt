@@ -1,5 +1,12 @@
 Story: Space Explorers
 
+Voices from Amazon Polly
+Narrator: Emma, Female; English, British
+Cat: Justin, Male; English, US
+Monkey: Raveena, Female; English Indian
+Horse: Geraint, Male; English, Welsh
+Bear: Nicole, Female; English, Australian
+
 Slide: 1
 Narrator: Our story begins with four friends exploring space on a trip to the moon.
 
@@ -13,8 +20,8 @@ Slide: 4
 Narrator: This problem caused the heroes to become stuck on the moon.
 
 Slide: 5
-[Slide with cat speech bubble.]
-Cat: Oh-oh!
+[Slide with bear speech bubble.]
+Bear: Oh-oh!
 
 Slide: 6
 [Slide with monkey speech bubble.]
@@ -25,8 +32,8 @@ Slide: 7
 Horse: What now!?
 
 Slide: 8
-[Slide with bear speech bubble.]
-Bear: We are in trouble!
+[Slide with cat speech bubble.]
+Cat: We are in trouble!
 
 Slide: 9
 [Slide with bear speech bubble.]
@@ -47,7 +54,7 @@ Monkey: I will start to fix the moon rover so that we can get around on the moon
 Slide: 13
 [Slide with bear speech bubble.]
 Bear: That sounds great!  I will collect the parts of the radio, so that we can call home.
-Narrator: The four team member all run to begin their jobs.
+Narrator: The four team members all run to begin their jobs.
 
 Slide: 14
 [Slide with cat speech bubble.]
@@ -71,7 +78,7 @@ Bear: These are all the parts I could find. Am I missing any?
 
 Slide: 19
 [Same slide with monkey and bear, only monkey with speech bubble.]
-Monkey: Yes, you are missing the antena.
+Monkey: Yes, you are missing the antenna.
 
 Slide: 20
 [Bear and monkey on moon rover, bear speech bubble.]
@@ -80,11 +87,11 @@ Bear: I will drive you in the moon buggy until we find it.
 Slide: 21
 [Monkey pointing on moon buggy.]
 Narrator: Bear drives the moon buggy around the wreck of the rocket, until suddenly monkey shouts:
-Monkey: There it is! The antena! Take me over there!
+Monkey: There it is! The antenna! Take me over there!
 
 Slide: 22
 [Slide with monkey and bear, only bear has speech bubble.]
-Narrator: Monkey runs to grab the antena. When Monkey returns, bear asks:
+Narrator: Monkey runs to grab the antenna. When Monkey returns, bear asks:
 Bear: Can you get the radio working now?
 
 Slide: 23
@@ -111,7 +118,7 @@ Narrator: The End.
 
 Slide: 28
 [Slide with cat speech bubble.]
-Cat: I am a maker.  I am make anything new that our team needs.
+Cat: I am a maker.  I can make anything new that our team needs.
 
 Slide: 29
 [Slide with monkey speech bubble.]
