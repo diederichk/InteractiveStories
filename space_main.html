@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CreateJS Story Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
+	
+	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+	<script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+	<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+</head>
+<body onload="init();">
+
+<!--
+<header class="CreateJS">
+	<h1>Story Example</h1>
+	
+	<p>This example is used to show the story with initial buttons
+		to progress between pages.</p>
+</header>
+
+Link to dynamic resizing ideas:
+https://github.com/CreateJS/EaselJS/issues/343
+-->
+<!--
+<div id="error">
+	<h2>Sorry!</h2>
+
+	<p>SoundJS is not currently supported in your browser.</p>
+
+	<p>Please <a href="http://github.com/CreateJS/SoundJS/issues" target="_blank">log a bug</a>
+		with the device and browser you are using. Thank you.</p>
+</div>
+-->
+<div>
+	<canvas id="demoCanvas" width="800" height="600"></canvas>
+</div>
+
+
+<script id="editable">
+	// Image Variables
+	var stage;
+	var bg; 			// Background
+	var imgqueue;		// Queue for all images
+	var musicqueue;		// Queue for all sounds
+	var container, bmp;	// Container object, image object
+	//var prvShape, nxtShape;
+	//var prvArrow, nxtArrow;
+	//var running = false;
+	
+	var leftImg, middleImg, rightImg;	// Variables to hold choice image objects
+	
+	// Constants
+	var musicPath = "Space_Story_Audio/";
+	var imgPath = "Space_Story_Images/";
+	var IMAGE_WIDTH = 2201;
+	var IMAGE_HEIGHT = 1239;
+	//var ARROW_SIDE = 230;
+	var NUM_PAGES = 32;
+	
+	var slide = 0;		// Variable to access the image and song queues
+	var song = 0;
+	
+	// Text Variables
+	//var txtintro;
+	//var prevtxt;
+	//var nexttxt;
+	
+	// Sound Variables
+	//var src;            // the audio src we are trying to play
+	var soundInstance;  // the soundInstance returned by Sound when we create or play a src
+	var canvas;  		// the canvas we draw to
+	
+	// Resize event listener
+	window.addEventListener('resize', resize);
+		
+	function init() {
+		// this does two things, it initializes the default plugins, and if that fails the if statement triggers and we display an error
+		
+		// if initializeDefaultPlugins returns false, we cannot play sound in this browser
+		if (!createjs.Sound.initializeDefaultPlugins()) {return;}
+			
+		// create a new stage and point it at our canvas:
+		canvas = document.getElementById("demoCanvas");
+		stage = new createjs.Stage(canvas);
+		
+		// Create the background
+		createBackground();		
+		
+		var musicManifest = [
+			{id: "0", src: musicPath + "slide00.mp3"},
+			{id: "1", src: musicPath + "slide01.mp3"},
+			{id: "2", src: musicPath + "slide02.mp3"},
+			{id: "3", src: musicPath + "slide03.mp3"},
+			{id: "4", src: musicPath + "slide04.mp3"},
+			{id: "5", src: musicPath + "slide05.mp3"},
+			{id: "6", src: musicPath + "slide06.mp3"},
+			{id: "7", src: musicPath + "slide07.mp3"},
+			{id: "8", src: musicPath + "slide08.mp3"},
+			{id: "9", src: musicPath + "slide09.mp3"},
+			{id: "10", src: musicPath + "slide10.mp3"},
+			{id: "11", src: musicPath + "slide11.mp3"},
+			{id: "12", src: musicPath + "slide12.mp3"},
+			{id: "13", src: musicPath + "slide13.mp3"},
+			{id: "14", src: musicPath + "slide14.mp3"},
+			{id: "15", src: musicPath + "slide15.mp3"},
+			{id: "16", src: musicPath + "slide16.mp3"},
+			{id: "17", src: musicPath + "slide17.mp3"},
+			{id: "18", src: musicPath + "slide18.mp3"},
+			{id: "19", src: musicPath + "slide19.mp3"},
+			{id: "20", src: musicPath + "slide20.mp3"},
+			{id: "21", src: musicPath + "slide21.mp3"},
+			{id: "22", src: musicPath + "slide22.mp3"},
+			{id: "23", src: musicPath + "slide23.mp3"},
+			{id: "24", src: musicPath + "slide24.mp3"},
+			{id: "25", src: musicPath + "slide25.mp3"},
+			{id: "26", src: musicPath + "slide26.mp3"},
+			{id: "27", src: musicPath + "slide27.mp3"},
+			{id: "28", src: musicPath + "slide28.mp3"},
+			{id: "29", src: musicPath + "slide29.mp3"},
+			{id: "30", src: musicPath + "slide30.mp3"},
+			{id: "31", src: musicPath + "slide31.mp3"}
+		];
+		
+		// Instantiate a music queue.
+		musicqueue = new createjs.LoadQueue();
+		createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
+		musicqueue.installPlugin(createjs.Sound);
+		musicqueue.addEventListener("complete", loadComplete);
+		musicqueue.addEventListener("fileload", fileComplete);
+		musicqueue.addEventListener("error", handleFileError);
+		musicqueue.addEventListener("fileprogress", handleFileProgress);
+		musicqueue.addEventListener("progress", handleProgress);
+		musicqueue.loadManifest(musicManifest);
+		
+		
+		// Royalty free sound clips: http://www.bigsoundbank.com/
+		// Royalty free music songs: http://www.bensound.com/
+		
+		//canvas.innerHTML = "Waiting for load to complete.";  // letting the user know what's happening
+		
+		
+		// Method: Display a slideshow
+		imgqueue = new createjs.LoadQueue(false); // Creates a new queue (false is important)
+		imgqueue.setMaxConnections(10); // Allows 10 concurrent connections for load
+		
+		// Need to call container creator
+		imgqueue.addEventListener("complete", createContainer); // Calls handleCmplt when load is finished
+		
+		
+		imgqueue.loadManifest([
+				    {id:'0', src: imgPath + 'slide00.png'},
+					{id:'1', src: imgPath + 'slide01.png'},
+				    {id:'2', src: imgPath + 'slide02.png'},
+					{id:'3', src: imgPath + 'slide03.png'},
+					{id:'4', src: imgPath + 'slide04.png'},
+					{id:'5', src: imgPath + 'slide05.png'},
+					{id:'6', src: imgPath + 'slide06.png'},
+					{id:'7', src: imgPath + 'slide07.png'},
+					{id:'8', src: imgPath + 'slide08.png'},
+					{id:'9', src: imgPath + 'slide09.png'},
+					{id:'10', src: imgPath + 'slide10.png'},
+					{id:'11', src: imgPath + 'slide11.png'},
+					{id:'12', src: imgPath + 'slide12.png'},
+					{id:'13', src: imgPath + 'slide13.png'},
+					{id:'14', src: imgPath + 'slide14.png'},
+					{id:'15', src: imgPath + 'slide15.png'},
+					{id:'16', src: imgPath + 'slide16.png'},
+					{id:'17', src: imgPath + 'slide17.png'},
+					{id:'18', src: imgPath + 'slide18.png'},
+					{id:'19', src: imgPath + 'slide19.png'},
+					{id:'20', src: imgPath + 'slide20.png'},
+					{id:'21', src: imgPath + 'slide21.png'},
+					{id:'22', src: imgPath + 'slide22.png'},
+					{id:'23', src: imgPath + 'slide23.png'},
+					{id:'24', src: imgPath + 'slide24.png'},
+					{id:'25', src: imgPath + 'slide25.png'},
+					{id:'26', src: imgPath + 'slide26.png'},
+					{id:'27', src: imgPath + 'slide27.png'},
+					{id:'28', src: imgPath + 'slide28.png'},
+					{id:'29', src: imgPath + 'slide29.png'},
+					{id:'30', src: imgPath + 'slide30.png'},
+					{id:'31', src: imgPath + 'slide31.png'},
+					{id:'right', src: imgPath + 'right_arrow.png'},
+					{id:'left', src: imgPath + 'left_arrow.png'}
+		]); // Preloads all images, Images paired with number id tags
+		
+		resize();
+	}
+	
+	/**
+	 * create and display the background (fullscreen)
+	 */
+	function createBackground() {
+		bg = new createjs.Shape();		
+		stage.addChild(bg);
+	}
+	/**
+	 * create container (centered)
+	 */
+	function createContainer() {
+		
+		// Obtain the current draw space
+		contentWidth = document.getElementById("demoCanvas").offsetWidth;
+		contentHeight = document.getElementById("demoCanvas").offsetHeight;
+
+		container = new createjs.Container();
+		//container.addEventListener("click", nxtClck);
+		stage.addChild(container);
+				
+		// Load the Image
+		storyImg = new Image();
+		storyImg.src = imgPath +"slide00.png";
+		storyImg.onload = handleImageLoad;
+	}
+	
+	function handleImageLoad() {
+		// Create a CreateJS bitmap from the loaded image
+		var bmpStoryImage = new createjs.Bitmap(storyImg);
+		
+		// Add the bitmap to the Container
+		container.addChild(bmpStoryImage);
+		
+		// Set the scale value
+		// It could be useful to properly handle different mobile resolutions
+		container.scaleX = 0.5;
+		container.scaleY = 0.5;
+						
+		// Create left rectangular button
+		prvShape = new createjs.Shape();
+		prvShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		prvShape.x = 40;
+		prvShape.y = 40;
+		prvShape.alpha = 0.01;
+		prvShape.addEventListener("click", prvClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(prvShape);
+		container.setChildIndex(prvShape, 1);
+		
+		// Create right rectangular button
+		nxtShape = new createjs.Shape();
+		nxtShape.graphics.beginFill("#ffffff").drawRoundRect(0, 0, 270, IMAGE_HEIGHT - 140, 30);
+		nxtShape.x = IMAGE_WIDTH - 310;
+		nxtShape.y = 40;
+		nxtShape.alpha = 0.01;
+		nxtShape.addEventListener("click", nxtClck);
+		
+		// Add the shape to the container
+		// Used to place the shape at the top layer
+		container.addChild(nxtShape);
+		container.setChildIndex(nxtShape, 1);
+						
+		// Set the registration point of the content Container to center
+		container.regX = bmpStoryImage.image.width/2;
+		container.regY = bmpStoryImage.image.height/2;
+		
+		//stage.update();		
+		resize();
+	}
+	
+	// Sound handling methods
+	function handleFileError(evt) {
+		// An error occurred.
+		//console.log("error ", evt);
+		//canvas.innerText = "Error :("
+		//alert("Error :(");
+	}
+
+	function handleFileProgress(evt) {
+		// Progress happened.
+		//canvas.innerText = "Event File Loading: " + (queue.progress.toFixed(2) * 100) + "%";
+		//alert("Event File Loading");
+	}
+
+	function handleProgress(evt) {
+		// Progress happened.
+		//canvas.innerText = "Event Loading: " + (queue.progress.toFixed(2) * 100) + "%";
+	}
+
+	function loadComplete(evt) {
+		// Load completed.
+		//alert("Complete :)");
+		//playSound("happy");
+		playSound("0");
+	}
+
+	function fileComplete(evt) {
+		//console.log("Event Callback file loaded ", evt);
+		//alert("File loaded");
+	}
+
+	function playSound(name) {
+		// Play the sound using the ID created above.
+		//soundInstance = createjs.Sound.play(name);
+		
+		//For testing
+		soundInstance = createjs.Sound.play(name);
+		soundInstance.addEventListener("complete", nxtClck);
+		//return createjs.Sound.play(name);
+	}
+	
+	/**
+	 *	Next Click Handler
+	 */
+	function nxtClck(event){
+		// Moves current slide to the next slide	
+		slide = slide + 1; //Set counter to previous or next slide
+		song = song + 1;	//Set counter to previous or next song
+		// Stop any song currently playing
+		createjs.Sound.stop();
+		
+		// Remove existing images
+		container.removeChild(bmp);
+		
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
+		// Adding to Container
+		container.addChildAt(bmp,1);
+		
+		// Run thru images
+		if (slide > NUM_PAGES) { //Stop counter from going past end of slide ids
+			slide = NUM_PAGES;
+			
+			/*BUG*/
+			// Remove Event Listener when story is complete
+			//soundInstance.removeEventListener("complete", nxtClck);
+			
+			/*BUG*/
+			// Quick fix to stop looping sound
+			createjs.Sound.removeAllSounds();
+		}
+				
+		// Run thru songs
+		// For use with audio for each slide
+		if (song > NUM_PAGES) { //Stop counter from going past end of song ids
+			song = NUM_PAGES;
+		}
+		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
+	}
+	
+	/**
+	 *	Previous Click Handler
+	 */
+	
+	function prvClck(event){
+		// Moves current slide to the previous slide
+		slide = slide - 1;	//Set counter to previous or next slide
+		song = song - 1;	//Set counter to previous or next song
+		// Stop any song currently playing
+		createjs.Sound.stop();
+		
+		// Remove existing images
+		container.removeChild(bmp);
+		container.removeChild(leftImg);
+		container.removeChild(middleImg);
+		container.removeChild(rightImg);
+		
+		// Run thru images
+		if (slide < 0) { //Stop counter from going negative
+			slide = 0;
+		}
+		
+		bmp = new createjs.Bitmap(imgqueue.getResult(slide.toString())); //Convert counter to string
+		
+		// Adding to Container
+		container.addChildAt(bmp,1);
+		
+		// Run thru songs
+		// For use with audio for each slide
+		if (song < 0) { //Stop counter from going negative
+			song = 0;
+		}
+		playSound(song.toString());
+		
+		// Make sure that everything is sized correctly and the stage updated
+		resize();
+	}
+	
+	/**
+	 * Resize event handler
+	 */
+	function resize() {
+		
+		var w = window.innerWidth-2;
+		var h = window.innerHeight-2;
+
+		stage.canvas.width = w;
+		stage.canvas.height = h;
+
+		// Simple "fit-to-screen" scaling
+		var ratio = IMAGE_WIDTH / IMAGE_HEIGHT; // Use the "default" size of the content you have.
+		var windowRatio = w/h;
+		
+		// calculate a scale factor to keep a correct aspect ratio.			
+		var scale = w/IMAGE_WIDTH;
+		if (windowRatio > ratio) {
+			scale = h/IMAGE_HEIGHT;
+		}
+		
+		// Background: full screen redraw 
+		bg.graphics.clear();
+		bg.graphics.beginFill("#222").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+		
+		// Content: centered
+		container.x = stage.canvas.width / 2;
+		container.y = stage.canvas.height / 2; 
+		
+		// Scale up to fit width or height
+		container.scaleX = container.scaleY = scale;
+		
+		stage.update();
+	}
+</script>
+</body>
+</html>
