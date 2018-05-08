@@ -1,4 +1,4 @@
-In order to use this software, you will need to make sure you have Python 2.7+/3.3+, and have downloaded all of the dependencies using pip. You will also need to make sure you have the AWS CLI configured (i.e. you will need to have your secret key configured so you can access the Amazon Polly service).
+In order to use this software, you will need to make sure you have Python 2.7+/3.3+, and have downloaded all of the dependencies using pip. You will also need to make sure you have the AWS CLI configured (i.e. you will need to have your secret key configured so you can access the Amazon Polly service). Some instruction on that can be found here: https://docs.aws.amazon.com/polly/latest/dg/getting-started.html
 
 ## Terminal Command:
 
