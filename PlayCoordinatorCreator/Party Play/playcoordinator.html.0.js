@@ -4,7 +4,7 @@ var imgqueue;		// Queue for all images
 var musicqueue;		// Queue for all sounds
 var container, bmp;	// Container object, image object
 var roles = []; // role buttons
-var people = [{name:"Player1",role:-1},{name:"Player2",role:-1},{name:"Player3",role:-1}];
+var people = [{name:"Player1",role:-1},{name:"Player2",role:-1},{name:"Player3",role:-1},{name:"Player4",role:-1}];
 var results = []; // for displaying people and roles chosen
 
 // Creating a queue to manage click events
@@ -19,7 +19,7 @@ var imgPath = "Story_Images_3/";
 var IMAGE_WIDTH = 2200;
 var IMAGE_HEIGHT = 1238;
 
-var NUM_ROLES=3; // number of roles to chose from
+var NUM_ROLES=4; // number of roles to chose from
 
 //variables for current slide,music playing, person picking role
 var song=0;
@@ -111,7 +111,7 @@ function init() {
 	imgqueue.loadManifest([
 			  {id:'0', src: imgPath + 'story1-newratio-00.png'},
 				{id:'1', src: imgPath + 'story1-newratio-01.png'},
-			  {id:'2', src: imgPath + 'story1-newratio-02.png'},
+				{id:'2', src: imgPath + 'story1-newratio-02.png'},
 				{id:'3', src: imgPath + 'story1-newratio-03.png'},
 				{id:'4', src: imgPath + 'story1-newratio-04.png'},
 				{id:'5', src: imgPath + 'story1-newratio-05.png'},
