@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Space Story</title>
+	<title>Castaways Story</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 	<link href="storystyle.css" rel="stylesheet" type="text/css"/>
@@ -52,12 +52,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 	var leftImg, middleImg, rightImg;	// Variables to hold choice image objects
 	
 	// Constants
-	var musicPath = "Space_Story_Audio/";
-	var imgPath = "Space_Story_Images/";
-	var IMAGE_WIDTH = 2201;
-	var IMAGE_HEIGHT = 1239;
+	var musicPath = "Castaways_Story_Audio/";
+	var imgPath = "Castaways_Story_Images/";
+	var IMAGE_WIDTH = 2200;
+	var IMAGE_HEIGHT = 1238;
 	//var ARROW_SIDE = 230;
-	var NUM_PAGES = 32;
+	var NUM_PAGES = 36;
 	
 	var slide = 0;		// Variable to access the image and song queues
 	var song = 0;
@@ -120,7 +120,12 @@ https://github.com/CreateJS/EaselJS/issues/343
 			{id: "28", src: musicPath + "slide28.mp3"},
 			{id: "29", src: musicPath + "slide29.mp3"},
 			{id: "30", src: musicPath + "slide30.mp3"},
-			{id: "31", src: musicPath + "slide31.mp3"}
+			{id: "31", src: musicPath + "slide31.mp3"},
+			{id: "32", src: musicPath + "slide32.mp3"},
+			{id: "33", src: musicPath + "slide33.mp3"},
+			{id: "34", src: musicPath + "slide34.mp3"},
+			{id: "35", src: musicPath + "slide35.mp3"},
+			{id: "36", src: musicPath + "slide36.mp3"}
 		];
 		
 		// Instantiate a music queue.
@@ -150,38 +155,43 @@ https://github.com/CreateJS/EaselJS/issues/343
 		
 		
 		imgqueue.loadManifest([
-				    {id:'0', src: imgPath + 'slide00.png'},
-					{id:'1', src: imgPath + 'slide01.png'},
-				    {id:'2', src: imgPath + 'slide02.png'},
-					{id:'3', src: imgPath + 'slide03.png'},
-					{id:'4', src: imgPath + 'slide04.png'},
-					{id:'5', src: imgPath + 'slide05.png'},
-					{id:'6', src: imgPath + 'slide06.png'},
-					{id:'7', src: imgPath + 'slide07.png'},
-					{id:'8', src: imgPath + 'slide08.png'},
-					{id:'9', src: imgPath + 'slide09.png'},
-					{id:'10', src: imgPath + 'slide10.png'},
-					{id:'11', src: imgPath + 'slide11.png'},
-					{id:'12', src: imgPath + 'slide12.png'},
-					{id:'13', src: imgPath + 'slide13.png'},
-					{id:'14', src: imgPath + 'slide14.png'},
-					{id:'15', src: imgPath + 'slide15.png'},
-					{id:'16', src: imgPath + 'slide16.png'},
-					{id:'17', src: imgPath + 'slide17.png'},
-					{id:'18', src: imgPath + 'slide18.png'},
-					{id:'19', src: imgPath + 'slide19.png'},
-					{id:'20', src: imgPath + 'slide20.png'},
-					{id:'21', src: imgPath + 'slide21.png'},
-					{id:'22', src: imgPath + 'slide22.png'},
-					{id:'23', src: imgPath + 'slide23.png'},
-					{id:'24', src: imgPath + 'slide24.png'},
-					{id:'25', src: imgPath + 'slide25.png'},
-					{id:'26', src: imgPath + 'slide26.png'},
-					{id:'27', src: imgPath + 'slide27.png'},
-					{id:'28', src: imgPath + 'slide28.png'},
-					{id:'29', src: imgPath + 'slide29.png'},
-					{id:'30', src: imgPath + 'slide30.png'},
-					{id:'31', src: imgPath + 'slide31.png'},
+				    {id:'0', src: imgPath + 'castaway-00.png'},
+					{id:'1', src: imgPath + 'castaway-01.png'},
+				    {id:'2', src: imgPath + 'castaway-02.png'},
+					{id:'3', src: imgPath + 'castaway-03.png'},
+					{id:'4', src: imgPath + 'castaway-04.png'},
+					{id:'5', src: imgPath + 'castaway-05.png'},
+					{id:'6', src: imgPath + 'castaway-06.png'},
+					{id:'7', src: imgPath + 'castaway-07.png'},
+					{id:'8', src: imgPath + 'castaway-08.png'},
+					{id:'9', src: imgPath + 'castaway-09.png'},
+					{id:'10', src: imgPath + 'castaway-10.png'},
+					{id:'11', src: imgPath + 'castaway-11.png'},
+					{id:'12', src: imgPath + 'castaway-12.png'},
+					{id:'13', src: imgPath + 'castaway-13.png'},
+					{id:'14', src: imgPath + 'castaway-14.png'},
+					{id:'15', src: imgPath + 'castaway-15.png'},
+					{id:'16', src: imgPath + 'castaway-16.png'},
+					{id:'17', src: imgPath + 'castaway-17.png'},
+					{id:'18', src: imgPath + 'castaway-18.png'},
+					{id:'19', src: imgPath + 'castaway-19.png'},
+					{id:'20', src: imgPath + 'castaway-20.png'},
+					{id:'21', src: imgPath + 'castaway-21.png'},
+					{id:'22', src: imgPath + 'castaway-22.png'},
+					{id:'23', src: imgPath + 'castaway-23.png'},
+					{id:'24', src: imgPath + 'castaway-24.png'},
+					{id:'25', src: imgPath + 'castaway-25.png'},
+					{id:'26', src: imgPath + 'castaway-26.png'},
+					{id:'27', src: imgPath + 'castaway-27.png'},
+					{id:'28', src: imgPath + 'castaway-28.png'},
+					{id:'29', src: imgPath + 'castaway-29.png'},
+					{id:'30', src: imgPath + 'castaway-30.png'},
+					{id:'31', src: imgPath + 'castaway-31.png'},
+					{id:'32', src: imgPath + 'castaway-32.png'},
+					{id:'33', src: imgPath + 'castaway-33.png'},
+					{id:'34', src: imgPath + 'castaway-34.png'},
+					{id:'35', src: imgPath + 'castaway-35.png'},
+					{id:'36', src: imgPath + 'castaway-36.png'},
 					{id:'right', src: imgPath + 'right_arrow.png'},
 					{id:'left', src: imgPath + 'left_arrow.png'}
 		]); // Preloads all images, Images paired with number id tags
@@ -211,7 +221,7 @@ https://github.com/CreateJS/EaselJS/issues/343
 				
 		// Load the Image
 		storyImg = new Image();
-		storyImg.src = imgPath +"slide00.png";
+		storyImg.src = imgPath +"castaway-00.png";
 		storyImg.onload = handleImageLoad;
 	}
 	
