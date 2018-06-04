@@ -1,0 +1,46 @@
+Story: Space Explorers Day 2
+Theme: Space
+
+Theme: Finding a lost young animal
+
+Cat: Maker
+Horse: Fixer
+Bear: Driver
+Monkey: Grower
+Robot: Gives instructions/plot device
+
+Voices from Amazon Polly
+Narrator: Emma, Female; English, British
+Cat: Justin, Male; English, US
+Monkey: Raveena, Female; English Indian
+Horse: Geraint, Male; English, Welsh
+Bear: Nicole, Female; English, Australian
+Robot: Joey, Male; English, US
+
+
+[Robot tells that find a nearby settlement with no form of life]
+
+Slide 1
+Narrator: Early the next morning, the four friends awoke to a sound coming from the robot.
+
+Slide 2
+Robot: Attention explorers! My sensors have picked up some strange readings.
+
+Slide 3
+Monkey: What do your readings tell you?
+
+Slide 4
+Bear: Oh I hope it means that I get to drive the moon rover.
+
+Slide 5
+Robot: My sensors are picking up the presense of a settlement 10 miles to the South of our current location.
+
+Slide 6
+Cat: A settlement.  Could it be that someone else is on the moon too?
+
+Slide 7
+Robot: That would be unlikely, because I am not reading any signs of life.
+
+Slide 8
+Horse:  We should go check it out.  Who knows what we might find.
+Narrator:  The four explorers set out to find the settlement that robot found.
