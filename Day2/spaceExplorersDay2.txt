@@ -33,7 +33,7 @@ Slide 4
 Bear: Oh I hope it means that I get to drive the moon rover.
 
 Slide 5
-Robot: My sensors are picking up the presense of a settlement 10 miles to the South of our current location.
+Robot: My sensors are picking up the presence of a settlement 10 miles to the South of our current location.
 
 Slide 6
 Cat: A settlement.  Could it be that someone else is on the moon too?
@@ -43,4 +43,4 @@ Robot: That would be unlikely, because I am not reading any signs of life.
 
 Slide 8
 Horse:  We should go check it out.  Who knows what we might find.
-Narrator:  The four explorers set out to find the settlement that robot found.
+Narrator:  The four explorers set out to locate the settlement that robot found.
