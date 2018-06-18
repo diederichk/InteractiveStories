@@ -40,11 +40,11 @@ var canvas;  		// the canvas we draw to
 var nextArrow, prevArrow;
 var nextShape, prevShape;
 
-// Resize event listener
-window.addEventListener('resize', resize);
-
 function init() {
 	// this does two things, it initializes the default plugins, and if that fails the if statement triggers and we display an error
+	
+	// Resize event listener
+	window.addEventListener('resize', resize);
 	
 	// if initializeDefaultPlugins returns false, we cannot play sound in this browser
 	if (!createjs.Sound.initializeDefaultPlugins()) {return;}
