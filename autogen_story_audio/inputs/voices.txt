@@ -1,0 +1,15 @@
+Narrator:Emma
+# No adjustments
+# Other Notes: Female; English, British
+Cat:Justin
+# No adjustments
+# Other noteS: Male; English, US
+Monkey:Raveena 
+# No adjustments
+# Other notes: Female; English Indian
+Horse:Geraint
+# No adjustments
+# Other notes: Male; English, Welsh
+Bear:Nicole
+# No adjustments
+# Other notes: Female English, Australian

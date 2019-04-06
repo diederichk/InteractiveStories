@@ -1,2 +1,9 @@
 /PlayCoordinatorCreator/dist/
 LessonsLearned_Lite.docx
+Party2_Story_Audio/.DS_Store
+.DS_Store
+*/.DS_Store
+
+autogen_story_audio/audio_clips/*
+autogen_story_audio/slide_audio/*
+autogen_story_audio/test.py

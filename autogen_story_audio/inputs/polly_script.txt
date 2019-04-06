@@ -1,0 +1,32 @@
+1:Narrator:Our story begins in Cat's house.
+1:Cat:I want to plan a party to celebrate my birthday, today.
+2:Cat:Where do I start? Oh, first I will need a cake!
+2:Narrator: Monkey hears Cat from the other room.
+3:Monkey: I can help you make a banana cake.
+3:Narrator: Monkey begins to look for things to make the cake.
+4:Monkey: Oops, we need bananas and eggs to make the cake!
+4:Narrator: Unfortunately, Monkey could not find anything. Thankfully Bear was there
+5:Bear: I can find them. But I have no way to get to the store. Who can take me there?
+6:Horse: I can take you to the store. Hop on and let's go!
+7:Cat: Thank you Bear and Horse.  I will start making the cake with Monkey.
+7:Narrator: Just as they were starting on the cake, Cat thought
+8:Cat: Oh, I will also need balloons and a birthday hat!
+8:Narrator: Because Bear had not left, Bear offered
+9:Bear: I can find the balloons and the hat. Can you take me there, Horse?
+10:Horse: Of course! I will prepare the car and we can go.
+11:Cat: Thank you both!
+12:Monkey: Cat and I will organize the room.
+13:Horse: Banana delivery!
+14:Bear: Hear are your bananas, Monkey.
+15:Bear: Here are the balloons.
+16:Horse: And the party hats!
+17:Monkey: That's awesome.
+18:Cat: Thank you both!
+19:Bear: You are welcome.
+29:Cat: Good teamwork, all! Put on your hats and let's celebrate.
+30:Narrator: With all the work finished, the four friends could spend the rest of the day singing and dancing.
+31:Narrator: Thee End
+32:Cat: I am the dreamer.  I have all the ideas for the group.
+33:Monkey: I am the maker.  I can make anything the group needs.
+34:Bear: I am the finder.  I can find anything, in any place.
+35:Horse: I am the driver.  I can drive any vehicle that the group needs.
